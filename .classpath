@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="hive/hive/" kind="src" path="Experiments/CameronSmith/hive/src/main/java"/>
+	<classpathentry kind="src" path="Experiments/CameronSmith/hive/src/main/java/hive/hive"/>
+	<classpathentry kind="src" path="Experiments/CatherineLarson/CustomMapMarker/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="Experiments/CatherineLarson/CustomMapMarker/app/src/main/java"/>
+	<classpathentry kind="src" path="Experiments/CatherineLarson/CustomMapMarker/app/src/test/java"/>
+	<classpathentry kind="src" path="Experiments/CatherineLarson/HelloWorld/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="Experiments/CatherineLarson/HelloWorld/app/src/main/java"/>
+	<classpathentry kind="src" path="Experiments/CatherineLarson/HelloWorld/app/src/test/java"/>
+	<classpathentry kind="src" path="Experiments/CatherineLarson/MapsExperiment/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="Experiments/CatherineLarson/MapsExperiment/app/src/main/java"/>
+	<classpathentry kind="src" path="Experiments/CatherineLarson/MapsExperiment/app/src/test/java"/>
+	<classpathentry kind="src" path="Experiments/JulieVanKirk/AndroidTestApp/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="Experiments/JulieVanKirk/AndroidTestApp/app/src/main/java"/>
+	<classpathentry kind="src" path="Experiments/JulieVanKirk/AndroidTestApp/app/src/test/java"/>
+	<classpathentry kind="src" path="Experiments/YoungHa/Calculator/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="Experiments/YoungHa/Calculator/app/src/main/java"/>
+	<classpathentry kind="src" path="Experiments/YoungHa/Calculator/app/src/test/java"/>
+	<classpathentry kind="src" path="Experiments/YoungHa/LogInScreen/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="Experiments/YoungHa/LogInScreen/app/src/main/java"/>
+	<classpathentry kind="src" path="Experiments/YoungHa/LogInScreen/app/src/test/java"/>
+	<classpathentry kind="lib" path="Experiments/CatherineLarson/CustomMapMarker/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="Experiments/CatherineLarson/HelloWorld/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="Experiments/CatherineLarson/MapsExperiment/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="Experiments/JulieVanKirk/AndroidTestApp/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="Experiments/YoungHa/Calculator/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="Experiments/YoungHa/LogInScreen/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="Experiments/CameronSmith/hive/target/classes"/>
+</classpath>

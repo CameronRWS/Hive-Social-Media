@@ -1,0 +1,13 @@
+
+Curl tests... Trying to learn how this works...
+
+POST (create a new post)
+curl -d '{"hiveId":"3", "userId":"3", "dateCreated":"ok", "textContent":"example post"}' -H "Content-Type: application/json" -X POST http://localhost:8080/posts
+
+
+PUT (update a posts text content - doesn't check credentials since userId is not provided)
+curl -d '{"textContent":"this is some text2"}' -H "Content-Type: application/json" -X PUT http://localhost:8080/posts/5
+
+
+PUT (update a posts text content - checks credentials)
+curl -d '{"userId":"100","textContent":"this is some text2"}' -H "Content-Type: application/json" -X PUT http://localhost:8080/posts/5
