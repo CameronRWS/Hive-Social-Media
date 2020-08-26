@@ -8,18 +8,14 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/background"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#FFFFFF"
-        android:gravity="center"
-        android:src="@drawable/loginbg"
+        android:id="@+id/imageView3"
+        android:layout_width="447dp"
+        android:layout_height="819dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:srcCompat="@drawable/hivebackground" />
 
     <TextView
         android:id="@+id/hivename"
@@ -34,9 +30,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.388"
+        app:layout_constraintVertical_bias="0.461"
         tools:text="HIVE" />
 
     <TextView
@@ -44,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:layout_marginBottom="175dp"
+        android:layout_marginBottom="75dp"
         android:fontFamily="@font/roboto"
         android:text="Don't have an account?"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -53,7 +50,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
@@ -62,7 +59,7 @@
         android:id="@+id/hivename3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="50dp"
         android:fontFamily="@font/roboto_black"
         android:text="Sign up."
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -79,7 +76,7 @@
         android:id="@+id/editTextTextPersonName"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="392dp"
         android:background="@drawable/rounded_rectangle"
         android:ems="10"
         android:fontFamily="@font/roboto"
@@ -89,16 +86,15 @@
         android:paddingRight="15dp"
         android:textColor="#757575"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/background"
-        app:layout_constraintStart_toStartOf="@+id/background"
-        app:layout_constraintTop_toTopOf="@+id/background"
-        app:layout_constraintVertical_bias="0.44" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editTextTextPersonName2"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginBottom="328dp"
         android:background="@drawable/rounded_rectangle"
         android:ems="10"
         android:fontFamily="@font/roboto"
@@ -108,27 +104,24 @@
         android:paddingRight="15dp"
         android:textColor="#757575"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/background"
-        app:layout_constraintStart_toStartOf="@+id/background"
-        app:layout_constraintTop_toTopOf="@+id/background"
-        app:layout_constraintVertical_bias="0.438" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="195dp"
-        android:layout_height="68dp"
-        android:layout_marginTop="250dp"
+        android:layout_width="155dp"
+        android:layout_height="61dp"
+        android:layout_marginBottom="224dp"
         android:background="@drawable/rect_border"
         android:fontFamily="@font/roboto"
         android:text="Log In"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="#FFFFFF"
-        android:textSize="25dp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="@+id/background"
-        app:layout_constraintTop_toTopOf="@+id/background"
-        app:layout_constraintVertical_bias="0.425" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
