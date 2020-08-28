@@ -37,6 +37,4 @@ public class HiveController {
         hiveRepository.delete(hiveId);
         return true;
     }
-
-
 }
