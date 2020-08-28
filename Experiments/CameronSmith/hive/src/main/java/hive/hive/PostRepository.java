@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public interface PostRespository extends JpaRepository<Post, Integer> {
+public interface PostRepository extends JpaRepository<Post, Integer> {
 
     // custom query to search to post by it's textContent
 //	@Query("SELECT p FROM post p WHERE p.textContent LIKE '%:textContent%'")

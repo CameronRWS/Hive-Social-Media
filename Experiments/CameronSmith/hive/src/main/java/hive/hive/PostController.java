@@ -11,7 +11,7 @@ import java.util.Map;
 public class PostController {
 
     @Autowired
-    PostRespository postRespository;
+    PostRepository postRepository;
 
     @GetMapping("/")
     public String index2(){
@@ -20,25 +20,25 @@ public class PostController {
     
     @GetMapping("/posts")
     public List<Post> index(){
-        return postRespository.findAll();
+        return postRepository.findAll();
     }
 
     @GetMapping("/posts/{id}")
     public Post show(@PathVariable String id){
         int PostId = Integer.parseInt(id);
-        return postRespository.findOne(PostId);
+        return postRepository.findOne(PostId);
     }
     
     @GetMapping("/posts/hive/{hiveId}")
     public List<Post> getPostsInHive(@PathVariable String hiveId){
         int theHiveId = Integer.parseInt(hiveId);
-        return postRespository.findByHiveId(theHiveId); 
+        return postRepository.findByHiveId(theHiveId); 
     }
 
 //    @PostMapping("/Post/search")
 //    public List<Post> search(@RequestBody Map<String, String> body){
 //        String textContent = body.get("textContent");
-//        return postRespository.findByTextContentContaining(textContent);
+//        return postRepository.findByTextContentContaining(textContent);
 //    }
 
     @PostMapping("/posts")
@@ -47,7 +47,7 @@ public class PostController {
         int userId = Integer.parseInt(body.get("userId"));
         String dateCreated = body.get("dateCreated");
         String textContent = body.get("textContent");
-        return postRespository.save(new Post(hiveId, userId, dateCreated, textContent));
+        return postRepository.save(new Post(hiveId, userId, dateCreated, textContent));
         //INSERT INTO post(hiveId, userId, dateCreated, textContent) VALUES 
         // (post.hiveId, post.userId, post.dateCreated, post.textContent)
     }
@@ -55,22 +55,22 @@ public class PostController {
     @PutMapping("/posts/{id}")
     public Post update(@PathVariable String id, @RequestBody Map<String, String> body){
         int postId = Integer.parseInt(id);
-        Post Post = postRespository.findOne(postId);
+        Post Post = postRepository.findOne(postId);
         String userId = body.get("userId");
         if(userId != null && userId != Post.getUserId() + "") {
         	//requesting user does not match the user post id, so can't edit
         	System.out.println("not proper credentials");
-        	return postRespository.findOne(postId);
+        	return postRepository.findOne(postId);
         }
         Post.setContent(body.get("textContent"));
-        return postRespository.save(Post);
+        return postRepository.save(Post);
         //UPDATE post SET textContent=post.textContent, WHERE id=post.id
     }
 
     @DeleteMapping("posts/{id}")
     public boolean delete(@PathVariable String id){
         int postId = Integer.parseInt(id);
-        postRespository.delete(postId);
+        postRepository.delete(postId);
         //DELETE FROM post WHERE id=param
         return true;
     }
