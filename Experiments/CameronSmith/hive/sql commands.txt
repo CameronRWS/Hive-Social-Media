@@ -1,0 +1,5 @@
+ALTER TABLE hivedb.post MODIFY title varchar(100) AFTER date_created
+
+alter table yourTableName add column yourColumnName1 dataType
+
+ALTER TABLE your_table_name RENAME COLUMN original_column_name TO new_column_name;

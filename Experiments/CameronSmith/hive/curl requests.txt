@@ -2,11 +2,13 @@
 Curl tests... Trying to learn how this works...
 
 POST (create a new post)
-curl -d '{"hiveId":"3", "userId":"3", "dateCreated":"ok", "textContent":"example post"}' -H "Content-Type: application/json" -X POST http://localhost:8080/posts
+curl -d '{"hiveId":"3", "userId":"3", "title":"this is a title", "textContent":"example post"}' -H "Content-Type: application/json" -X POST http://localhost:8080/posts
 
 POST (create a new hive)
 curl -d '{"dateCreated":"eventually lol", "hiveName":"example hive name"}' -H "Content-Type: application/json" -X POST http://localhost:8080/hives
 
+POST (create a new user)
+curl -d '{"userName":"Cameron", "displayName":"Cameron Smith", "birthday":"12/28/1998", "biography":"a nerd"}' -H "Content-Type: application/json" -X POST http://localhost:8080/users
 
 
 PUT (update a posts text content - doesn't check credentials since userId is not provided)

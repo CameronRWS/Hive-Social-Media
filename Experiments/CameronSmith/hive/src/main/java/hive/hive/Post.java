@@ -20,25 +20,20 @@ public class Post {
     private int userId;
     @Column(name = "date_created")
     private String dateCreated;
+    @Column(name = "title")
+    private String title;
     @Column(name = "text_content")
     private String textContent;
     
 
     public Post() {  }
-
-    public Post(int postId, int hiveId, int userId, String dateCreated, String textContent) {
-        this.setpostId(postId);
-        this.setHiveId(hiveId);
-        this.setUserId(userId);
-        this.setDateCreated(dateCreated);
-        this.setContent(textContent);
-    }
     
-    public Post(int hiveId, int userId, String dateCreated, String textContent) {
+    public Post(int hiveId, int userId, String title, String textContent) {
         this.setHiveId(hiveId);
         this.setUserId(userId);
-        this.setDateCreated(dateCreated);
-        this.setContent(textContent);
+        this.setDateCreated(DateTime.GetCurrentDateTime());
+        this.setTitle(title);
+        this.setTextContent(textContent);
     }
 
     public int getpostId() {
@@ -73,12 +68,19 @@ public class Post {
         this.dateCreated = dateCreated;
     }
     
+    public String getTitle() {
+        return title;
+    }
 
-    public String getContent() {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getTextContent() {
         return textContent;
     }
 
-    public void setContent(String textContent) {
+    public void setTextContent(String textContent) {
         this.textContent = textContent;
     }
 
@@ -86,7 +88,9 @@ public class Post {
     public String toString() {
         return "Post{" +
                 "postId=" + postId +
+                ", hiveId='" + hiveId + '\'' +
                 ", userId='" + userId + '\'' +
+                ", title='" + title + '\'' +
                 ", textContent='" + textContent + '\'' +
                 '}';
     }

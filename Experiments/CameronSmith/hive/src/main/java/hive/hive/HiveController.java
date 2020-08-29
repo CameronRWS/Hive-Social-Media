@@ -24,11 +24,14 @@ public class HiveController {
         return hiveRepository.findOne(hiveId);
     }
     
+    
     @PostMapping("/hives")
     public Hive create(@RequestBody Map<String, String> body){
-        String dateCreated = body.get("dateCreated");
-        String hiveName = body.get("hiveName");
-        return hiveRepository.save(new Hive(dateCreated, hiveName));
+        String name = body.get("name");
+        String description = body.get("description");
+        String type = body.get("type");
+        String coordinates = body.get("coordinates");
+        return hiveRepository.save(new Hive(name, description, type, coordinates));
     }
 
     @DeleteMapping("hives/{id}")
