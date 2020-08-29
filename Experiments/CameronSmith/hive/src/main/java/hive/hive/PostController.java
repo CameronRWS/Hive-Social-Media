@@ -50,17 +50,20 @@ public class PostController {
         return postRepository.save(new Post(hiveId, userId, title, textContent));
     }
 
-    @PutMapping("/posts/{id}")
-    public Post update(@PathVariable String id, @RequestBody Map<String, String> body){
-        int postId = Integer.parseInt(id);
+    @PutMapping("/posts")
+    public Post update(@RequestBody Map<String, String> body){
+        int postId = Integer.parseInt(body.get("postId"));
+        String title = body.get("title");
+        String textContent = body.get("textContent");
         Post Post = postRepository.findOne(postId);
-        Post.setTextContent(body.get("textContent"));
+        Post.setTitle(title);
+        Post.setTextContent(textContent);
         return postRepository.save(Post);
     }
 
-    @DeleteMapping("posts/{id}")
-    public boolean delete(@PathVariable String id){
-        int postId = Integer.parseInt(id);
+    @DeleteMapping("/posts")
+    public boolean delete(@RequestBody Map<String, String> body){
+        int postId = Integer.parseInt(body.get("postId"));
         postRepository.delete(postId);
         return true;
     }

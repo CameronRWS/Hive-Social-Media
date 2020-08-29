@@ -18,13 +18,13 @@ public class LikeController {
         return likeRepository.findAll();
     }
     
-    @GetMapping("/likes/post_id/{postId}")
+    @GetMapping("/likes/byPostId/{postId}")
     public List<Like> getLikesByPostId(@PathVariable String postId){
         int thePostId = Integer.parseInt(postId);
         return likeRepository.findByPostId(thePostId); 
     }
     
-    @GetMapping("/likes/user_id/{userId}")
+    @GetMapping("/likes/byUserId/{userId}")
     public List<Like> getLikesByUserId(@PathVariable String userId){
         int theUserId = Integer.parseInt(userId);
         return likeRepository.findByUserId(theUserId); 
