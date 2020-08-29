@@ -8,48 +8,45 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "posts")
-public class Post {
+@Table(name = "comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "comment_id")
+    private int commentId;
     @Column(name = "post_id")
     private int postId;
-    @Column(name = "hive_id")
-    private int hiveId;
     @Column(name = "user_id")
     private int userId;
     @Column(name = "date_created")
     private String dateCreated;
-    @Column(name = "title")
-    private String title;
     @Column(name = "text_content")
     private String textContent;
     
 
-    public Post() {  }
+    public Comment() {  }
     
-    public Post(int hiveId, int userId, String title, String textContent) {
-        this.setHiveId(hiveId);
+    public Comment(int postId, int userId, String textContent) {
+        this.setPostId(postId);
         this.setUserId(userId);
         this.setDateCreated(DateTime.GetCurrentDateTime());
-        this.setTitle(title);
         this.setTextContent(textContent);
     }
 
-    public int getpostId() {
+    public int getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(int id) {
+        this.commentId = id;
+    }
+    
+    public int getPostId() {
         return postId;
     }
 
-    public void setpostId(int id) {
-        this.postId = id;
-    }
-    
-    public int getHiveId() {
-        return hiveId;
-    }
-
-    public void setHiveId(int hiveId) {
-        this.hiveId = hiveId;
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
     
     public int getUserId() {
@@ -68,14 +65,6 @@ public class Post {
         this.dateCreated = dateCreated;
     }
     
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
     public String getTextContent() {
         return textContent;
     }
@@ -86,11 +75,11 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" +
-                "postId=" + postId +
-                ", hiveId='" + hiveId + '\'' +
+        return "Comment{" +
+                "commentId=" + commentId +
+                ", postId='" + postId + '\'' +
                 ", userId='" + userId + '\'' +
-                ", title='" + title + '\'' +
+                ", dateCreated='" + dateCreated + '\'' +
                 ", textContent='" + textContent + '\'' +
                 '}';
     }

@@ -2,18 +2,21 @@
 Curl tests... Trying to learn how this works...
 
 POST (create a new post)
-curl -d '{"hiveId":"3", "userId":"3", "title":"this is a title", "textContent":"example post"}' -H "Content-Type: application/json" -X POST http://localhost:8080/posts
+curl -d '{"hiveId":"1", "userId":"1", "title":"This is Epic (Check it out)", "textContent":"EPIC"}' -H "Content-Type: application/json" -X POST http://localhost:8080/posts
+
+POST (create a new comment)
+curl -d '{"postId":"1", "userId":"1", "textContent":"Nah not so epic"}' -H "Content-Type: application/json" -X POST http://localhost:8080/comments
+
+POST (create a new like)
+curl -d '{"postId":"2", "userId":"1"}' -H "Content-Type: application/json" -X POST http://localhost:8080/likes
+
+DELETE (delete a like where number is postId)
+curl -d '{"postId":"1", "userId":"1"}' -H "Content-Type: application/json" -X DELETE http://localhost:8080/likes
 
 POST (create a new hive)
 curl -d '{"dateCreated":"eventually lol", "hiveName":"example hive name"}' -H "Content-Type: application/json" -X POST http://localhost:8080/hives
 
 POST (create a new user)
-curl -d '{"userName":"Cameron", "displayName":"Cameron Smith", "birthday":"12/28/1998", "biography":"a nerd"}' -H "Content-Type: application/json" -X POST http://localhost:8080/users
+curl -d '{"userName":"Matt123", "displayName":"Matt Guy", "birthday":"01/03/1983", "biography":"an old guy"}' -H "Content-Type: application/json" -X POST http://localhost:8080/users
 
 
-PUT (update a posts text content - doesn't check credentials since userId is not provided)
-curl -d '{"textContent":"this is some text2"}' -H "Content-Type: application/json" -X PUT http://localhost:8080/posts/5
-
-
-PUT (update a posts text content - checks credentials)
-curl -d '{"userId":"100","textContent":"this is some text2"}' -H "Content-Type: application/json" -X PUT http://localhost:8080/posts/5

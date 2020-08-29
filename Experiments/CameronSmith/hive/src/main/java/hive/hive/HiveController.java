@@ -18,7 +18,7 @@ public class HiveController {
         return hiveRepository.findAll();
     }
 
-    @GetMapping("/hives/{id}")
+    @GetMapping("/hives/hive_id/{id}")
     public Hive show(@PathVariable String id){
         int hiveId = Integer.parseInt(id);
         return hiveRepository.findOne(hiveId);

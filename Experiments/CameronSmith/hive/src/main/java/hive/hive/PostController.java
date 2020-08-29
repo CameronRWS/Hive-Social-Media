@@ -23,16 +23,22 @@ public class PostController {
         return postRepository.findAll();
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/posts/post_id/{id}")
     public Post show(@PathVariable String id){
         int PostId = Integer.parseInt(id);
         return postRepository.findOne(PostId);
     }
     
-    @GetMapping("/posts/hive/{hiveId}")
-    public List<Post> getPostsInHive(@PathVariable String hiveId){
+    @GetMapping("/posts/hive_id/{hiveId}")
+    public List<Post> getPostsByHiveId(@PathVariable String hiveId){
         int theHiveId = Integer.parseInt(hiveId);
         return postRepository.findByHiveId(theHiveId); 
+    }
+    
+    @GetMapping("/posts/user_id/{userId}")
+    public List<Post> getPostsByUserId(@PathVariable String userId){
+        int theUserId = Integer.parseInt(userId);
+        return postRepository.findByUserId(theUserId); 
     }
 
     @PostMapping("/posts")

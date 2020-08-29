@@ -1,5 +1,21 @@
+
+//Change order of columns
 ALTER TABLE hivedb.post MODIFY title varchar(100) AFTER date_created
 
+//Add a column to an existing table
 alter table yourTableName add column yourColumnName1 dataType
 
+//Change name of column
 ALTER TABLE your_table_name RENAME COLUMN original_column_name TO new_column_name;
+
+//Change name of table
+ALTER TABLE user RENAME TO users;
+
+//New Table
+USE hivedb;
+CREATE TABLE likes (
+  post_id INT(8) UNSIGNED,
+  user_id INT(8) UNSIGNED,
+  date_created VARCHAR(100) NOT NULL,
+  PRIMARY KEY(post_id, user_id)
+);
