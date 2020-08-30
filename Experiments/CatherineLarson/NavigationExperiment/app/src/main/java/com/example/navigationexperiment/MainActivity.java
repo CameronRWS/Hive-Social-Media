@@ -34,4 +34,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void viewProfile(View view){
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    public void viewSettings(View view){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
 }
