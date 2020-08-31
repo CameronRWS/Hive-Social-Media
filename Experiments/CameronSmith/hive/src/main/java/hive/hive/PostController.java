@@ -29,13 +29,13 @@ public class PostController {
         return postRepository.findOne(PostId);
     }
     
-    @GetMapping("/posts/hive_id/{hiveId}")
+    @GetMapping("/posts/byHiveId/{hiveId}")
     public List<Post> getPostsByHiveId(@PathVariable String hiveId){
         int theHiveId = Integer.parseInt(hiveId);
         return postRepository.findByHiveId(theHiveId); 
     }
     
-    @GetMapping("/posts/user_id/{userId}")
+    @GetMapping("/posts/byUserId/{userId}")
     public List<Post> getPostsByUserId(@PathVariable String userId){
         int theUserId = Integer.parseInt(userId);
         return postRepository.findByUserId(theUserId); 
@@ -67,6 +67,4 @@ public class PostController {
         postRepository.delete(postId);
         return true;
     }
-
-
 }

@@ -24,16 +24,10 @@ public class CommentController {
         return commentRepository.findOne(commentId);
     }
     
-    @GetMapping("/comments/post_id/{postId}")
-    public List<Comment> getCommentsByPostId(@PathVariable String postId){
+    @GetMapping("/comments/byPostId/{postId}")
+    public List<Comment> getCommentsByUserId(@PathVariable String postId){
         int thePostId = Integer.parseInt(postId);
         return commentRepository.findByPostId(thePostId); 
-    }
-    
-    @GetMapping("/comments/user_id/{userId}")
-    public List<Comment> getCommentsByUserId(@PathVariable String userId){
-        int theUserId = Integer.parseInt(userId);
-        return commentRepository.findByUserId(theUserId); 
     }
 
     @PostMapping("/comments")
@@ -44,17 +38,18 @@ public class CommentController {
         return commentRepository.save(new Comment(postId, userId, textContent));
     }
 
-    @PutMapping("/comments/{id}")
-    public Comment update(@PathVariable String id, @RequestBody Map<String, String> body){
-        int commentId = Integer.parseInt(id);
+    @PutMapping("/comments")
+    public Comment update(@RequestBody Map<String, String> body){
+        int commentId = Integer.parseInt(body.get("commentId"));
+        String textContent = body.get("textContent");
         Comment comment = commentRepository.findOne(commentId);
-        comment.setTextContent(body.get("textContent"));
+        comment.setTextContent(textContent);
         return commentRepository.save(comment);
     }
 
-    @DeleteMapping("comments/{id}")
-    public boolean delete(@PathVariable String id){
-        int commentId = Integer.parseInt(id);
+    @DeleteMapping("/comments")
+    public boolean delete(@RequestBody Map<String, String> body){
+        int commentId = Integer.parseInt(body.get("commentId"));
         commentRepository.delete(commentId);
         return true;
     }
