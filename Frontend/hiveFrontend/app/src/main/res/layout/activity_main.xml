@@ -7,14 +7,29 @@
     android:layout_height="match_parent"
     android:paddingTop="0dp">
 
-    <Button
+    <ImageView
+        android:id="@+id/hiveLogo"
+        android:layout_width="43dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/Settings"
+        app:layout_constraintHorizontal_bias="0.536"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
+        app:srcCompat="@drawable/ic_honeycomb" />
+
+    <ImageButton
         android:id="@+id/Settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
         android:onClick="viewSettings"
+        android:src="@drawable/ic_baseline_settings_24"
         android:text="Settings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.912"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
