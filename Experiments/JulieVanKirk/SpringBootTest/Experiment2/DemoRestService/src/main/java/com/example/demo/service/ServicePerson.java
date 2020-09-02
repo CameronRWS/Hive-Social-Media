@@ -7,8 +7,16 @@ public class ServicePerson {
 	
 	private String id;
 	private String name;
-	private String age;
+	private int age;
 	private String height;
+	
+//	@bean
+//	public ServicePerson(String id, String name, int age, String height) {
+//		this.id = id;
+//		this.name = name;
+//		this.age = age;
+//		this.height = height;
+//	}
 	
 	public void setId(String arg) {
 		this.id = arg;
@@ -20,7 +28,7 @@ public class ServicePerson {
 		return;
 	}
 	
-	public void setAge(String arg) {
+	public void setAge(int arg) {
 		this.age = arg;
 		return;
 	}
@@ -34,7 +42,7 @@ public class ServicePerson {
 		return name;
 	}
 	
-	public String getAge() {
+	public int getAge() {
 		return age;
 	}
 	
