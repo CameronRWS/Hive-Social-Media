@@ -2,6 +2,7 @@ package com.example.hivefrontend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,10 +28,29 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         // NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+    navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(MenuItem item) {
+            if (item.getItemId() == R.id.navigation_buzz) {
+                // buzz is selected
+                clickBuzz(this);
+
+            }
+            return true;
+        }
+    });
+
     }
+
+
 
     public void viewSettings(View view){
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+    public void clickBuzz(BottomNavigationView.OnNavigationItemSelectedListener view){
+        Intent intent = new Intent(this, BuzzActivity.class);
         startActivity(intent);
     }
 }
