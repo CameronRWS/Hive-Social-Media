@@ -1,4 +1,4 @@
-package com.example.navigationexperiment.ui.profile;
+package com.example.hivefrontend.ui.profile;
 
 import androidx.lifecycle.ViewModel;
 

@@ -1,4 +1,4 @@
-package com.example.navigationexperiment.ui.profile;
+package com.example.hivefrontend.ui.profile;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.navigationexperiment.R;
+import com.example.hivefrontend.R;
 
 public class ProfileFragment extends Fragment {
 

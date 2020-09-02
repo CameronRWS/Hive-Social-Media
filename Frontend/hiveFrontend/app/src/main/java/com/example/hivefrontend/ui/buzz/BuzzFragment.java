@@ -1,4 +1,4 @@
-package com.example.navigationexperiment.ui.buzz;
+package com.example.hivefrontend.ui.buzz;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.navigationexperiment.R;
+import com.example.hivefrontend.R;
 
 public class BuzzFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.navigationexperiment;
+package com.example.hivefrontend;
 
 import android.os.Bundle;
 

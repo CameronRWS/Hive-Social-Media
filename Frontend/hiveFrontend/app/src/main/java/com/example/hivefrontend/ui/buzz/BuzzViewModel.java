@@ -1,4 +1,4 @@
-package com.example.navigationexperiment.ui.buzz;
+package com.example.hivefrontend.ui.buzz;
 
 import androidx.lifecycle.ViewModel;
 

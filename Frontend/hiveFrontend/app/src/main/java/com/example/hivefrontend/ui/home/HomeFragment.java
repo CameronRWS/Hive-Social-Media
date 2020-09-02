@@ -1,4 +1,4 @@
-package com.example.navigationexperiment.ui.home;
+package com.example.hivefrontend.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.navigationexperiment.R;
+import com.example.hivefrontend.R;
 
 public class HomeFragment extends Fragment {
 

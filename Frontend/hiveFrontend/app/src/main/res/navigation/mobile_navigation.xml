@@ -7,30 +7,30 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.navigationexperiment.ui.home.HomeFragment"
+        android:name="com.example.hivefrontend.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.navigationexperiment.ui.dashboard.DashboardFragment"
+        android:id="@+id/navigation_search"
+        android:name="com.example.hivefrontend.ui.search.SearchFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_buzz"
-        android:name="com.example.navigationexperiment.ui.buzz.BuzzFragment"
+        android:name="com.example.hivefrontend.ui.buzz.BuzzFragment"
         android:label="@string/title_buzz"
         tools:layout="@layout/buzz_fragment" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.navigationexperiment.ui.notifications.NotificationsFragment"
+        android:name="com.example.hivefrontend.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.navigationexperiment.ui.profile.ProfileFragment"
+        android:name="com.example.hivefrontend.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/profile_fragment" />
 </navigation>
