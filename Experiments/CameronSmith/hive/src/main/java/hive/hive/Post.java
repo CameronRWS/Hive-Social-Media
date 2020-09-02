@@ -1,10 +1,17 @@
 package hive.hive;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,8 +23,6 @@ public class Post {
     private int postId;
     @Column(name = "hive_id")
     private int hiveId;
-    @Column(name = "user_id")
-    private int userId;
     @Column(name = "date_created")
     private String dateCreated;
     @Column(name = "title")
@@ -25,12 +30,16 @@ public class Post {
     @Column(name = "text_content")
     private String textContent;
     
-
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
+   
+   
     public Post() {  }
     
-    public Post(int hiveId, int userId, String title, String textContent) {
+    public Post(int hiveId, User user, String title, String textContent) {
         this.setHiveId(hiveId);
-        this.setUserId(userId);
+        this.setUser(user);
         this.setDateCreated(DateTime.GetCurrentDateTime());
         this.setTitle(title);
         this.setTextContent(textContent);
@@ -52,12 +61,12 @@ public class Post {
         this.hiveId = hiveId;
     }
     
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
     
     public String getDateCreated() {
@@ -89,7 +98,6 @@ public class Post {
         return "Post{" +
                 "postId=" + postId +
                 ", hiveId='" + hiveId + '\'' +
-                ", userId='" + userId + '\'' +
                 ", title='" + title + '\'' +
                 ", textContent='" + textContent + '\'' +
                 '}';

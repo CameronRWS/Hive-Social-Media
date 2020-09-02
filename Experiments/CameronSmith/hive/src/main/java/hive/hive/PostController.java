@@ -23,7 +23,7 @@ public class PostController {
         return postRepository.findAll();
     }
 
-    @GetMapping("/posts/post_id/{id}")
+    @GetMapping("/posts/byPostId/{id}")
     public Post show(@PathVariable String id){
         int PostId = Integer.parseInt(id);
         return postRepository.findOne(PostId);
@@ -44,10 +44,10 @@ public class PostController {
     @PostMapping("/posts")
     public Post create(@RequestBody Map<String, String> body){
         int hiveId = Integer.parseInt(body.get("hiveId"));
-        int userId = Integer.parseInt(body.get("userId"));
+        User user = new User();
         String title = body.get("title");
         String textContent = body.get("textContent");
-        return postRepository.save(new Post(hiveId, userId, title, textContent));
+        return postRepository.save(new Post(hiveId, user, title, textContent));
     }
 
     @PutMapping("/posts")
