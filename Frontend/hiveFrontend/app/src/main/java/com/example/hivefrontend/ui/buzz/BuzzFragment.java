@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BuzzFragment extends Fragment {
 
@@ -26,6 +28,7 @@ public class BuzzFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.buzz_fragment, container, false);
+
     }
 
     @Override
@@ -33,6 +36,8 @@ public class BuzzFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(BuzzViewModel.class);
         // TODO: Use the ViewModel
+
+
     }
 
 }
