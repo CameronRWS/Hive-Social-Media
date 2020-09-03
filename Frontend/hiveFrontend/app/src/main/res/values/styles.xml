@@ -5,6 +5,8 @@
         <item name="colorPrimary">#F0B540</item>
         <item name="colorPrimaryDark">#C06524</item>
         <item name="colorAccent">#9A9A9A</item>
+        <item name="android:fontFamily">@font/helveticaneuemedium</item>
     </style>
+
 
 </resources>

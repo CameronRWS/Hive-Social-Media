@@ -7,7 +7,9 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -28,26 +30,27 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
 
-    navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(MenuItem item) {
-            if (item.getItemId() == R.id.navigation_buzz) {
-                // buzz is selected
-                clickBuzz(this);
-
-            }
-            return true;
-        }
-    });
-
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch(item.getItemId()) {
+                        case R.id.navigation_buzz:
+                            clickBuzz(this);
+                            break;
+                    }
 
+                    return true;
+                }
+            };
 
     public void viewSettings(View view){
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+
     public void clickBuzz(BottomNavigationView.OnNavigationItemSelectedListener view){
         Intent intent = new Intent(this, BuzzActivity.class);
         startActivity(intent);
