@@ -33,6 +33,10 @@ public class Hive {
     @JoinColumn(name="hive_id", referencedColumnName = "hive_id")
     private List<Member> members;
     
+    @OneToMany
+    @JoinColumn(name="hive_id", referencedColumnName = "hive_id")
+    private List<Post> posts;
+    
 
     public Hive() {  }
     
@@ -50,6 +54,14 @@ public class Hive {
 
     public void setMembers(List<Member> members) {
         this.members = members;
+    }
+    
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
     
     public int getHiveId() {
