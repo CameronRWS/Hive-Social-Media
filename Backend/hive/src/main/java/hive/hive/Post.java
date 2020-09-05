@@ -44,8 +44,6 @@ public class Post {
     @JoinColumn(name="post_id", referencedColumnName = "post_id")
     private List<Like> likes;
     
-    
-   
     public Post() {  }
     
     public Post(int hiveId, User user, String title, String textContent) {
