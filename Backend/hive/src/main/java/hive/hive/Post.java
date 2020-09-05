@@ -1,5 +1,6 @@
 package hive.hive;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "posts")
@@ -34,6 +36,15 @@ public class Post {
     @JoinColumn(name="user_id", nullable=false)
     private User user;
    
+    @OneToMany
+    @JoinColumn(name="post_id", referencedColumnName = "post_id")
+    private List<Comment> comments;
+    
+    @OneToMany
+    @JoinColumn(name="post_id", referencedColumnName = "post_id")
+    private List<Like> likes;
+    
+    
    
     public Post() {  }
     
@@ -44,12 +55,28 @@ public class Post {
         this.setTitle(title);
         this.setTextContent(textContent);
     }
+    
+    public List<Comment> getComments() {
+        return comments;
+    }
 
-    public int getpostId() {
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+    
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public int getPostId() {
         return postId;
     }
 
-    public void setpostId(int id) {
+    public void setPostId(int id) {
         this.postId = id;
     }
     

@@ -34,12 +34,12 @@ public class Like {
         this.likeIdentity.setPostId(postId);
     }
     
-    public int getUserId() {
-    	return likeIdentity.getUserId();
+    public User getUser() {
+    	return likeIdentity.getUser();
     }
 
-    public void setUserId(int userId) {
-    	this.likeIdentity.setUserId(userId);
+    public void setUser(User user) {
+    	this.likeIdentity.setUser(user);
     }
     
     public String getDateCreated() {
@@ -49,13 +49,4 @@ public class Like {
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     } 
-
-    @Override
-    public String toString() {
-        return "Like{" +
-                ", postId='" + this.likeIdentity.getPostId() + '\'' +
-                ", userId='" + this.likeIdentity.getUserId() + '\'' +
-                ", dateCreated='" + dateCreated + '\'' +
-                '}';
-    }
 }

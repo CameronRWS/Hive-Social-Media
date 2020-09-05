@@ -37,12 +37,12 @@ public class Member {
         this.memberIdentity.setHiveId(HiveId);
     }
     
-    public int getUserId() {
-    	return memberIdentity.getUserId();
+    public User getUser() {
+    	return memberIdentity.getUser();
     }
 
-    public void setUserId(int userId) {
-    	this.memberIdentity.setUserId(userId);
+    public void setUser(User user) {
+    	this.memberIdentity.setUser(user);
     }
     
     public String getDateCreated() {
@@ -60,14 +60,4 @@ public class Member {
     public void setIsModerator(Boolean isModerator) {
         this.isModerator = isModerator;
     } 
-    
-    @Override
-    public String toString() {
-        return "Member{" +
-                ", hiveId='" + this.memberIdentity.getHiveId() + '\'' +
-                ", userId='" + this.memberIdentity.getUserId() + '\'' +
-                ", dateCreated='" + dateCreated + '\'' +
-                ", isModerator='" + isModerator + '\'' +
-                '}';
-    }
 }

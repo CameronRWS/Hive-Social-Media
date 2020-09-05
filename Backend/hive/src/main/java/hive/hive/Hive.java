@@ -1,10 +1,14 @@
 package hive.hive;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -25,6 +29,10 @@ public class Hive {
     @Column(name = "coordinates")
     private String coordinates;
     
+    @OneToMany
+    @JoinColumn(name="hive_id", referencedColumnName = "hive_id")
+    private List<Member> members;
+    
 
     public Hive() {  }
     
@@ -34,6 +42,14 @@ public class Hive {
         this.setDescription(description);
         this.setType(type);
         this.setCoordinates(coordinates);
+    }
+    
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Member> members) {
+        this.members = members;
     }
     
     public int getHiveId() {

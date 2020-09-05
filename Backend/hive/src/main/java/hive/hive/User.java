@@ -30,8 +30,6 @@ public class User {
     @Column(name = "biography")
     private String biography;
     
-    @OneToMany(mappedBy="user")
-    private Set<Post> posts;
     
 
     public User() {  }

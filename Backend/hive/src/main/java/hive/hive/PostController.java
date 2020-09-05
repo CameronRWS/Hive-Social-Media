@@ -12,6 +12,8 @@ public class PostController {
 
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/")
     public String index2(){
@@ -44,7 +46,8 @@ public class PostController {
     @PostMapping("/posts")
     public Post create(@RequestBody Map<String, String> body){
         int hiveId = Integer.parseInt(body.get("hiveId"));
-        User user = new User();
+        int userId = Integer.parseInt(body.get("userId"));
+        User user = userRepository.findOne(userId);
         String title = body.get("title");
         String textContent = body.get("textContent");
         return postRepository.save(new Post(hiveId, user, title, textContent));

@@ -12,6 +12,8 @@ public class CommentController {
 
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    UserRepository userRepository;
     
     @GetMapping("/comments")
     public List<Comment> index(){
@@ -34,8 +36,9 @@ public class CommentController {
     public Comment create(@RequestBody Map<String, String> body){
         int postId = Integer.parseInt(body.get("postId"));
         int userId = Integer.parseInt(body.get("userId"));
+        User user = userRepository.findOne(userId);
         String textContent = body.get("textContent");
-        return commentRepository.save(new Comment(postId, userId, textContent));
+        return commentRepository.save(new Comment(postId, user, textContent));
     }
 
     @PutMapping("/comments")

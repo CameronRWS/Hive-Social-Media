@@ -12,6 +12,9 @@ public class MemberController {
 
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    UserRepository userRepository;
+    
     
     @GetMapping("/members")
     public List<Member> index(){
@@ -28,8 +31,9 @@ public class MemberController {
     public Member create(@RequestBody Map<String, String> body){
         int hiveId = Integer.parseInt(body.get("hiveId"));
         int userId = Integer.parseInt(body.get("userId"));
+        User user = userRepository.findOne(userId);
         Boolean isModerator = Boolean.parseBoolean(body.get("isModerator"));
-        MemberIdentity memberIdentity = new MemberIdentity(hiveId, userId);
+        MemberIdentity memberIdentity = new MemberIdentity(hiveId, user);
         return memberRepository.save(new Member(memberIdentity, isModerator));
     }
     
@@ -37,8 +41,9 @@ public class MemberController {
     public Member update(@RequestBody Map<String, String> body){
         int hiveId = Integer.parseInt(body.get("hiveId"));
         int userId = Integer.parseInt(body.get("userId"));
+        User user = userRepository.findOne(userId);
         Boolean isModerator = Boolean.parseBoolean(body.get("isModerator"));
-        MemberIdentity memberIdentity = new MemberIdentity(hiveId, userId);
+        MemberIdentity memberIdentity = new MemberIdentity(hiveId, user);
         Member member = memberRepository.findOne(memberIdentity);
         member.setIsModerator(isModerator);
         return memberRepository.save(member);
@@ -49,7 +54,8 @@ public class MemberController {
     public Boolean delete(@RequestBody Map<String, String> body){
         int hiveId = Integer.parseInt(body.get("hiveId"));
         int userId = Integer.parseInt(body.get("userId"));
-        MemberIdentity memberIdentity = new MemberIdentity(hiveId, userId);
+        User user = userRepository.findOne(userId);
+        MemberIdentity memberIdentity = new MemberIdentity(hiveId, user);
         memberRepository.delete(memberIdentity);
         return true;
     }

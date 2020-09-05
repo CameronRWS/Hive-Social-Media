@@ -12,6 +12,8 @@ public class LikeController {
 
     @Autowired
     LikeRepository likeRepository;
+    @Autowired
+    UserRepository userRepository;
     
     @GetMapping("/likes")
     public List<Like> index(){
@@ -34,7 +36,8 @@ public class LikeController {
     public Like create(@RequestBody Map<String, String> body){
         int postId = Integer.parseInt(body.get("postId"));
         int userId = Integer.parseInt(body.get("userId"));
-        LikeIdentity likeIdentity = new LikeIdentity(postId, userId);
+        User user = userRepository.findOne(userId);
+        LikeIdentity likeIdentity = new LikeIdentity(postId, user);
         return likeRepository.save(new Like(likeIdentity));
     }
 
@@ -42,7 +45,8 @@ public class LikeController {
     public boolean delete(@RequestBody Map<String, String> body){
         int postId = Integer.parseInt(body.get("postId"));
         int userId = Integer.parseInt(body.get("userId"));
-        LikeIdentity likeIdentity = new LikeIdentity(postId, userId);
+        User user = userRepository.findOne(userId);
+        LikeIdentity likeIdentity = new LikeIdentity(postId, user);
         likeRepository.delete(likeIdentity);
         return true;
     }

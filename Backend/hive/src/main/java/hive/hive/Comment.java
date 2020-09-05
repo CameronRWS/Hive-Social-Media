@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,8 +18,9 @@ public class Comment {
     private int commentId;
     @Column(name = "post_id")
     private int postId;
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
     @Column(name = "date_created")
     private String dateCreated;
     @Column(name = "text_content")
@@ -26,9 +29,9 @@ public class Comment {
 
     public Comment() {  }
     
-    public Comment(int postId, int userId, String textContent) {
+    public Comment(int postId, User user, String textContent) {
         this.setPostId(postId);
-        this.setUserId(userId);
+        this.setUser(user);
         this.setDateCreated(DateTime.GetCurrentDateTime());
         this.setTextContent(textContent);
     }
@@ -49,12 +52,12 @@ public class Comment {
         this.postId = postId;
     }
     
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
     
     public String getDateCreated() {
@@ -71,16 +74,5 @@ public class Comment {
 
     public void setTextContent(String textContent) {
         this.textContent = textContent;
-    }
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "commentId=" + commentId +
-                ", postId='" + postId + '\'' +
-                ", userId='" + userId + '\'' +
-                ", dateCreated='" + dateCreated + '\'' +
-                ", textContent='" + textContent + '\'' +
-                '}';
     }
 }
