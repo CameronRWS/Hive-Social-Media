@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_hive_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RegisterActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/maps_api_key" />
 
-
-        <activity android:name=".BuzzActivity"></activity>
+        <activity android:name=".BuzzActivity" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
