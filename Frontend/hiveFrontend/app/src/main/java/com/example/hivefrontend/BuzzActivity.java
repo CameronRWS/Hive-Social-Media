@@ -3,6 +3,9 @@ package com.example.hivefrontend;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
 
 public class BuzzActivity extends AppCompatActivity {
 
