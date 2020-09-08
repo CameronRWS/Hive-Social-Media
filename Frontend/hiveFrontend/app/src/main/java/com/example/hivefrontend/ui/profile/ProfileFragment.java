@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,7 @@ public class ProfileFragment extends Fragment {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        String url ="coms-309-tc-03.cs.iastate.edu:8080/users";
+        String url ="http://coms-309-tc-03.cs.iastate.edu:8080/users";
 
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
@@ -67,7 +68,7 @@ public class ProfileFragment extends Fragment {
 
                             // Get the current user (json object) data
                             String name = user1.getString("displayName");
-
+                            Log.i("hive","name");
 
                             // Display the formatted json data in text view
                             textView.setText(name);
@@ -75,6 +76,7 @@ public class ProfileFragment extends Fragment {
                         }
                         catch (JSONException e){
                             e.printStackTrace();
+                            Log.i("jsonAppError",e.toString());
                         }
 
                     }
@@ -83,7 +85,9 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
-                        VolleyLog.d("Error: " + error.getMessage());
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+
                         textView.setText("That didn't work :( ");
 
                     }
