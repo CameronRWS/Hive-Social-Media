@@ -33,13 +33,13 @@ public class Hive {
     @Column(name = "coordinates")
     private String coordinates;
     
-    @OneToMany
-    @JoinColumn(name="hive_id", referencedColumnName = "hive_id")
-    private List<Member> members;
+//    @OneToMany
+//    @JoinColumn(name="hive_id", referencedColumnName = "hive_id")
+//    private List<Member> members;
     
-    @OneToMany
-    @JoinColumn(name="hive_id", referencedColumnName = "hive_id")
-    private List<Post> posts;
+//    @OneToMany
+//    @JoinColumn(name="hive_id", referencedColumnName = "hive_id")
+//    private List<Post> posts;
     
 
     public Hive() {  }
@@ -52,21 +52,21 @@ public class Hive {
         this.setCoordinates(coordinates);
     }
     
-    public List<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
-    }
+//    public List<Member> getMembers() {
+//        return members;
+//    }
+//
+//    public void setMembers(List<Member> members) {
+//        this.members = members;
+//    }
     
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
+//    public List<Post> getPosts() {
+//        return posts;
+//    }
+//
+//    public void setPosts(List<Post> posts) {
+//        this.posts = posts;
+//    }
     
     public int getHiveId() {
         return hiveId;
