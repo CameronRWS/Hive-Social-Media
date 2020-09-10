@@ -13,24 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 
 public class ProfileFragment extends Fragment {
 
@@ -47,7 +41,10 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
 
 
-        final TextView textView = (TextView) rootView.findViewById(R.id.text);
+        final TextView textView = (TextView) rootView.findViewById(R.id.displayName);
+        final TextView userName = (TextView) rootView.findViewById(R.id.userName);
+        final TextView bio = (TextView) rootView.findViewById(R.id.bio);
+        final TextView dateJoined = (TextView) rootView.findViewById(R.id.dateJoined);
 
 
         // Instantiate the RequestQueue.
@@ -60,18 +57,17 @@ public class ProfileFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONArray response) {
-
-
                         try{
-
-                            JSONObject user1 = response.getJSONObject(1);
-
+                            JSONObject user1 = response.getJSONObject(3);
                             // Get the current user (json object) data
                             String name = user1.getString("displayName");
-                            Log.i("hive","name");
-
+                            String uName = user1.getString("userName");
                             // Display the formatted json data in text view
                             textView.setText(name);
+                            userName.setText(uName);
+                            bio.setText(user1.getString("biography"));
+                            dateJoined.setText(user1.getString("dateCreated"));
+
 
                         }
                         catch (JSONException e){
