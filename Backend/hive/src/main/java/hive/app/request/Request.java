@@ -14,18 +14,16 @@ import hive.app.utils.DateTime;
 @Table(name = "requests")
 public class Request {
 
-	// for now, generate key as normal. want embedded class after RequestIdentity is created
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "comment_id")
-	private int requestIdentity;
+	@EmbeddedId
+	private RequestIdentity requestIdentity;
 	
 	@Column (name = "date_created")
 	private String dateCreated;
 	
-	//public Request() {}
+	public Request() {}
 	
-	public Request(){
+	public Request(RequestIdentity requestIdentity){
+		this.requestIdentity = requestIdentity;
 		this.dateCreated = DateTime.GetCurrentDateTime();
 	}
 	

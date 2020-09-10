@@ -8,9 +8,9 @@ import javax.persistence.ManyToOne;
 import hive.app.user.User;
 
 @Embeddable
-public class RequestIdentity {
+public class RequestIdentity implements Serializable{
 	
-	private static final long serializedVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	@Column (name = "hive_id")
 	private int hiveId;
