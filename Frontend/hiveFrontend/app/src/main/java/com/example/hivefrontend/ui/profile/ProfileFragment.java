@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        String url ="http://coms-309-tc-03.cs.iastate.edu:8080/users";
+        String url ="http://10.24.227.37:8080/users";
 
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
