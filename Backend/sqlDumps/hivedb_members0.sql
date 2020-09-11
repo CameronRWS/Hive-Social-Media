@@ -16,31 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `hives`
+-- Table structure for table `members`
 --
 
-DROP TABLE IF EXISTS `hives`;
+DROP TABLE IF EXISTS `members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `hives` (
-  `hive_id` int unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `members` (
+  `hive_id` int unsigned NOT NULL,
+  `user_id` int unsigned NOT NULL,
   `date_created` varchar(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` varchar(1000) DEFAULT NULL,
-  `type` varchar(9) DEFAULT NULL,
-  `coordinates` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`hive_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `is_moderator` tinyint(1) NOT NULL,
+  PRIMARY KEY (`hive_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `hives`
+-- Dumping data for table `members`
 --
 
-LOCK TABLES `hives` WRITE;
-/*!40000 ALTER TABLE `hives` DISABLE KEYS */;
-INSERT INTO `hives` VALUES (3,'08/29/2020 17:14:50','example hive name2',NULL,'protected',NULL),(4,'08/29/2020 17:15:05','example hive name3',NULL,'private',NULL),(5,'09/02/2020 15:58:47','example hive name333',NULL,'private',NULL);
-/*!40000 ALTER TABLE `hives` ENABLE KEYS */;
+LOCK TABLES `members` WRITE;
+/*!40000 ALTER TABLE `members` DISABLE KEYS */;
+INSERT INTO `members` VALUES (3,1,'08/29/2020 16:33:54',0),(3,2,'08/29/2020 15:54:18',0),(3,3,'08/29/2020 15:59:48',0);
+/*!40000 ALTER TABLE `members` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-07 17:30:23
+-- Dump completed on 2020-09-11 17:16:47

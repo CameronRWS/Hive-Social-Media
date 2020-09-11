@@ -16,31 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `posts`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `posts`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `posts` (
-  `post_id` int unsigned NOT NULL AUTO_INCREMENT,
-  `hive_id` int DEFAULT NULL,
-  `user_id` int unsigned DEFAULT NULL,
-  `date_created` varchar(500) NOT NULL,
-  `title` varchar(100) DEFAULT NULL,
-  `text_content` varchar(2000) NOT NULL,
-  PRIMARY KEY (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `users` (
+  `user_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `date_created` varchar(100) NOT NULL,
+  `user_name` varchar(15) NOT NULL,
+  `display_name` varchar(25) NOT NULL,
+  `birthday` varchar(10) NOT NULL,
+  `biography` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `posts`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `posts` WRITE;
-/*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (1,3,1,'<some date>',NULL,'This is the new text...'),(2,3,2,'<some date2>',NULL,'This is an epic post'),(3,3,1,'<somed>',NULL,'lawl'),(4,3,2,'<somed2>',NULL,'lawl2'),(5,4,3,'ok',NULL,'this is some text2'),(6,3,3,'ok',NULL,'example post'),(7,3,3,'ok',NULL,'example post'),(10,3,1,'08/29/2020 10:56:43','New title!','This is the new text...'),(11,3,1,'08/29/2020 17:28:09','This is a new post!','This is the new text... hmmm'),(12,4,1,'08/30/2020 11:22:36','New title!2','This is the new text...');
-/*!40000 ALTER TABLE `posts` ENABLE KEYS */;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'08/28/2020 23:28:23','CameronX','Cameron Smith','12/28/1998','a nerd'),(2,'09/02/2020 17:18:20','NewGuy','New_Guy','12/28/2020','yea'),(3,'08/29/2020 10:55:33','Matt123','Matt Guy','01/03/1983','an old guy'),(4,'08/29/2020 17:18:22','Bob','Bobby Man','11/23/1993','a good guy');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-07 17:30:24
+-- Dump completed on 2020-09-11 17:16:44
