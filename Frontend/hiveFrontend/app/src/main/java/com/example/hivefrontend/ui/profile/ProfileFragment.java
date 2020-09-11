@@ -70,7 +70,7 @@ public class ProfileFragment extends Fragment {
                             textView.setText(name);
                             userName.setText(uName);
                             bio.setText(user1.getString("biography"));
-                            dateJoined.setText(user1.getString("dateCreated"));
+                            //dateJoined.setText(user1.getString("dateCreated"));
 
 
                         }
