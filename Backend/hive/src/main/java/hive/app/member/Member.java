@@ -6,7 +6,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import hive.app.hive.Hive;
 import hive.app.user.User;
 import hive.app.utils.DateTime;
 
@@ -33,12 +32,12 @@ public class Member {
         this.setDateCreated(DateTime.GetCurrentDateTime());
     }
     
-    public Hive getHive() {
-        return memberIdentity.getHive();
+    public int getHiveId() {
+        return memberIdentity.getHiveId();
     }
 
-    public void setHive(Hive hive) {
-        this.memberIdentity.setHive(hive);
+    public void setHiveId(int HiveId) {
+        this.memberIdentity.setHiveId(HiveId);
     }
     
     public User getUser() {
