@@ -16,30 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `comments`
+-- Table structure for table `interests`
 --
 
-DROP TABLE IF EXISTS `comments`;
+DROP TABLE IF EXISTS `interests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `comments` (
-  `comment_id` int unsigned NOT NULL AUTO_INCREMENT,
-  `post_id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `date_created` varchar(100) NOT NULL,
-  `text_content` varchar(200) NOT NULL,
-  PRIMARY KEY (`comment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `interests` (
+  `interest_id` int NOT NULL AUTO_INCREMENT,
+  `interest_text` varchar(30) DEFAULT NULL,
+  `date_created` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`interest_id`),
+  UNIQUE KEY `interestText` (`interest_text`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comments`
+-- Dumping data for table `interests`
 --
 
-LOCK TABLES `comments` WRITE;
-/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (1,1,1,'08/29/2020 11:24:12','EPIC'),(2,1,1,'08/29/2020 11:24:41','Nah not so epic'),(3,2,1,'08/30/2020 22:31:11','This is the new text...'),(5,2,1,'09/04/2020 19:41:25','Such a great post lol.');
-/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+LOCK TABLES `interests` WRITE;
+/*!40000 ALTER TABLE `interests` DISABLE KEYS */;
+INSERT INTO `interests` VALUES (1,'Chess','date'),(2,'Golf','date'),(3,'Math','date'),(4,'Science','date'),(5,'Funny','date'),(6,'Swimming','date'),(7,'Bowling','09/11/2020 16:46:32'),(9,'Equations','09/11/2020 17:10:22');
+/*!40000 ALTER TABLE `interests` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-07 17:30:24
+-- Dump completed on 2020-09-11 17:16:44

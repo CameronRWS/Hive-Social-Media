@@ -11,33 +11,34 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import hive.app.hive.Hive;
+import hive.app.utils.DateTime;
 
 @Entity
 @Table(name = "interests")
 public class Interest {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "interest_id")
 	private int interestId;
 	@Column(name = "interest_text")
 	private String interestText;
-	
-//    @ManyToMany(mappedBy = "interests")
-//    private List<Hive> hives;
+    @Column(name = "date_created")
+    private String dateCreated;
     
     public Interest() {};
 	
 	public Interest(String interestText) {
 		this.setInterestText(interestText);
+        this.setDateCreated(DateTime.GetCurrentDateTime());
 	}
 	
-//    public void setHives(List<Hive> hives) {
-//        this.hives = hives;
-//    }
-//    
-//    public List<Hive> getHives() {
-//        return this.hives;
-//    }
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 	
     public void setInterestId(int id) {
         this.interestId = id;
