@@ -7,32 +7,30 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import hive.app.hive.Hive;
 import hive.app.user.User;
 
 @Embeddable
 public class MemberIdentity implements Serializable {
 	private static final long serialVersionUID = 1L;
-    @ManyToOne
-    @JoinColumn(name="hive_id", nullable=false)
-    private Hive hive;
+    @Column(name = "hive_id")
+    private int hiveId;
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private User user;
     
     public MemberIdentity() { };
     
-    public MemberIdentity(Hive hive, User user) {
-    	this.hive = hive;
+    public MemberIdentity(int hiveId, User user) {
+    	this.hiveId = hiveId;
     	this.user = user;
     }
     
-    public Hive getHive() {
-    	return hive;
+    public int getHiveId() {
+    	return hiveId;
     }
     
-    public void setHive(Hive hive) {
-    	this.hive = hive;
+    public void setHiveId(int hiveId) {
+    	this.hiveId = hiveId;
     }
     
     public User getUser() {
