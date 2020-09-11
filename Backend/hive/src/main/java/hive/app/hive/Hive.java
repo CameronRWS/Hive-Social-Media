@@ -1,16 +1,22 @@
 package hive.app.hive;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import hive.app.interest.Interest;
 import hive.app.member.Member;
 import hive.app.post.Post;
 import hive.app.utils.DateTime;
@@ -33,13 +39,13 @@ public class Hive {
     @Column(name = "coordinates")
     private String coordinates;
     
-    @OneToMany
-    @JoinColumn(name="hive_id", referencedColumnName = "hive_id")
-    private List<Member> members;
-    
-    @OneToMany
-    @JoinColumn(name="hive_id", referencedColumnName = "hive_id")
-    private List<Post> posts;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+    	name = "hive_interests", 
+    	joinColumns = { @JoinColumn(name = "hive_id") }, 
+    	inverseJoinColumns = { @JoinColumn(name = "interest_id") } 
+    )
+    List<Interest> interests;
     
 
     public Hive() {  }
@@ -52,20 +58,12 @@ public class Hive {
         this.setCoordinates(coordinates);
     }
     
-    public List<Member> getMembers() {
-        return members;
+    public List<Interest> getInterests() {
+        return interests;
     }
 
-    public void setMembers(List<Member> members) {
-        this.members = members;
-    }
-    
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
+    public void setHiveId(List<Interest> interests) {
+        this.interests = interests;
     }
     
     public int getHiveId() {
