@@ -7,15 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
 
-    <TextView
-        android:id="@+id/userName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:ems="10"
-        android:inputType="textPersonName"
+    <ImageView
+        android:id="@+id/header"
+        android:layout_width="417dp"
+        android:layout_height="145dp"
+        android:layout_marginBottom="610dp"
+        android:src="@drawable/header"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="134dp"
+        android:layout_height="136dp"
+        android:layout_marginTop="75dp"
+        android:src="@drawable/profilepicture"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,11 +33,11 @@
         android:id="@+id/bio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="44dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userName" />
 
@@ -35,8 +45,8 @@
         android:id="@+id/buzzingSince"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="252dp"
         android:text="Buzzing since"
         app:layout_constraintStart_toEndOf="@+id/bio"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,14 +62,34 @@
 
     <TextView
         android:id="@+id/displayName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_width="122dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="164dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.059"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="123dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="2dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textAlignment="textStart"
+        android:textColor="#40000000"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displayName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

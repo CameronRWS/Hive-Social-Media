@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -40,7 +41,6 @@ public class ProfileFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
 
-
         final TextView textView = (TextView) rootView.findViewById(R.id.displayName);
         final TextView userName = (TextView) rootView.findViewById(R.id.userName);
         final TextView bio = (TextView) rootView.findViewById(R.id.bio);
@@ -51,6 +51,8 @@ public class ProfileFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         String url ="http://10.24.227.37:8080/users";
 
+        // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
+
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -58,10 +60,12 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         try{
-                            JSONObject user1 = response.getJSONObject(3);
+                            JSONObject user1 = response.getJSONObject(2);
                             // Get the current user (json object) data
                             String name = user1.getString("displayName");
                             String uName = user1.getString("userName");
+                            uName = uName.toLowerCase();
+                            uName = "@" + uName;
                             // Display the formatted json data in text view
                             textView.setText(name);
                             userName.setText(uName);
