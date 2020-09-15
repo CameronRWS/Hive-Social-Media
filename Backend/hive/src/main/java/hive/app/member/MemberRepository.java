@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, MemberIdentity> {
-    @Query("SELECT l FROM Member l WHERE l.memberIdentity.hiveId= :hiveId")
+    @Query("SELECT l FROM Member l WHERE l.memberIdentity.hive.hiveId= :hiveId")
     List<Member> findByHiveId(@Param("hiveId") int hiveId);
+    
+    @Query("SELECT l FROM Member l WHERE l.memberIdentity.user.userId= :userId")
+    List<Member> findByUserId(@Param("userId") int userId);
+
 }
