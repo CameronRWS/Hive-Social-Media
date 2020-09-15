@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment {
 
         final TextView textView = (TextView) rootView.findViewById(R.id.displayName);
         final TextView userName = (TextView) rootView.findViewById(R.id.userName);
+        final TextView hiveListHeading = (TextView) rootView.findViewById(R.id.hiveListHeading);
         final TextView bio = (TextView) rootView.findViewById(R.id.bio);
         final TextView dateJoined = (TextView) rootView.findViewById(R.id.dateJoined);
 
@@ -63,13 +64,29 @@ public class ProfileFragment extends Fragment {
                             JSONObject user1 = response.getJSONObject(3);
                             // Get the current user (json object) data
                             String name = user1.getString("displayName");
+
+                            // Gets first name out of whole name, but checks if a space exists.
+                            String firstName = "";
+                            if (name.contains(" ")) {
+                                firstName = name.substring(0, name.indexOf(" "));
+                            }
+
                             String uName = user1.getString("userName");
+                            // Formats username and concatenates an '@' before.
                             uName = uName.toLowerCase();
                             uName = "@" + uName;
                             // Display the formatted json data in text view
                             textView.setText(name);
                             userName.setText(uName);
                             bio.setText(user1.getString("biography"));
+                            // TODO: replace '(4)' with actual count.
+                            if (firstName.length() == 0)
+                            {
+                                hiveListHeading.setText("Their Public Hives (4)");
+                            }
+                            else {
+                                hiveListHeading.setText((firstName + "'s Public Hives (4)"));
+                            }
                             //dateJoined.setText(user1.getString("dateCreated"));
                         }
                         catch (JSONException e){
