@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         try{
-                            JSONObject user1 = response.getJSONObject(2);
+                            JSONObject user1 = response.getJSONObject(3);
                             // Get the current user (json object) data
                             String name = user1.getString("displayName");
                             String uName = user1.getString("userName");
@@ -71,8 +71,6 @@ public class ProfileFragment extends Fragment {
                             userName.setText(uName);
                             bio.setText(user1.getString("biography"));
                             //dateJoined.setText(user1.getString("dateCreated"));
-
-
                         }
                         catch (JSONException e){
                             e.printStackTrace();
