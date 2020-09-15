@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -36,6 +37,8 @@ import java.util.Map;
 
 public class BuzzFragment extends Fragment implements View.OnClickListener {
 
+    EditText buzzTitle;
+    EditText buzzContent;
     private BuzzViewModel mViewModel;
 
     public static BuzzFragment newInstance() {
@@ -47,9 +50,10 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.buzz_fragment, container, false);
+        buzzTitle = (EditText) rootView.findViewById(R.id.buzzTitleInput);
+        buzzContent = (EditText) rootView.findViewById(R.id.buzzContentInput);
         Button b = (Button) rootView.findViewById(R.id.submitBuzz);
         b.setOnClickListener(this);
-
         return rootView;
     }
 
@@ -75,8 +79,8 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
         try{
             postObject.put("hiveId",2);
             postObject.put("userId",1);
-            postObject.put("title","super cool post from the app!!!");
-            postObject.put("textContent", "This is the first post from the make buzz screen!");
+            postObject.put("title", buzzTitle.getText().toString());
+            postObject.put("textContent", buzzContent.getText().toString());
 
         } catch (JSONException e){
             e.printStackTrace();
@@ -94,27 +98,7 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
             public void onErrorResponse(VolleyError error){
                 Log.i("request","fail!");
             }
-        })
-        {
-
-//            @Override
-//            protected Map<String,String> getParams(){
-//                Map<String,String> params = new HashMap<String, String>();
-//                params.put("hiveId", "2");
-//                params.put("userId", "1");
-//                params.put("title", "super cool post from the app!!!");
-//                params.put("textContent", "This is the first post from the make buzz screen!");
-//
-//
-//                return params;
-//            }
-//            @Override
-//            public Map<String,String> getHeaders() throws AuthFailureError{
-//                final Map<String, String> params = new HashMap<>();
-//                params.put("Content-Type", "Application/json");
-//                return params;
-//            }
-        };
+        });
 // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest);
 
