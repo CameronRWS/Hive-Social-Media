@@ -29,6 +29,12 @@ public class MemberController {
         int theHiveId = Integer.parseInt(hiveId);
         return memberRepository.findByHiveId(theHiveId); 
     }
+    
+    @GetMapping("/members/byUserId/{userId}")
+    public List<Member> getMembersByUserId(@PathVariable String userId){
+        int theUserId = Integer.parseInt(userId);
+        return memberRepository.findByUserId(theUserId); 
+    }
 
     @PostMapping("/members")
     public Member create(@RequestBody Map<String, String> body){

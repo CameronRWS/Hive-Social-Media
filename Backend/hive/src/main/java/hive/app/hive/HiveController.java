@@ -4,6 +4,8 @@ package hive.app.hive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import hive.app.like.Like;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +25,6 @@ public class HiveController {
         int hiveId = Integer.parseInt(id);
         return hiveRepository.findOne(hiveId);
     }
-    
     
     @PostMapping("/hives")
     public Hive create(@RequestBody Map<String, String> body){
