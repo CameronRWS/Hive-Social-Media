@@ -73,8 +73,8 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
 
         final JSONObject postObject = new JSONObject();
         try{
-            postObject.put("hiveID",2);
-            postObject.put("userID",1);
+            postObject.put("hiveId",2);
+            postObject.put("userId",1);
             postObject.put("title","super cool post from the app!!!");
             postObject.put("textContent", "This is the first post from the make buzz screen!");
 
@@ -87,21 +87,33 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
 
 
             public void onResponse(JSONObject response) {
-
+                Log.i("request","success!");
             }
 
         }, new Response.ErrorListener() {
             public void onErrorResponse(VolleyError error){
-
+                Log.i("request","fail!");
             }
         })
         {
-            @Override
-            public Map<String,String> getHeaders() throws AuthFailureError{
-                final Map<String, String> params = new HashMap<>();
-                params.put("Content-Type", "Application/json");
-                return params;
-            }
+
+//            @Override
+//            protected Map<String,String> getParams(){
+//                Map<String,String> params = new HashMap<String, String>();
+//                params.put("hiveId", "2");
+//                params.put("userId", "1");
+//                params.put("title", "super cool post from the app!!!");
+//                params.put("textContent", "This is the first post from the make buzz screen!");
+//
+//
+//                return params;
+//            }
+//            @Override
+//            public Map<String,String> getHeaders() throws AuthFailureError{
+//                final Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "Application/json");
+//                return params;
+//            }
         };
 // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest);
