@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment {
                         Log.i("volleyAppError","Error: " + error.getMessage());
                         Log.i("volleyAppError","VolleyError: "+ error);
 
-                        textView.setText("That didn't work :( ");
+                        textView.setText("Error.");
 
                     }
                 });
