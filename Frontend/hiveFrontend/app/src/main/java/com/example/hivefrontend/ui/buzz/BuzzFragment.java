@@ -12,8 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -42,7 +44,9 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
     EditText buzzContent;
     private BuzzViewModel mViewModel;
     private ArrayList<Integer> hiveIds;
+    private ArrayList<String> hiveOptions;
     private RequestQueue queue;
+    private Spinner mySpinner;
 
     public static BuzzFragment newInstance() {
         return new BuzzFragment();
@@ -55,8 +59,10 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.buzz_fragment, container, false);
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         hiveIds= new ArrayList<>();
+        hiveOptions = new ArrayList<>();
         buzzTitle = (EditText) rootView.findViewById(R.id.buzzTitleInput);
         buzzContent = (EditText) rootView.findViewById(R.id.buzzContentInput);
+        mySpinner = (Spinner) rootView.findViewById(R.id.hiveIdSpinner);
         Button b = (Button) rootView.findViewById(R.id.submitBuzz);
         b.setOnClickListener(this);
 
@@ -80,12 +86,15 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
                         try{
                             Log.i("responselength", response.length()+"");
                             for(int i = 0; i < response.length(); i++){
-                                JSONObject member1 = response.getJSONObject(i); //should return user,hive pair
-                                Integer hiveId = (Integer) member1.getJSONObject("hive").getInt("hiveId");
-                                Log.i("hiveid", ""+hiveId);
+                                JSONObject member = response.getJSONObject(i); //should return user,hive pair
+                                Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
                                 hiveIds.add(hiveId);
+                                String hiveName =  member.getJSONObject("hive").getString("name");
+                                hiveOptions.add(hiveName);
+
                             }
-                            Log.i("hiveids", hiveIds.toString()+"");
+                            //here the hive options and corresponding ids have been set appropriately, can add the needed spinner
+                            onOptionsSet();
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -107,6 +116,13 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
 
 // Add the request to the RequestQueue.
         queue.add(jsonArrayRequest);
+    }
+
+    private void onOptionsSet(){
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,hiveOptions);
+        mySpinner.setAdapter(adapter);
+
     }
 
     @Override
