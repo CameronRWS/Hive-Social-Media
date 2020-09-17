@@ -71,16 +71,13 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
         selectedItemPos = 0;
 
         //get the hives the user is part of HARDCODED USER
-
         getHives(1);
         return rootView;
     }
 
     private void getHives(int userId){
-
         String url ="http://10.24.227.37:8080/members/byUserId/" + userId;
         // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
-
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -88,16 +85,17 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
                     @Override
                     public void onResponse(JSONArray response) {
                         try{
-                            Log.i("responselength", response.length()+"");
+
                             for(int i = 0; i < response.length(); i++){
                                 JSONObject member = response.getJSONObject(i); //should return user,hive pair
                                 Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
                                 hiveIds.add(hiveId);
                                 String hiveName =  member.getJSONObject("hive").getString("name");
                                 hiveOptions.add(hiveName);
-
                             }
-                            //here the hive options and corresponding ids have been set appropriately, can add the needed spinner
+
+                            //here the hive options and corresponding ids have been set appropriately
+                            //can add the options to the spinner
                             onOptionsSet();
                         }
                         catch (JSONException e){
@@ -116,17 +114,13 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
                     }
                 });
 
-
-
 // Add the request to the RequestQueue.
         queue.add(jsonArrayRequest);
     }
 
     private void onOptionsSet(){
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,hiveOptions);
         mySpinner.setAdapter(adapter);
-
     }
 
     @Override
@@ -134,17 +128,11 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(BuzzViewModel.class);
         // TODO: Use the ViewModel
-
-
     }
 
     @Override
     public void onClick(View view) {
-
-        // Instantiate the RequestQueue.
-        //RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         String url ="http://10.24.227.37:8080/posts";
-
         // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
 
         final JSONObject postObject = new JSONObject();
@@ -161,7 +149,6 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 postObject, new Response.Listener<JSONObject>(){
 
-
             public void onResponse(JSONObject response) {
                 Log.i("request","success!");
             }
@@ -177,8 +164,6 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
         selectedItemPos = pos;
         Log.i("positionSelected",""+pos);
     }
