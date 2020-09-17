@@ -32,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,8 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
     EditText buzzTitle;
     EditText buzzContent;
     private BuzzViewModel mViewModel;
+    private ArrayList<Integer> hiveIds;
+    private RequestQueue queue;
 
     public static BuzzFragment newInstance() {
         return new BuzzFragment();
@@ -50,11 +53,60 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.buzz_fragment, container, false);
+        queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        hiveIds= new ArrayList<>();
         buzzTitle = (EditText) rootView.findViewById(R.id.buzzTitleInput);
         buzzContent = (EditText) rootView.findViewById(R.id.buzzContentInput);
         Button b = (Button) rootView.findViewById(R.id.submitBuzz);
         b.setOnClickListener(this);
+
+        //get the hives the user is part of HARDCODED USER
+
+        getHives(1);
         return rootView;
+    }
+
+    private void getHives(int userId){
+
+        String url ="http://10.24.227.37:8080/members/byUserId/" + userId;
+        // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
+
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try{
+                            Log.i("responselength", response.length()+"");
+                            for(int i = 0; i < response.length(); i++){
+                                JSONObject member1 = response.getJSONObject(i); //should return user,hive pair
+                                Integer hiveId = (Integer) member1.getJSONObject("hive").getInt("hiveId");
+                                Log.i("hiveid", ""+hiveId);
+                                hiveIds.add(hiveId);
+                            }
+                            Log.i("hiveids", hiveIds.toString()+"");
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Log.i("jsonAppError",e.toString());
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+                    }
+                });
+
+
+
+// Add the request to the RequestQueue.
+        queue.add(jsonArrayRequest);
     }
 
     @Override
@@ -70,7 +122,7 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        //RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         String url ="http://10.24.227.37:8080/posts";
 
         // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
