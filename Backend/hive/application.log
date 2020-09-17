@@ -1763,3 +1763,89 @@ com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Colu
 2020-09-17 15:14:33.743  INFO 18240 --- [main] hive.app.MainApplicationClass            : Started MainApplicationClass in 5.688 seconds (JVM running for 6.35)
 2020-09-17 15:14:44.875  INFO 18240 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
 2020-09-17 15:14:44.875  INFO 18240 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2020-09-17 15:14:44.888  INFO 18240 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 13 ms
+2020-09-17 15:31:43.684  INFO 18240 --- [RMI TCP Connection(28)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2020-09-17 15:31:43.686  INFO 18240 --- [RMI TCP Connection(28)-127.0.0.1] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1e67a849: startup date [Thu Sep 17 15:14:28 CDT 2020]; root of context hierarchy
+2020-09-17 15:31:43.692  INFO 18240 --- [RMI TCP Connection(28)-127.0.0.1] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2020-09-17 15:31:43.700  INFO 18240 --- [RMI TCP Connection(28)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-09-17 15:33:15.287  INFO 816 --- [main] hive.app.MainApplicationClass            : Starting MainApplicationClass on DESKTOP-5IFD5M5 with PID 816 (C:\Users\julie\Documents\workspace-spring-tool-suite-4-4.7.1.RELEASE\tc_3\Backend\hive\target\classes started by julie in C:\Users\julie\Documents\workspace-spring-tool-suite-4-4.7.1.RELEASE\tc_3\Backend\hive)
+2020-09-17 15:33:15.291  INFO 816 --- [main] hive.app.MainApplicationClass            : No active profile set, falling back to default profiles: default
+2020-09-17 15:33:15.358  INFO 816 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1e67a849: startup date [Thu Sep 17 15:33:15 CDT 2020]; root of context hierarchy
+2020-09-17 15:33:17.266  INFO 816 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8080 (http)
+2020-09-17 15:33:17.295  INFO 816 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-17 15:33:17.297  INFO 816 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.23
+2020-09-17 15:33:17.462  INFO 816 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-17 15:33:17.463  INFO 816 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2109 ms
+2020-09-17 15:33:17.667  INFO 816 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2020-09-17 15:33:17.672  INFO 816 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2020-09-17 15:33:17.673  INFO 816 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2020-09-17 15:33:17.674  INFO 816 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2020-09-17 15:33:17.674  INFO 816 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2020-09-17 15:33:18.631  INFO 816 --- [main] j.LocalContainerEntityManagerFactoryBean : Building JPA container EntityManagerFactory for persistence unit 'default'
+2020-09-17 15:33:18.651  INFO 816 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2020-09-17 15:33:18.745  INFO 816 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.0.12.Final}
+2020-09-17 15:33:18.748  INFO 816 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2020-09-17 15:33:18.751  INFO 816 --- [main] org.hibernate.cfg.Environment            : HHH000021: Bytecode provider name : javassist
+2020-09-17 15:33:18.809  INFO 816 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2020-09-17 15:33:18.974  INFO 816 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2020-09-17 15:33:19.308  WARN 816 --- [main] org.hibernate.mapping.RootClass          : HHH000038: Composite-id class does not override equals(): hive.app.like.LikeIdentity
+2020-09-17 15:33:19.308  WARN 816 --- [main] org.hibernate.mapping.RootClass          : HHH000039: Composite-id class does not override hashCode(): hive.app.like.LikeIdentity
+2020-09-17 15:33:19.309  WARN 816 --- [main] org.hibernate.mapping.RootClass          : HHH000038: Composite-id class does not override equals(): hive.app.member.MemberIdentity
+2020-09-17 15:33:19.309  WARN 816 --- [main] org.hibernate.mapping.RootClass          : HHH000039: Composite-id class does not override hashCode(): hive.app.member.MemberIdentity
+2020-09-17 15:33:19.310  WARN 816 --- [main] org.hibernate.mapping.RootClass          : HHH000038: Composite-id class does not override equals(): hive.app.request.RequestIdentity
+2020-09-17 15:33:19.310  WARN 816 --- [main] org.hibernate.mapping.RootClass          : HHH000039: Composite-id class does not override hashCode(): hive.app.request.RequestIdentity
+2020-09-17 15:33:19.735  INFO 816 --- [main] org.hibernate.tool.hbm2ddl.SchemaUpdate  : HHH000228: Running hbm2ddl schema update
+2020-09-17 15:33:20.311  INFO 816 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-09-17 15:33:20.662  INFO 816 --- [main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2020-09-17 15:33:21.277  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1e67a849: startup date [Thu Sep 17 15:33:15 CDT 2020]; root of context hierarchy
+2020-09-17 15:33:21.373  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/comments/comment_id/{id}],methods=[GET]}" onto public hive.app.comment.Comment hive.app.comment.CommentController.show(java.lang.String)
+2020-09-17 15:33:21.375  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/comments/byPostId/{postId}],methods=[GET]}" onto public java.util.List<hive.app.comment.Comment> hive.app.comment.CommentController.getCommentsByUserId(java.lang.String)
+2020-09-17 15:33:21.376  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/comments],methods=[GET]}" onto public java.util.List<hive.app.comment.Comment> hive.app.comment.CommentController.index()
+2020-09-17 15:33:21.377  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/comments],methods=[PUT]}" onto public hive.app.comment.Comment hive.app.comment.CommentController.update(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.378  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/comments],methods=[DELETE]}" onto public boolean hive.app.comment.CommentController.delete(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.378  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/comments],methods=[POST]}" onto public hive.app.comment.Comment hive.app.comment.CommentController.create(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.380  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/hives/byHiveId/{id}],methods=[GET]}" onto public hive.app.hive.Hive hive.app.hive.HiveController.show(java.lang.String)
+2020-09-17 15:33:21.381  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/hives],methods=[GET]}" onto public java.util.List<hive.app.hive.Hive> hive.app.hive.HiveController.index()
+2020-09-17 15:33:21.382  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/hives],methods=[PUT]}" onto public hive.app.hive.Hive hive.app.hive.HiveController.update(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.382  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/hives],methods=[DELETE]}" onto public boolean hive.app.hive.HiveController.delete(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.382  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/hives],methods=[POST]}" onto public hive.app.hive.Hive hive.app.hive.HiveController.create(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.385  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/likes/byUserId/{userId}],methods=[GET]}" onto public java.util.List<hive.app.like.Like> hive.app.like.LikeController.getLikesByUserId(java.lang.String)
+2020-09-17 15:33:21.386  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/likes/byPostId/{postId}],methods=[GET]}" onto public java.util.List<hive.app.like.Like> hive.app.like.LikeController.getLikesByPostId(java.lang.String)
+2020-09-17 15:33:21.386  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/likes],methods=[GET]}" onto public java.util.List<hive.app.like.Like> hive.app.like.LikeController.index()
+2020-09-17 15:33:21.387  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/likes],methods=[DELETE]}" onto public boolean hive.app.like.LikeController.delete(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.387  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/likes],methods=[POST]}" onto public hive.app.like.Like hive.app.like.LikeController.create(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.389  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/members/byHiveId/{hiveId}],methods=[GET]}" onto public java.util.List<hive.app.member.Member> hive.app.member.MemberController.getMembersByHiveId(java.lang.String)
+2020-09-17 15:33:21.390  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/members],methods=[GET]}" onto public java.util.List<hive.app.member.Member> hive.app.member.MemberController.index()
+2020-09-17 15:33:21.391  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/members],methods=[PUT]}" onto public hive.app.member.Member hive.app.member.MemberController.update(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.392  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/members],methods=[DELETE]}" onto public java.lang.Boolean hive.app.member.MemberController.delete(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.392  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/members],methods=[POST]}" onto public hive.app.member.Member hive.app.member.MemberController.create(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.395  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/],methods=[GET]}" onto public java.lang.String hive.app.post.PostController.index2()
+2020-09-17 15:33:21.395  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/posts/byPostId/{id}],methods=[GET]}" onto public hive.app.post.Post hive.app.post.PostController.show(java.lang.String)
+2020-09-17 15:33:21.396  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/posts/byHiveId/{hiveId}],methods=[GET]}" onto public java.util.List<hive.app.post.Post> hive.app.post.PostController.getPostsByHiveId(java.lang.String)
+2020-09-17 15:33:21.396  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/posts/byUserId/{userId}],methods=[GET]}" onto public java.util.List<hive.app.post.Post> hive.app.post.PostController.getPostsByUserId(java.lang.String)
+2020-09-17 15:33:21.397  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/posts],methods=[GET]}" onto public java.util.List<hive.app.post.Post> hive.app.post.PostController.index()
+2020-09-17 15:33:21.397  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/posts],methods=[PUT]}" onto public hive.app.post.Post hive.app.post.PostController.update(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.398  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/posts],methods=[DELETE]}" onto public boolean hive.app.post.PostController.delete(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.398  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/posts],methods=[POST]}" onto public hive.app.post.Post hive.app.post.PostController.create(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.403  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/requests/byHiveId/{hiveId}],methods=[GET]}" onto public java.util.List<hive.app.request.Request> hive.app.request.RequestController.getRequestsByHiveId(java.lang.String)
+2020-09-17 15:33:21.403  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/requests/byUserId/{userId}],methods=[GET]}" onto public java.util.List<hive.app.request.Request> hive.app.request.RequestController.getRequestsByUserId(java.lang.String)
+2020-09-17 15:33:21.403  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/requests],methods=[GET]}" onto public java.util.List<hive.app.request.Request> hive.app.request.RequestController.index()
+2020-09-17 15:33:21.404  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/requests],methods=[DELETE]}" onto public boolean hive.app.request.RequestController.delete(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.404  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/requests],methods=[POST]}" onto public hive.app.request.Request hive.app.request.RequestController.create(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.407  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/users/{id}],methods=[GET]}" onto public hive.app.user.User hive.app.user.UserController.show(java.lang.String)
+2020-09-17 15:33:21.408  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/users],methods=[GET]}" onto public java.util.List<hive.app.user.User> hive.app.user.UserController.index()
+2020-09-17 15:33:21.408  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/users],methods=[PUT]}" onto public hive.app.user.User hive.app.user.UserController.update(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.408  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/users],methods=[DELETE]}" onto public boolean hive.app.user.UserController.delete(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.409  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/users],methods=[POST]}" onto public hive.app.user.User hive.app.user.UserController.create(java.util.Map<java.lang.String, java.lang.String>)
+2020-09-17 15:33:21.411  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2020-09-17 15:33:21.411  INFO 816 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2020-09-17 15:33:21.449  INFO 816 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-09-17 15:33:21.449  INFO 816 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-09-17 15:33:21.497  INFO 816 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-09-17 15:33:21.817  INFO 816 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2020-09-17 15:33:21.890  INFO 816 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2020-09-17 15:33:21.897  INFO 816 --- [main] hive.app.MainApplicationClass            : Started MainApplicationClass in 6.903 seconds (JVM running for 7.585)
+2020-09-17 15:34:15.766  INFO 816 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2020-09-17 15:34:15.767  INFO 816 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started

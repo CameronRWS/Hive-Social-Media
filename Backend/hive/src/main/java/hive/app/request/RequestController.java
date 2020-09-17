@@ -36,9 +36,10 @@ public class RequestController {
 	public Request create(@RequestBody Map<String, String> body) {
 		int hiveId = Integer.parseInt(body.get("hiveId"));
 		int userId = Integer.parseInt(body.get("userId"));
+		String requestMessage = body.get("requestMessage");
 		User user = userRepository.findOne(userId);
 		RequestIdentity requestIdentity = new RequestIdentity(hiveId, user);
-		return requestRepository.save(new Request(requestIdentity));
+		return requestRepository.save(new Request(requestIdentity, requestMessage));
 	}
 	
 	@DeleteMapping("/requests")

@@ -20,11 +20,15 @@ public class Request {
 	@Column (name = "date_created")
 	private String dateCreated;
 	
+	@Column(name = "request_message")
+    private String requestMessage;
+	
 	public Request() {}
 	
-	public Request(RequestIdentity requestIdentity){
+	public Request(RequestIdentity requestIdentity, String requestMessage){
 		this.requestIdentity = requestIdentity;
 		this.dateCreated = DateTime.GetCurrentDateTime();
+		this.requestMessage = requestMessage;
 	}
 	
 	public int getHiveId() {
@@ -49,5 +53,13 @@ public class Request {
 	
 	public void setDateCreated(String dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+	
+	public String getRequestMessage() {
+		return requestMessage;
+	}
+	
+	public void setRequestMessage(String requestMessage) {
+		this.requestMessage = requestMessage;
 	}
 }
