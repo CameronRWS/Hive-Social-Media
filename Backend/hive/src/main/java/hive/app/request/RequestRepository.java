@@ -14,5 +14,5 @@ public interface RequestRepository extends JpaRepository<Request, RequestIdentit
 	List<Request> findByHiveId(@Param("hiveId") int hiveId);
 	
 	@Query("SELECT l FROM Request l WHERE l.requestIdentity.user.userId = :userId")
-    List<Like> findByUserId(@Param("userId") int userId);
+    List<Request> findByUserId(@Param("userId") int userId);
 }

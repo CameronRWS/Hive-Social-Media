@@ -20,6 +20,18 @@ public class RequestController {
 		return requestRepository.findAll();
 	}
 	
+	@GetMapping("/requests/byHiveId/{hiveId}")
+	public List<Request> getRequestsByHiveId(@PathVariable String hiveId){
+		int theHiveId = Integer.parseInt(hiveId);
+		return requestRepository.findByHiveId(theHiveId);
+	}
+	
+	@GetMapping("/requests/byUserId/{userId}")
+	public List<Request> getRequestsByUserId(@PathVariable String userId){
+		int theUserId = Integer.parseInt(userId);
+		return requestRepository.findByUserId(theUserId);
+	}
+	
 	@PostMapping("/requests")
 	public Request create(@RequestBody Map<String, String> body) {
 		int hiveId = Integer.parseInt(body.get("hiveId"));
@@ -31,7 +43,7 @@ public class RequestController {
 	
 	@DeleteMapping("/requests")
 	public boolean delete(@RequestBody Map<String, String> body) {
-		int hiveId = Integer.parseInt(body.get("postId"));
+		int hiveId = Integer.parseInt(body.get("hiveId"));
 		int userId = Integer.parseInt(body.get("userId"));
 		User user = userRepository.findOne(userId);
 		RequestIdentity requestIdentity = new RequestIdentity(hiveId, user);

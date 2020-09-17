@@ -27,6 +27,22 @@ public class Request {
 		this.dateCreated = DateTime.GetCurrentDateTime();
 	}
 	
+	public int getHiveId() {
+		return requestIdentity.getHiveId();
+	}
+	
+	public void setHiveId(int hiveId) {
+		requestIdentity.setHiveId(hiveId);
+	}
+	
+	public User getUser() {
+		return requestIdentity.getUser();
+	}
+	
+	public void setUser(User user) {
+		requestIdentity.setUser(user);
+	}
+	
 	public String getDateCreated() {
 		return dateCreated;
 	}
@@ -35,4 +51,3 @@ public class Request {
 		this.dateCreated = dateCreated;
 	}
 }
-
