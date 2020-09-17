@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BuzzFragment extends Fragment implements View.OnClickListener {
+public class BuzzFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     EditText buzzTitle;
     EditText buzzContent;
@@ -47,6 +48,7 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
     private ArrayList<String> hiveOptions;
     private RequestQueue queue;
     private Spinner mySpinner;
+    private int selectedItemPos;
 
     public static BuzzFragment newInstance() {
         return new BuzzFragment();
@@ -63,8 +65,10 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
         buzzTitle = (EditText) rootView.findViewById(R.id.buzzTitleInput);
         buzzContent = (EditText) rootView.findViewById(R.id.buzzContentInput);
         mySpinner = (Spinner) rootView.findViewById(R.id.hiveIdSpinner);
+        mySpinner.setOnItemSelectedListener(this);
         Button b = (Button) rootView.findViewById(R.id.submitBuzz);
         b.setOnClickListener(this);
+        selectedItemPos = 0;
 
         //get the hives the user is part of HARDCODED USER
 
@@ -145,7 +149,7 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
 
         final JSONObject postObject = new JSONObject();
         try{
-            postObject.put("hiveId",2);
+            postObject.put("hiveId",hiveIds.get(selectedItemPos));
             postObject.put("userId",1);
             postObject.put("title", buzzTitle.getText().toString());
             postObject.put("textContent", buzzContent.getText().toString());
@@ -169,7 +173,18 @@ public class BuzzFragment extends Fragment implements View.OnClickListener {
         });
 // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest);
+    }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+        selectedItemPos = pos;
+        Log.i("positionSelected",""+pos);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }
