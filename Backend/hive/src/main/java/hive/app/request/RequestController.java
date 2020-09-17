@@ -2,6 +2,9 @@ package hive.app.request;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import hive.app.member.Member;
+import hive.app.member.MemberIdentity;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
 import java.util.List;
@@ -41,6 +44,17 @@ public class RequestController {
 		RequestIdentity requestIdentity = new RequestIdentity(hiveId, user);
 		return requestRepository.save(new Request(requestIdentity, requestMessage));
 	}
+	
+	@PutMapping("/requests")
+    public Request update(@RequestBody Map<String, String> body){
+        int hiveId = Integer.parseInt(body.get("hiveId"));
+        int userId = Integer.parseInt(body.get("userId"));
+        User user = userRepository.findOne(userId);
+        RequestIdentity requestIdentity = new RequestIdentity(hiveId, user);
+        Request request = requestRepository.findOne(requestIdentity);
+        request.setRequestMessage(body.get("requestMessage"));
+        return requestRepository.save(request);
+    }
 	
 	@DeleteMapping("/requests")
 	public boolean delete(@RequestBody Map<String, String> body) {
