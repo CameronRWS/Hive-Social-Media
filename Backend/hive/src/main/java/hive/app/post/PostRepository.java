@@ -8,9 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
     

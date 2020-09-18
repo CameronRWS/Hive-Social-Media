@@ -1,15 +1,12 @@
 package hive.app.user;
 
-import java.util.Set;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import hive.app.utils.DateTime;
@@ -31,6 +28,8 @@ public class User {
     private String birthday;
     @Column(name = "biography")
     private String biography;
+    @Column(name = "location")
+    private String location;
     
     
 
@@ -91,16 +90,12 @@ public class User {
     public void setBiography(String biography) {
         this.biography = biography;
     }
+    
+    public String getLocation() {
+        return location;
+    }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", dateCreated='" + dateCreated + '\'' +
-                ", userName='" + userName + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", biography='" + biography + '\'' +
-                '}';
+    public void setLocation(String location) {
+        this.location = location;
     }
 }
