@@ -1,9 +1,11 @@
 package com.example.hivefrontend;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final BottomNavigationView navView = findViewById(R.id.nav_view);
+        final ImageView hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -39,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
                     navView.setVisibility(View.GONE);
                 } else {
                     navView.setVisibility(View.VISIBLE);
+                }
+
+                if(destination.getId() == R.id.navigation_profile) {
+                    hiveLogo.setVisibility(View.GONE);
+                } else {
+                    hiveLogo.setVisibility(View.VISIBLE);
                 }
 
             }

@@ -24,14 +24,14 @@ public class HiveController {
         return hiveRepository.findOne(hiveId);
     }
     
-    
     @PostMapping("/hives")
     public Hive create(@RequestBody Map<String, String> body){
         String name = body.get("name");
         String description = body.get("description");
         String type = body.get("type");
-        String coordinates = body.get("coordinates");
-        return hiveRepository.save(new Hive(name, description, type, coordinates));
+        Double latitude = Double.parseDouble(body.get("latitude"));
+        Double longitude = Double.parseDouble(body.get("longitude"));
+        return hiveRepository.save(new Hive(name, description, type, latitude, longitude));
     }
     
     @PutMapping("/hives")
@@ -40,12 +40,14 @@ public class HiveController {
         String name = body.get("name");
         String description = body.get("description");
         String type = body.get("type");
-        String coordinates = body.get("coordinates");
+        Double latitude = Double.parseDouble(body.get("latitude"));
+        Double longitude = Double.parseDouble(body.get("longitude"));
         Hive hive = hiveRepository.findOne(hiveId);
         hive.setName(name);
         hive.setDescription(description);
         hive.setType(type);
-        hive.setCoordinates(coordinates);
+        hive.setLatitude(latitude);
+        hive.setLongitude(longitude);
         return hiveRepository.save(hive);
     }
 

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.21, for macos10.15 (x86_64)
 --
--- Host: localhost    Database: hivedb
+-- Host: 127.0.0.1    Database: hivedb
 -- ------------------------------------------------------
 -- Server version	8.0.21
 
@@ -39,7 +39,7 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (1,3,1,'<some date>',NULL,'This is the new text...'),(2,3,2,'<some date2>',NULL,'This is an epic post'),(3,3,1,'<somed>',NULL,'lawl'),(4,3,2,'<somed2>',NULL,'lawl2'),(5,4,3,'ok',NULL,'this is some text2'),(6,3,3,'ok',NULL,'example post'),(7,3,3,'ok',NULL,'example post'),(10,3,1,'08/29/2020 10:56:43','New title!','This is the new text...'),(11,3,1,'08/29/2020 17:28:09','This is a new post!','This is the new text... hmmm'),(12,4,1,'08/30/2020 11:22:36','New title!2','This is the new text...');
+INSERT INTO `posts` VALUES (1,3,1,'08/29/2020 10:56:43','title1','This is the new text...'),(2,3,2,'08/29/2020 10:56:43','title2','This is an epic post'),(3,3,1,'08/29/2020 10:56:43','title3','lawl'),(4,3,2,'08/29/2020 10:56:43','title4','lawl2'),(5,4,3,'08/29/2020 10:56:43','title5','this is some text2'),(6,3,3,'08/29/2020 10:56:43','title6','example post'),(7,3,3,'08/29/2020 10:56:43','title7','example post'),(10,3,1,'08/29/2020 10:56:43','New title!10','This is the new text...'),(11,3,1,'08/29/2020 17:28:09','This is a new post!11','This is the new text... hmmm'),(12,4,1,'08/30/2020 11:22:36','New title!12','This is the new text...');
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-07 17:30:24
+-- Dump completed on 2020-09-17 17:00:24

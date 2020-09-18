@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.21, for macos10.15 (x86_64)
 --
--- Host: localhost    Database: hivedb
+-- Host: 127.0.0.1    Database: hivedb
 -- ------------------------------------------------------
 -- Server version	8.0.21
 
@@ -39,7 +39,7 @@ CREATE TABLE `hives` (
 
 LOCK TABLES `hives` WRITE;
 /*!40000 ALTER TABLE `hives` DISABLE KEYS */;
-INSERT INTO `hives` VALUES (3,'08/29/2020 17:14:50','example hive name2',NULL,'protected',NULL),(4,'08/29/2020 17:15:05','example hive name3',NULL,'private',NULL),(5,'09/02/2020 15:58:47','example hive name333',NULL,'private',NULL);
+INSERT INTO `hives` VALUES (3,'08/29/2020 17:14:50','ISU Math Nerds','Mathy Guys','protected',NULL),(4,'08/29/2020 17:15:05','ISU Sports Guys','desc','public',NULL),(5,'09/02/2020 15:58:47','ISU Swim Team','desc','private',NULL);
 /*!40000 ALTER TABLE `hives` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-07 17:30:23
+-- Dump completed on 2020-09-17 17:00:24

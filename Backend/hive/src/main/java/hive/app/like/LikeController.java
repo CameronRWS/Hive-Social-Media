@@ -18,6 +18,12 @@ public class LikeController {
     @Autowired
     UserRepository userRepository;
     
+    @GetMapping("/likeCount/byUserId/{userId}")
+    public Integer getLikeCountByUserId(@PathVariable String userId) {
+    	Integer theUserId = Integer.parseInt(userId);
+        return likeRepository.getLikeCountByUserId(theUserId);
+    }
+    
     @GetMapping("/likes")
     public List<Like> index(){
         return likeRepository.findAll();
