@@ -4,9 +4,6 @@ package hive.app.hiveInterest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import hive.app.user.User;
-import hive.app.user.UserRepository;
-
 import java.util.List;
 import java.util.Map;
 

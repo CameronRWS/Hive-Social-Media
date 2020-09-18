@@ -11,12 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import hive.app.interest.Interest;
-import hive.app.member.Member;
-import hive.app.post.Post;
 import hive.app.utils.DateTime;
 
 @Entity
@@ -34,8 +31,10 @@ public class Hive {
     private String description;
     @Column(name = "type")
     private String type;
-    @Column(name = "coordinates")
-    private String coordinates;
+    @Column(name = "latitude")
+    private Double latitude;
+    @Column(name = "longitude")
+    private Double longitude;
     
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -48,12 +47,13 @@ public class Hive {
 
     public Hive() {  }
     
-    public Hive(String name, String description, String type, String coordinates) {
+    public Hive(String name, String description, String type, Double latitude, Double longitude) {
         this.setDateCreated(DateTime.GetCurrentDateTime());
         this.setName(name);
         this.setDescription(description);
         this.setType(type);
-        this.setCoordinates(coordinates);
+        this.setLatitude(latitude);
+        this.setLongitude(longitude);
     }
     
     public List<Interest> getInterests() {
@@ -104,23 +104,19 @@ public class Hive {
         this.type = type;
     }
     
-    public String getCoordinates() {
-        return coordinates;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setCoordinates(String coordinates) {
-        this.coordinates = coordinates;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
     
-    @Override
-    public String toString() {
-        return "Hive{" +
-                "hiveId=" + hiveId +
-                ", dateCreated='" + dateCreated + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", type='" + type + '\'' +
-                ", coordinates='" + coordinates + '\'' +
-                '}';
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }
