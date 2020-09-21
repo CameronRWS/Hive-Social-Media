@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         try{
-                            JSONObject user1 = response.getJSONObject(3);
+                            JSONObject user1 = response.getJSONObject(4);
                             // Get the current user (json object) data
                             String name = user1.getString("displayName");
 
