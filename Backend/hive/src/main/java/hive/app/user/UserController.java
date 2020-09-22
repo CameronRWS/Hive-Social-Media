@@ -31,7 +31,8 @@ public class UserController {
         String displayName = body.get("displayName");
         String birthday = body.get("birthday");
         String biography = body.get("biography");
-        return userRepository.save(new User(userName, displayName, birthday, biography));
+        String location = body.get("location");
+        return userRepository.save(new User(userName, displayName, birthday, biography, location));
     }
     
     @PutMapping("/users")
@@ -41,11 +42,13 @@ public class UserController {
         String displayName = body.get("displayName");
         String birthday = body.get("birthday");
         String biography = body.get("biography");
+        String location = body.get("location");
         User user = userRepository.findOne(userId);
         user.setUserName(userName);
         user.setDisplayName(displayName);
         user.setBirthday(birthday);
         user.setBiography(biography);
+        user.setLocation(location);
         return userRepository.save(user);
     }
 

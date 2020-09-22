@@ -31,16 +31,15 @@ public class User {
     @Column(name = "location")
     private String location;
     
-    
-
     public User() {  }
     
-    public User(String userName, String displayName, String birthday, String biography) {
+    public User(String userName, String displayName, String birthday, String biography, String location) {
         this.setDateCreated(DateTime.GetCurrentDateTime());
         this.setUserName(userName);
         this.setDisplayName(displayName);
         this.setBirthday(birthday);
         this.setBiography(biography);
+        this.setLocation(location);
     }
 
     public int getUserId() {

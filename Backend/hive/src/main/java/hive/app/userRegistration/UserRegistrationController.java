@@ -48,7 +48,7 @@ public class UserRegistrationController {
         if(body.get("userId") == null) {
         	Random rand = new Random();
         	int number = rand.nextInt(1000000);
-        	user = new User("newUser" + number, "New User " + number, "", "");
+        	user = new User("newUser" + number, "New User " + number, "", "", "");
         } else {
             int userId = Integer.parseInt(body.get("userId"));
         	user = userRepository.findOne(userId);
