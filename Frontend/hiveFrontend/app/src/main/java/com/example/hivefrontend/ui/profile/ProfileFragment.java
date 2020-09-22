@@ -60,7 +60,12 @@ public class ProfileFragment extends Fragment {
         final TextView hiveListHeading = (TextView) rootView.findViewById(R.id.hiveListHeading);
         final TextView bio = (TextView) rootView.findViewById(R.id.bio);
         final TextView dateJoined = (TextView) rootView.findViewById(R.id.dateJoined);
-        final TextView hiveList = (TextView) rootView.findViewById(R.id.hiveList);
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.hiveListRecyler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        final MyAdapter myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
+        recyclerView.setAdapter(myAdapter);
+
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -148,23 +153,13 @@ public class ProfileFragment extends Fragment {
                                 hiveOptions.add(hiveName);
                             }
                             //here the hives' ids and names have been set appropriately
-                            String hiveString = "";
-                            for(int i = 0; i<hiveOptions.size(); i++){
-                                if(i==hiveOptions.size()-1){
-                                    hiveString = hiveString + "" + hiveOptions.get(i);
-                                }
-                                else{
-                                    hiveString = hiveString + "" + hiveOptions.get(i) + ", ";
-                                }
-                            }
-                            hiveList.setText(hiveString);
 
-                            // set up the RecyclerView
-                           // RecyclerView recyclerView = rootView.findViewById(R.id.hiveList);
-                            //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-                            //mAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
-                            //recyclerView.setAdapter(mAdapter);
-                            //mAdapter.notifyDataSetChanged();
+//                           RecyclerView recyclerView = rootView.findViewById(R.id.hiveListRecyler);
+//                           recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+//                           MyAdapter myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
+//                           recyclerView.setAdapter(myAdapter);
+
+                           myAdapter.notifyDataSetChanged();
 
                         }
                         catch (JSONException e){
