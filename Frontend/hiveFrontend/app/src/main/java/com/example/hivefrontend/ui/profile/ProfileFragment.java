@@ -61,6 +61,12 @@ public class ProfileFragment extends Fragment {
         final TextView bio = (TextView) rootView.findViewById(R.id.bio);
         final TextView dateJoined = (TextView) rootView.findViewById(R.id.dateJoined);
 
+        RecyclerView recyclerView = rootView.findViewById(R.id.hiveListRecyler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        final MyAdapter myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
+        recyclerView.setAdapter(myAdapter);
+
+
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         String url ="http://10.24.227.37:8080/users";
@@ -148,9 +154,12 @@ public class ProfileFragment extends Fragment {
                             }
                             //here the hives' ids and names have been set appropriately
 
-                           RecyclerView recyclerView = rootView.findViewById(R.id.hiveListRecyler);
-                           recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-                           recyclerView.setAdapter(new MyAdapter(getActivity().getApplicationContext(), hiveOptions));
+//                           RecyclerView recyclerView = rootView.findViewById(R.id.hiveListRecyler);
+//                           recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+//                           MyAdapter myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
+//                           recyclerView.setAdapter(myAdapter);
+
+                           myAdapter.notifyDataSetChanged();
 
                         }
                         catch (JSONException e){
