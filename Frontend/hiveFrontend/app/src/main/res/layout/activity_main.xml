@@ -12,14 +12,14 @@
         android:layout_width="43dp"
         android:layout_height="37dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/Settings"
+        app:layout_constraintEnd_toEndOf="@+id/gearIcon"
         app:layout_constraintHorizontal_bias="0.536"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
         app:srcCompat="@drawable/ic_honeycomb" />
 
     <ImageButton
-        android:id="@+id/Settings"
+        android:id="@+id/gearIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"

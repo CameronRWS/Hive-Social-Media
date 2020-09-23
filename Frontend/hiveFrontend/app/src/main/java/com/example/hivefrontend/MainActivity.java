@@ -5,6 +5,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final BottomNavigationView navView = findViewById(R.id.nav_view);
         final ImageView hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
+        final ImageButton gearIcon = (ImageButton) findViewById(R.id.gearIcon);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -40,11 +42,13 @@ public class MainActivity extends AppCompatActivity {
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if(destination.getId() == R.id.navigation_buzz) {
                     navView.setVisibility(View.GONE);
+                    gearIcon.setVisibility(View.GONE);
                 } else {
                     navView.setVisibility(View.VISIBLE);
+                    gearIcon.setVisibility(View.VISIBLE);
                 }
 
-                if(destination.getId() == R.id.navigation_profile) {
+                if(destination.getId() == R.id.navigation_profile || destination.getId() == R.id.navigation_buzz) {
                     hiveLogo.setVisibility(View.GONE);
                 } else {
                     hiveLogo.setVisibility(View.VISIBLE);

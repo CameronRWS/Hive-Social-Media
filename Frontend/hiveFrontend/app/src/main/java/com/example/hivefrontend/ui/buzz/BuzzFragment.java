@@ -2,6 +2,7 @@ package com.example.hivefrontend.ui.buzz;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,6 +32,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -49,6 +53,7 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
     private RequestQueue queue;
     private Spinner mySpinner;
     private int selectedItemPos;
+    private JSONObject member;
 
     public static BuzzFragment newInstance() {
         return new BuzzFragment();
@@ -66,12 +71,21 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
         buzzContent = (EditText) rootView.findViewById(R.id.buzzContentInput);
         mySpinner = (Spinner) rootView.findViewById(R.id.hiveIdSpinner);
         mySpinner.setOnItemSelectedListener(this);
+        Button back = (Button) rootView.findViewById(R.id.cancelButton);
         Button b = (Button) rootView.findViewById(R.id.submitBuzz);
+
         b.setOnClickListener(this);
         selectedItemPos = 0;
 
         //get the hives the user is part of HARDCODED USER
         getHives(1);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openHome();
+            }
+        });
         return rootView;
     }
 
@@ -86,8 +100,10 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
                     public void onResponse(JSONArray response) {
                         try{
 
+                            hiveIds.add(-1);
+                            hiveOptions.add("Choose a hive.");
                             for(int i = 0; i < response.length(); i++){
-                                JSONObject member = response.getJSONObject(i); //should return user,hive pair
+                                member = response.getJSONObject(i); //should return user,hive pair
                                 Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
                                 hiveIds.add(hiveId);
                                 String hiveName =  member.getJSONObject("hive").getString("name");
@@ -132,6 +148,12 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
 
     @Override
     public void onClick(View view) {
+
+        if (selectedItemPos == 0)
+        {
+            Toast.makeText(this.getContext(), "Please choose a hive to share this post to.", Toast.LENGTH_LONG).show();
+            return;
+        }
         String url ="http://10.24.227.37:8080/posts";
         // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
 
@@ -160,6 +182,20 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
         });
 // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest);
+        try {
+            String msg = "You just made some buzz in " + member.getJSONObject("hive").getString("name") + "!";
+            Toast.makeText(this.getContext(), msg, Toast.LENGTH_LONG).show();
+            openHome();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(this.getContext(), "Error sharing this post. Try again.", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public void openHome() {
+        Intent intent = new Intent(BuzzFragment.this.getActivity(), MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
