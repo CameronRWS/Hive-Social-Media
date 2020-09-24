@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hivefrontend.R;
@@ -77,13 +78,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         public TextView likeNumber;
         public TextView hiveName;
 
-        LinearLayout linearLayout;
+        ConstraintLayout constraintLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
             postTitle = itemView.findViewById(R.id.postTitle);
             postContent = itemView.findViewById(R.id.postContent);
-            linearLayout=itemView.findViewById(R.id.postViewLayout);
+            constraintLayout=itemView.findViewById(R.id.postViewLayout);
             userDisplayName = itemView.findViewById(R.id.userDisplayName);
             userName = itemView.findViewById(R.id.userName);
             commentNumber = itemView.findViewById(R.id.commentNumber);
