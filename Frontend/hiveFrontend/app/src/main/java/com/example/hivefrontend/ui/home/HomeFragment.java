@@ -52,11 +52,10 @@ private RequestQueue queue;
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+
             }
         });
 
@@ -83,8 +82,6 @@ private RequestQueue queue;
                                 hiveIds.add(hiveId);
                                 String hiveName =  member.getJSONObject("hive").getString("name");
                                 hiveOptions.add(hiveName);
-                                Log.i("hiveID:", hiveId.toString());
-                                Log.i("hiveName:", hiveName);
 
                             }
                             //here the hives' ids and names have been set appropriately
@@ -105,8 +102,6 @@ private RequestQueue queue;
                         // TODO: Handle error
                         Log.i("volleyAppError","Error: " + error.getMessage());
                         Log.i("volleyAppError","VolleyError: "+ error);
-
-                        textView.setText("Error.");
 
                     }
                 });

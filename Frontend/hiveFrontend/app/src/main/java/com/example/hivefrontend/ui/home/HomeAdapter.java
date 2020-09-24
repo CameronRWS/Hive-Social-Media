@@ -1,6 +1,7 @@
 package com.example.hivefrontend.ui.home;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,13 +42,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
         try {
             holder.postTitle.setText(posts.get(position).getString("title"));
-            holder.postContent.setText(posts.get(position).getString("postContent"));
             holder.userName.setText(posts.get(position).getJSONObject("user").getString("userName"));
+            holder.postContent.setText(posts.get(position).getString("textContent"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
     // total number of rows
@@ -55,7 +54,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public int getItemCount() {
         return posts.size();
     }
-
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder {
