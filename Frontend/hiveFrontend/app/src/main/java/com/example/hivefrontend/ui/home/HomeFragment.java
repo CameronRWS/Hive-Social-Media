@@ -40,6 +40,9 @@ public class HomeFragment extends Fragment {
 
     private ArrayList<String> buzzTitles;
     private ArrayList<String> buzzContent;
+    private ArrayList<String> buzzUsers;
+
+    private HomeAdapter homeAdapter;
 
 private RequestQueue queue;
 
@@ -50,6 +53,7 @@ private RequestQueue queue;
         hiveOptions = new ArrayList<>();
         buzzContent = new ArrayList<>();
         buzzTitles = new ArrayList<>();
+        buzzUsers = new ArrayList<>();
 
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
@@ -77,100 +81,109 @@ private RequestQueue queue;
 
         RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        final HomeAdapter homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), data,data,data); //dummy data for now
+        homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), buzzTitles,buzzContent,buzzUsers); //dummy data for now
         recyclerView.setAdapter(homeAdapter);
 
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-//        //Request: hive information of this user
-//        String url ="http://10.24.227.37:8080/members/byUserId/1"; //for now, getting this user's hive information until we have login functionality
-//
-//        JsonArrayRequest hiveRequest = new JsonArrayRequest
-//                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-//
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        try{
-//                            for(int i = 0; i < response.length(); i++){
-//                                JSONObject member = response.getJSONObject(i); //should return user,hive pair
-//                                Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-//                                hiveIds.add(hiveId);
-//                                String hiveName =  member.getJSONObject("hive").getString("name");
-//                                hiveOptions.add(hiveName);
-//                            }
-//                            //here the hives' ids and names have been set appropriately
-//                            //must get posts from all the hives this user has,
-//                            getInfoFromPosts();
-//                            homeAdapter.notifyDataSetChanged();
-//
-//
-//                        }
-//                        catch (JSONException e){
-//                            e.printStackTrace();
-//                            Log.i("jsonAppError",e.toString());
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // TODO: Handle error
-//                        Log.i("volleyAppError","Error: " + error.getMessage());
-//                        Log.i("volleyAppError","VolleyError: "+ error);
-//
-//                        textView.setText("Error.");
-//
-//                    }
-//                });
-//
-//
-//// Add the request to the RequestQueue.
-//
-//        queue.add(hiveRequest);
+        //Request: hive information of this user
+        String url ="http://10.24.227.37:8080/members/byUserId/1"; //for now, getting this user's hive information until we have login functionality
+
+        JsonArrayRequest hiveRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try{
+                            for(int i = 0; i < response.length(); i++){
+                                JSONObject member = response.getJSONObject(i); //should return user,hive pair
+                                Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
+                                hiveIds.add(hiveId);
+                                String hiveName =  member.getJSONObject("hive").getString("name");
+                                hiveOptions.add(hiveName);
+                                Log.i("hiveID:", hiveId.toString());
+                                Log.i("hiveName:", hiveName);
+
+                            }
+                            //here the hives' ids and names have been set appropriately
+                            //must get posts from all the hives this user has,
+                            getInfoFromPosts();
+
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Log.i("jsonAppError",e.toString());
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+
+                        textView.setText("Error.");
+
+                    }
+                });
+
+
+// Add the request to the RequestQueue.
+
+        queue.add(hiveRequest);
 
         return root;
     }
 
     private void getInfoFromPosts(){
-//
-//        //get each hive
-//        for(int i = 0; i<hiveIds.size(); i++){
-//            int hiveId = hiveIds.get(i);
-//
-//            //request posts from each hive:
-//            String url ="http://10.24.227.37:8080/posts/byHiveId/" + hiveId; //for now, getting this user's hive information until we have login functionality
-//
-//            JsonArrayRequest hivePostRequest = new JsonArrayRequest
-//                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-//                        @Override
-//                        public void onResponse(JSONArray response) {
-//                            try{
-//                                for(int i = 0; i < response.length(); i++){
-//                                    JSONObject post = response.getJSONObject(i); //should return user,hive pair
-//                                    String title = post.getString("title");
-//                                    String content = post.getString("textContent");
-//                                    buzzTitles.add(title);
-//                                    buzzContent.add(content);
-//                                }
-//                            }
-//                            catch (JSONException e){
-//                                e.printStackTrace();
-//                                Log.i("jsonAppError",e.toString());
-//                            }
-//
-//                        }
-//                    }, new Response.ErrorListener() {
-//
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            // TODO: Handle error
-//                            Log.i("volleyAppError","Error: " + error.getMessage());
-//                            Log.i("volleyAppError","VolleyError: "+ error);
-//                        }
-//                    });
-//            queue.add(hivePostRequest);
-//        }
+
+        //get each hive
+        for(int i = 0; i<hiveIds.size(); i++){
+            int hiveId = hiveIds.get(i);
+
+            //request posts from each hive:
+            String url ="http://10.24.227.37:8080/posts/byHiveId/" + hiveId; //for now, getting this user's hive information until we have login functionality
+            Log.i("status", "just before buzz request");
+            JsonArrayRequest hivePostRequest = new JsonArrayRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            try{
+                                for(int i = 0; i <  response.length(); i++){
+                                    JSONObject post = response.getJSONObject(i); //should a post object
+                                    String title = post.getString("title");
+                                    String content = post.getString("textContent");
+                                    buzzTitles.add(title);
+                                    buzzContent.add(content);
+                                    JSONObject user = post.getJSONObject("user");
+                                    String userName = user.getString("userName");
+                                    buzzUsers.add(userName);
+                                }
+                                Log.i("status","requested");
+                                String postsTitles = buzzTitles.toString();
+                                Log.i("titles ", postsTitles);
+                                homeAdapter.notifyDataSetChanged();
+                            }
+                            catch (JSONException e){
+                                e.printStackTrace();
+                                Log.i("jsonAppError",e.toString());
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            Log.i("volleyAppError","Error: " + error.getMessage());
+                            Log.i("volleyAppError","VolleyError: "+ error);
+
+                        }
+                    });
+
+            queue.add(hivePostRequest);
+        }
 
     }
 }

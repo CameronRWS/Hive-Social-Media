@@ -42,6 +42,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
         holder.postTitle.setText(titles.get(position));
         holder.postContent.setText(postContent.get(position));
+        holder.userName.setText(userNames.get(position));
     }
 
     // total number of rows
@@ -55,6 +56,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView postTitle;
         public TextView postContent;
+        public TextView userName;
         LinearLayout linearLayout;
 
         ViewHolder(View itemView) {
@@ -62,6 +64,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             postTitle = itemView.findViewById(R.id.postTitle);
             postContent = itemView.findViewById(R.id.postContent);
             linearLayout=itemView.findViewById(R.id.postViewLayout);
+            userName = itemView.findViewById(R.id.userDisplayName);
         }
     }
 
