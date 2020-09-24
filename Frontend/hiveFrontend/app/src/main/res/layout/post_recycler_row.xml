@@ -40,6 +40,14 @@
                 android:textSize="18sp"></TextView>
 
             <TextView
+                android:id="@+id/hiveName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hive Name"
+                android:textAlignment="viewStart"
+                android:textSize="24sp"></TextView>
+
+            <TextView
                 android:id="@+id/postTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

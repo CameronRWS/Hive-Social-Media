@@ -23,10 +23,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private Context context;
     private List<JSONObject> posts;
+    private List<Integer> hiveIds;
+    private List<String> hiveNames;
 
-    HomeAdapter(Context context, List<JSONObject> posts) {
+    HomeAdapter(Context context, List<JSONObject> posts, List<Integer> hiveIds, List<String> hiveNames) {
         this.context = context;
         this.posts=posts;
+        this.hiveIds=hiveIds;
+        this.hiveNames=hiveNames;
     }
 
     // inflates the row layout from xml when needed
@@ -47,6 +51,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.postContent.setText(posts.get(position).getString("textContent"));
             holder.commentNumber.setText(String.valueOf(posts.get(position).getJSONArray("comments").length())+ " comments");
             holder.likeNumber.setText(String.valueOf(posts.get(position).getJSONArray("likes").length())+ " likes");
+
+            int id = posts.get(position).getInt("hiveId");
+            String hive = hiveNames.get(hiveIds.indexOf(id));
+            holder.hiveName.setText(hive);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -66,6 +75,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         public TextView userDisplayName;
         public TextView commentNumber;
         public TextView likeNumber;
+        public TextView hiveName;
 
         LinearLayout linearLayout;
 
@@ -78,6 +88,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             userName = itemView.findViewById(R.id.userName);
             commentNumber = itemView.findViewById(R.id.commentNumber);
             likeNumber = itemView.findViewById(R.id.likeNumber);
+            hiveName = itemView.findViewById(R.id.hiveName);
         }
     }
 

@@ -62,7 +62,7 @@ private RequestQueue queue;
 
         RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), postObjects); //dummy data for now
+        homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), postObjects,hiveIds,hiveOptions); //dummy data for now
         recyclerView.setAdapter(homeAdapter);
 
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -82,7 +82,6 @@ private RequestQueue queue;
                                 hiveIds.add(hiveId);
                                 String hiveName =  member.getJSONObject("hive").getString("name");
                                 hiveOptions.add(hiveName);
-
                             }
                             //here the hives' ids and names have been set appropriately
                             //must get posts from all the hives this user has,
