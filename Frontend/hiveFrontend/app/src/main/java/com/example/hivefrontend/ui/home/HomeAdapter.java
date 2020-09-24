@@ -12,21 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.profile.MyAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
 
     private Context context;
-    private List<String> titles;
-    private List<String> postContent;
-    private List<String> userNames;
+    private List<JSONObject> posts;
 
-    HomeAdapter(Context context,  List<String> titles, List<String> postContent, List<String> userNames) {
-        this.titles= titles;
-        this.postContent=postContent;
-        this.userNames=userNames;
+    HomeAdapter(Context context, List<JSONObject> posts) {
         this.context = context;
+        this.posts=posts;
     }
 
     // inflates the row layout from xml when needed
@@ -40,15 +39,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
-        holder.postTitle.setText(titles.get(position));
-        holder.postContent.setText(postContent.get(position));
-        holder.userName.setText(userNames.get(position));
+        try {
+            holder.postTitle.setText(posts.get(position).getString("title"));
+            holder.postContent.setText(posts.get(position).getString("postContent"));
+            holder.userName.setText(posts.get(position).getJSONObject("user").getString("userName"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     // total number of rows
     @Override
     public int getItemCount() {
-        return titles.size();
+        return posts.size();
     }
 
 
@@ -69,8 +74,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     // convenience method for getting data at click position
-    String getItem(int id) {
-        return titles.get(id);
+    String getItem(int id) throws JSONException {
+        return posts.get(id).getString("title");
     }
 
 }

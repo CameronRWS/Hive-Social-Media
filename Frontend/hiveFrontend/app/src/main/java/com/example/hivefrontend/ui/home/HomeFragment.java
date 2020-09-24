@@ -37,10 +37,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private ArrayList<Integer> hiveIds;
     private ArrayList<String> hiveOptions;
-
-    private ArrayList<String> buzzTitles;
-    private ArrayList<String> buzzContent;
-    private ArrayList<String> buzzUsers;
+    private ArrayList<JSONObject> postObjects;
 
     private HomeAdapter homeAdapter;
 
@@ -51,10 +48,7 @@ private RequestQueue queue;
 
         hiveIds= new ArrayList<>();
         hiveOptions = new ArrayList<>();
-        buzzContent = new ArrayList<>();
-        buzzTitles = new ArrayList<>();
-        buzzUsers = new ArrayList<>();
-
+        postObjects = new ArrayList<>();
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -66,22 +60,10 @@ private RequestQueue queue;
             }
         });
 
-        ArrayList<String> data = new ArrayList<>();
-        data.add("post 1");
-        data.add("post 2");
-        data.add("post 3");
-        data.add("post 4");
-        data.add("post 5");
-        data.add("post 6");
-        data.add("post 7");
-        data.add("post 8");
-        data.add("post 9");
-        data.add("post 10");
-
 
         RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), buzzTitles,buzzContent,buzzUsers); //dummy data for now
+        homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), postObjects); //dummy data for now
         recyclerView.setAdapter(homeAdapter);
 
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -153,17 +135,8 @@ private RequestQueue queue;
                             try{
                                 for(int i = 0; i <  response.length(); i++){
                                     JSONObject post = response.getJSONObject(i); //should a post object
-                                    String title = post.getString("title");
-                                    String content = post.getString("textContent");
-                                    buzzTitles.add(title);
-                                    buzzContent.add(content);
-                                    JSONObject user = post.getJSONObject("user");
-                                    String userName = user.getString("userName");
-                                    buzzUsers.add(userName);
+                                    postObjects.add(post);
                                 }
-                                Log.i("status","requested");
-                                String postsTitles = buzzTitles.toString();
-                                Log.i("titles ", postsTitles);
                                 homeAdapter.notifyDataSetChanged();
                             }
                             catch (JSONException e){
