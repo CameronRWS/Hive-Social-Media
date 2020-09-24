@@ -2,6 +2,8 @@ package com.example.hivefrontend.ui.buzz;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -14,10 +16,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +59,7 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
     private Spinner mySpinner;
     private int selectedItemPos;
     private JSONObject member;
+    public static final int RESULT_GALLERY = 0;
 
     public static BuzzFragment newInstance() {
         return new BuzzFragment();
@@ -73,6 +79,8 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
         mySpinner.setOnItemSelectedListener(this);
         Button back = (Button) rootView.findViewById(R.id.cancelButton);
         Button b = (Button) rootView.findViewById(R.id.submitBuzz);
+        ImageButton accessGallery = (ImageButton) rootView.findViewById(R.id.accessGallery);
+        ImageButton accessCamera = (ImageButton) rootView.findViewById(R.id.accessCamera);
 
         b.setOnClickListener(this);
         selectedItemPos = 0;
@@ -86,6 +94,25 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
                 openHome();
             }
         });
+
+        accessGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent , RESULT_GALLERY );
+            }
+        });
+
+        accessCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                startActivity(intent);
+            }
+        });
+
         return rootView;
     }
 
@@ -149,6 +176,7 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
     @Override
     public void onClick(View view) {
 
+
         if (selectedItemPos == 0)
         {
             Toast.makeText(this.getContext(), "Please choose a hive to share this post to.", Toast.LENGTH_LONG).show();
@@ -164,9 +192,13 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
             postObject.put("title", buzzTitle.getText().toString());
             postObject.put("textContent", buzzContent.getText().toString());
 
+            Toast.makeText(this.getContext(), "You just made buzz in " + hiveOptions.get(selectedItemPos) + "!", Toast.LENGTH_LONG).show();
+            openHome();
         } catch (JSONException e){
             e.printStackTrace();
+            Toast.makeText(this.getContext(), "Error sharing this post. Try again.", Toast.LENGTH_LONG).show();
         }
+
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 postObject, new Response.Listener<JSONObject>(){
@@ -180,16 +212,8 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
                 Log.i("request","fail!");
             }
         });
-// Add the request to the RequestQueue.
+        // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest);
-        try {
-            String msg = "You just made some buzz in " + member.getJSONObject("hive").getString("name") + "!";
-            Toast.makeText(this.getContext(), msg, Toast.LENGTH_LONG).show();
-            openHome();
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(this.getContext(), "Error sharing this post. Try again.", Toast.LENGTH_LONG).show();
-        }
 
     }
 
@@ -208,4 +232,6 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+
 }

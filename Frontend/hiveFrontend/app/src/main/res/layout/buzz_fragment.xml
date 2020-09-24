@@ -30,6 +30,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/textBox"
+        android:layout_width="351dp"
+        android:layout_height="178dp"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/textbox"
+        app:layout_constraintBottom_toBottomOf="@+id/buzzContentInput"
+        app:layout_constraintEnd_toEndOf="@+id/buzzContentInput"
+        app:layout_constraintStart_toStartOf="@+id/buzzContentInput"
+        app:layout_constraintTop_toTopOf="@+id/buzzContentInput" />
+
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
@@ -60,8 +73,8 @@
     <EditText
         android:id="@+id/buzzContentInput"
         style="@style/Base.Widget.MaterialComponents.TextInputEditText"
-        android:layout_width="333dp"
-        android:layout_height="183dp"
+        android:layout_width="330dp"
+        android:layout_height="168dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="44dp"
         android:ems="10"
@@ -98,27 +111,30 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/accessGallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:background="#00FFFFFF"
-        android:src="@drawable/accessgallery"
-        app:layout_constraintBottom_toBottomOf="@+id/buzzDivider"
-        app:layout_constraintStart_toStartOf="@+id/buzzDivider"
-        app:layout_constraintTop_toTopOf="@+id/buzzDivider"
-        app:layout_constraintVertical_bias="0.77" />
-
-    <ImageView
-        android:id="@+id/buzzDivider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/divider2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:id="@+id/accessCamera"
+        android:layout_width="87dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="6dp"
+        android:backgroundTint="#00FFFFFF"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/accesscamera"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.567" />
+        app:layout_constraintTop_toBottomOf="@+id/buzzContentInput" />
+
+    <ImageButton
+        android:id="@+id/accessGallery"
+        android:layout_width="87dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="6dp"
+        android:backgroundTint="#00FFFFFF"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/accessgallery"
+        app:layout_constraintStart_toEndOf="@+id/accessCamera"
+        app:layout_constraintTop_toBottomOf="@+id/buzzContentInput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
