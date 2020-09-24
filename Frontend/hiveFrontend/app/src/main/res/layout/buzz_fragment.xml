@@ -9,73 +9,132 @@
 
     <EditText
         android:id="@+id/buzzTitleInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="232dp"
-        android:layout_marginEnd="16dp"
+        style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+        android:layout_width="335dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="140dp"
         android:ems="10"
+        android:fontFamily="@font/helveticaneuemedium"
+        android:gravity="top|left"
+        android:hint="A captivating title..."
         android:inputType="textPersonName"
+        android:textColor="#000000"
+        android:textColorHighlight="#9A9A9a"
+        android:textColorHint="#000000"
+        android:textSize="20sp"
+        android:maxLength="35"
+        android:maxLines="1"
+        app:boxBackgroundMode="none"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buzzTitle"
+        app:layout_constraintHorizontal_bias="0.447"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/buzzContent"
+    <ImageView
+        android:id="@+id/textBox"
+        android:layout_width="351dp"
+        android:layout_height="178dp"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/textbox"
+        app:layout_constraintBottom_toBottomOf="@+id/buzzContentInput"
+        app:layout_constraintEnd_toEndOf="@+id/buzzContentInput"
+        app:layout_constraintStart_toStartOf="@+id/buzzContentInput"
+        app:layout_constraintTop_toTopOf="@+id/buzzContentInput" />
+
+    <Button
+        android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Buzz Content:"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buzzContentInput"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buzzTitle" />
-
-    <TextView
-        android:id="@+id/buzzTitle"
-        android:layout_width="76dp"
-        android:layout_height="12dp"
-        android:layout_marginStart="16dp"
-        android:text="Buzz Title:"
-        app:layout_constraintBottom_toTopOf="@+id/buzzContent"
-        app:layout_constraintEnd_toStartOf="@+id/buzzTitleInput"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@null"
+        android:fontFamily="@font/helveticaneuebold"
+        android:text="Cancel"
+        android:textAllCaps="false"
+        android:textColor="#F2A402"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/submitBuzz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/rect_border_filled_bg"
         android:text="Buzz"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/buzzContentInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="208dp"
-        android:layout_marginEnd="16dp"
+        style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+        android:layout_width="330dp"
+        android:layout_height="168dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="44dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:fontFamily="@font/helveticaneuelight"
+        android:gravity="top|left"
+        android:hint="Your words go here... (optional)"
+        android:inputType="textPersonName|textMultiLine"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        android:textSize="16sp"
+        app:boxBackgroundMode="none"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buzzContent"
         app:layout_constraintTop_toBottomOf="@+id/buzzTitleInput" />
+
+    <ImageView
+        android:id="@+id/beehive"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="76dp"
+        android:src="@drawable/beehive"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/hiveIdSpinner"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_width="203dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="76dp"
+        android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.095"
+        app:layout_constraintStart_toEndOf="@+id/beehive"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/accessCamera"
+        android:layout_width="87dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="6dp"
+        android:backgroundTint="#00FFFFFF"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/accesscamera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buzzContentInput" />
+
+    <ImageButton
+        android:id="@+id/accessGallery"
+        android:layout_width="87dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="6dp"
+        android:backgroundTint="#00FFFFFF"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/accessgallery"
+        app:layout_constraintStart_toEndOf="@+id/accessCamera"
+        app:layout_constraintTop_toBottomOf="@+id/buzzContentInput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
