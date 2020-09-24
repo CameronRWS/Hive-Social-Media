@@ -43,6 +43,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         try {
             holder.postTitle.setText(posts.get(position).getString("title"));
             holder.userName.setText(posts.get(position).getJSONObject("user").getString("userName"));
+            holder.userDisplayName.setText(posts.get(position).getJSONObject("user").getString("displayName"));
             holder.postContent.setText(posts.get(position).getString("textContent"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -60,6 +61,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         public TextView postTitle;
         public TextView postContent;
         public TextView userName;
+        public TextView userDisplayName;
+
         LinearLayout linearLayout;
 
         ViewHolder(View itemView) {
@@ -67,7 +70,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             postTitle = itemView.findViewById(R.id.postTitle);
             postContent = itemView.findViewById(R.id.postContent);
             linearLayout=itemView.findViewById(R.id.postViewLayout);
-            userName = itemView.findViewById(R.id.userDisplayName);
+            userDisplayName = itemView.findViewById(R.id.userDisplayName);
+            userName = itemView.findViewById(R.id.userName);
         }
     }
 
