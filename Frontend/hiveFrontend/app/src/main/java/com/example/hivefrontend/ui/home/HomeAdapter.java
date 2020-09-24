@@ -42,9 +42,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
         try {
             holder.postTitle.setText(posts.get(position).getString("title"));
-            holder.userName.setText(posts.get(position).getJSONObject("user").getString("userName"));
+            holder.userName.setText("@" + posts.get(position).getJSONObject("user").getString("userName"));
             holder.userDisplayName.setText(posts.get(position).getJSONObject("user").getString("displayName"));
             holder.postContent.setText(posts.get(position).getString("textContent"));
+            holder.commentNumber.setText(String.valueOf(posts.get(position).getJSONArray("comments").length())+ " comments");
+            holder.likeNumber.setText(String.valueOf(posts.get(position).getJSONArray("likes").length())+ " likes");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -62,6 +64,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         public TextView postContent;
         public TextView userName;
         public TextView userDisplayName;
+        public TextView commentNumber;
+        public TextView likeNumber;
 
         LinearLayout linearLayout;
 
@@ -72,6 +76,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             linearLayout=itemView.findViewById(R.id.postViewLayout);
             userDisplayName = itemView.findViewById(R.id.userDisplayName);
             userName = itemView.findViewById(R.id.userName);
+            commentNumber = itemView.findViewById(R.id.commentNumber);
+            likeNumber = itemView.findViewById(R.id.likeNumber);
         }
     }
 

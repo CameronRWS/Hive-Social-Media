@@ -55,6 +55,23 @@
                 android:textAlignment="viewStart"
                 android:textSize="24sp"></TextView>
 
+            <TextView
+                android:id="@+id/commentNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:textAlignment="viewStart"
+                android:textSize="16sp"></TextView>
+
+            <TextView
+                android:id="@+id/likeNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Likes"
+                android:textAlignment="viewStart"
+                android:textSize="16sp"></TextView>
+
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
