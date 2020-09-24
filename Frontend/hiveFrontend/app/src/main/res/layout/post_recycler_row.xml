@@ -22,17 +22,19 @@
 
             <TextView
                 android:id="@+id/userDisplayName"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="4dp"
                 android:text="User display name"
                 android:textAlignment="viewStart"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/userName"
+                app:layout_constraintBottom_toTopOf="@+id/hiveName"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
                 app:layout_constraintVertical_chainStyle="packed"></TextView>
 
             <TextView
@@ -40,6 +42,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
 
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="24dp"
                 android:layout_marginBottom="1dp"
                 android:text=" User name"
                 android:textAlignment="viewStart"
@@ -47,8 +51,9 @@
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/hiveName"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userDisplayName"></TextView>
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/userDisplayName"
+                app:layout_constraintTop_toBottomOf="parent"></TextView>
 
             <TextView
                 android:id="@+id/hiveName"
