@@ -4,6 +4,8 @@ package hive.app.comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import hive.app.notification.Notification;
+import hive.app.notification.NotificationRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
 
@@ -17,6 +19,8 @@ public class CommentController {
     CommentRepository commentRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
     
     @GetMapping("/comments")
     public List<Comment> index(){
@@ -41,16 +45,9 @@ public class CommentController {
         int userId = Integer.parseInt(body.get("userId"));
         User user = userRepository.findOne(userId);
         String textContent = body.get("textContent");
-        return commentRepository.save(new Comment(postId, user, textContent));
-    }
-
-    @PutMapping("/comments")
-    public Comment update(@RequestBody Map<String, String> body){
-        int commentId = Integer.parseInt(body.get("commentId"));
-        String textContent = body.get("textContent");
-        Comment comment = commentRepository.findOne(commentId);
-        comment.setTextContent(textContent);
-        return commentRepository.save(comment);
+        notificationRepository.save(new Notification(userId, postId, "comment", "@" + user.getUserName() + " commented on your buzz!", true));
+        Comment comment = commentRepository.save(new Comment(postId, user, textContent));
+        return comment;
     }
 
     @DeleteMapping("/comments")
