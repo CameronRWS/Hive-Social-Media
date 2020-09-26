@@ -4,6 +4,9 @@ package hive.app.like;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import hive.app.comment.Comment;
+import hive.app.notification.Notification;
+import hive.app.notification.NotificationRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
 
@@ -19,6 +22,8 @@ public class LikeController {
     LikeRepository likeRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
     
     @GetMapping("/likeCount/byUserId/{userId}")
     public Map<String, Object> getLikeCountByUserId(@PathVariable String userId) {
@@ -51,6 +56,10 @@ public class LikeController {
         int userId = Integer.parseInt(body.get("userId"));
         User user = userRepository.findOne(userId);
         LikeIdentity likeIdentity = new LikeIdentity(postId, user);
+        System.out.println(likeRepository.findOne(likeIdentity) == null);
+        if(likeRepository.findOne(likeIdentity) == null) {
+            notificationRepository.save(new Notification(userId, postId, "like", "@" + user.getUserName() + " liked your buzz!", true));
+        }
         return likeRepository.save(new Like(likeIdentity));
     }
 
