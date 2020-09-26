@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +21,11 @@ public class LikeController {
     UserRepository userRepository;
     
     @GetMapping("/likeCount/byUserId/{userId}")
-    public Integer getLikeCountByUserId(@PathVariable String userId) {
+    public Map<String, Object> getLikeCountByUserId(@PathVariable String userId) {
     	Integer theUserId = Integer.parseInt(userId);
-        return likeRepository.getLikeCountByUserId(theUserId);
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("likeCount", likeRepository.getLikeCountByUserId(theUserId));
+        return map;
     }
     
     @GetMapping("/likes")
