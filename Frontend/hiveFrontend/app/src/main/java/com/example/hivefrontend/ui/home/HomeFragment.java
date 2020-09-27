@@ -85,24 +85,16 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(homeAdapter);
 
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabLayout);
+        //set on tab selected listener--on tab reselect or select, set the recyclerView's adapter to home/discover adapter as needed
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 selectedTab = tab.getPosition();
                 if(selectedTab == 0){
-
-                    postObjects = new ArrayList(homePostObjects);
-                    hiveIds = new ArrayList(hiveIdsHome);
-                    hiveOptions = new ArrayList(hiveOptionsHome);
-                    homeAdapter.notifyDataSetChanged();
                     recyclerView.setAdapter(homeAdapter);
                 }
                 else{
-                    postObjects = new ArrayList(discoverPostObjects);
-                    hiveIds = new ArrayList(hiveIdsDiscover);
-                    hiveOptions = new ArrayList(hiveOptionsDiscover);
-                    discoverAdapter.notifyDataSetChanged();
                     recyclerView.setAdapter(discoverAdapter);
                 }
 
@@ -117,18 +109,9 @@ public class HomeFragment extends Fragment {
                 selectedTab = tab.getPosition();
 
                 if(selectedTab == 0){
-                    postObjects = new ArrayList(homePostObjects);
-                    hiveIds = new ArrayList(hiveIdsHome);
-                    hiveOptions = new ArrayList(hiveOptionsHome);
-
-                    homeAdapter.notifyDataSetChanged();
                     recyclerView.setAdapter(homeAdapter);
                 }
                 else{
-                    postObjects = new ArrayList(discoverPostObjects);
-                    hiveIds = new ArrayList(hiveIdsDiscover);
-                    hiveOptions = new ArrayList(hiveOptionsDiscover);
-                    discoverAdapter.notifyDataSetChanged();
                     recyclerView.setAdapter(discoverAdapter);
                 }
             }
@@ -153,7 +136,8 @@ public class HomeFragment extends Fragment {
                                 }
 
                                 //here the hives' ids and names have been set appropriately
-                                //must get posts from all the hives this user has, then sort them
+                                //can use them to get discover page posts and home posts
+                                //start with discover page posts--methods to get home page posts called from within
                                 getDiscoverPosts();
 
 
@@ -174,16 +158,13 @@ public class HomeFragment extends Fragment {
                         }
                     });
 
-
-// Add the request to the RequestQueue.
-
+            // Add the request to the RequestQueue.
             queue.add(hiveRequest);
-
-
 
         return root;
     }
 
+    //sorts the discover and home page posts chronologically, notifies the adapters of the changes
     private void sortPosts(){
         Collections.sort(homePostObjects, new PostComparator());
         Collections.sort(discoverPostObjects, new PostComparator());
@@ -203,25 +184,21 @@ public class HomeFragment extends Fragment {
                                 JSONObject post = response.getJSONObject(i); //a post object
                                 Integer hiveId =  Integer.valueOf(post.getInt("hiveId"));
                                 //if the user is in this hive, should not display their posts on the discover page
+                                //if they aren't add to the list
                                 if(!hiveIdsHome.contains(hiveId)) {
                                     hiveIdsDiscover.add(hiveId);
                                     discoverPostObjects.add(post);
                                 }
                             }
-                            Log.i("discover post size", String.valueOf(discoverPostObjects.size()));
-                            for(int i = 0; i<discoverPostObjects.size(); i++){
-                                Log.i("discover post title", discoverPostObjects.get(i).getString("title"));
-                            }
-                            //now get hive options for discover page
+                            //now get hive options for discover page for the adapter to use
                             getDiscoverHives();
-                            //info is set for discover page, now get info for home page
+                            //post info is set for discover page, now get info for home page
                             getHomePosts();
                         }
                         catch (JSONException e){
                             e.printStackTrace();
                             Log.i("jsonAppError",e.toString());
                         }
-
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -240,11 +217,8 @@ public class HomeFragment extends Fragment {
         //get each hive
         for(int i = 0; i<hiveIdsDiscover.size(); i++){
             int hiveId = hiveIdsDiscover.get(i);
-
             //request posts from each hive:
             String url ="http://10.24.227.37:8080/hives/byHiveId/" + hiveId; //for now, getting this user's hive information until we have login functionality
-
-
             JsonObjectRequest hiveNameRequest = new JsonObjectRequest
                     (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                         @Override
@@ -265,18 +239,14 @@ public class HomeFragment extends Fragment {
                             // TODO: Handle error
                             Log.i("volleyAppError","Error: " + error.getMessage());
                             Log.i("volleyAppError","VolleyError: "+ error);
-
                         }
                     });
-
             queue.add(hiveNameRequest);
         }
-
-
     }
 
     private void getHomePosts(){
-        //get each hive
+        //get each hive id
         for(int i = 0; i<hiveIdsHome.size(); i++){
             int hiveId = hiveIdsHome.get(i);
 
@@ -293,8 +263,6 @@ public class HomeFragment extends Fragment {
                                 }
                                 //now have all the posts--must sort chronologically
                                 sortPosts();
-                                homeAdapter.notifyDataSetChanged();
-                                Log.i(" home post size: ", "" + homePostObjects.size());
                             }
                             catch (JSONException e){
                                 e.printStackTrace();
@@ -311,9 +279,7 @@ public class HomeFragment extends Fragment {
 
                         }
                     });
-
             queue.add(hivePostRequest);
         }
-
     }
 }
