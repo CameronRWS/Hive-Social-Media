@@ -39,8 +39,10 @@ public class HomeFragment extends Fragment {
     private ArrayList<Integer> hiveIds;
     private ArrayList<String> hiveOptions;
     private ArrayList<JSONObject> postObjects;
-
+    private ArrayList<JSONObject> discoverPostObjects;
     private HomeAdapter homeAdapter;
+    private HomeAdapter discoverAdapter;
+    private int selectedTab;
 
 private RequestQueue queue;
 
@@ -50,6 +52,7 @@ private RequestQueue queue;
         hiveIds= new ArrayList<>();
         hiveOptions = new ArrayList<>();
         postObjects = new ArrayList<>();
+        discoverPostObjects = new ArrayList<>();
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -61,57 +64,92 @@ private RequestQueue queue;
         });
 
 
-        RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
+        final RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), postObjects,hiveIds,hiveOptions); //dummy data for now
+        discoverAdapter = new HomeAdapter(getActivity().getApplicationContext(), discoverPostObjects,hiveIds,hiveOptions);
         recyclerView.setAdapter(homeAdapter);
 
+        TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabLayout);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                selectedTab = tab.getPosition();
+                if(selectedTab == 0){
+                    recyclerView.setAdapter(homeAdapter);
+                }
+                else{
+                    recyclerView.setAdapter(discoverAdapter);
+                }
+                Log.i("selected tab position:", ""+selectedTab);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                selectedTab = tab.getPosition();
+                if(selectedTab == 0){
+                    recyclerView.setAdapter(homeAdapter);
+                }
+                else{
+                    recyclerView.setAdapter(discoverAdapter);
+                }
+            }
+        });
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         //Request: hive information of this user
         String url ="http://10.24.227.37:8080/members/byUserId/1"; //for now, getting this user's hive information until we have login functionality
 
-        JsonArrayRequest hiveRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        if(selectedTab == 0) {
+            JsonArrayRequest hiveRequest = new JsonArrayRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try{
-                            for(int i = 0; i < response.length(); i++){
-                                JSONObject member = response.getJSONObject(i); //should return user,hive pair
-                                Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-                                hiveIds.add(hiveId);
-                                String hiveName =  member.getJSONObject("hive").getString("name");
-                                hiveOptions.add(hiveName);
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            try {
+                                for (int i = 0; i < response.length(); i++) {
+                                    JSONObject member = response.getJSONObject(i); //should return user,hive pair
+                                    Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
+                                    hiveIds.add(hiveId);
+                                    String hiveName = member.getJSONObject("hive").getString("name");
+                                    hiveOptions.add(hiveName);
+                                }
+                                //here the hives' ids and names have been set appropriately
+                                //must get posts from all the hives this user has, then sort them
+                                getInfoFromPosts();
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Log.i("jsonAppError", e.toString());
                             }
-                            //here the hives' ids and names have been set appropriately
-                            //must get posts from all the hives this user has,
-                            getInfoFromPosts();
-
 
                         }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Log.i("jsonAppError",e.toString());
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            Log.i("volleyAppError", "Error: " + error.getMessage());
+                            Log.i("volleyAppError", "VolleyError: " + error);
+
                         }
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        Log.i("volleyAppError","Error: " + error.getMessage());
-                        Log.i("volleyAppError","VolleyError: "+ error);
-
-                    }
-                });
+                    });
 
 
 // Add the request to the RequestQueue.
 
-        queue.add(hiveRequest);
+            queue.add(hiveRequest);
 
+        }
+        else if(selectedTab ==1){
+
+        }
         return root;
     }
 
