@@ -20,6 +20,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.profile.MyAdapter;
@@ -38,21 +39,34 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private ArrayList<Integer> hiveIds;
     private ArrayList<String> hiveOptions;
+    private ArrayList<Integer> hiveIdsHome;
+    private ArrayList<String> hiveOptionsHome;
+    private ArrayList<Integer> hiveIdsDiscover;
+    private ArrayList<String> hiveOptionsDiscover;
     private ArrayList<JSONObject> postObjects;
     private ArrayList<JSONObject> discoverPostObjects;
+    private ArrayList<JSONObject> homePostObjects;
     private HomeAdapter homeAdapter;
     private HomeAdapter discoverAdapter;
     private int selectedTab;
 
-private RequestQueue queue;
+    private RequestQueue queue;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        hiveIds= new ArrayList<>();
-        hiveOptions = new ArrayList<>();
-        postObjects = new ArrayList<>();
+
+        hiveIdsHome = new ArrayList<>();
+        hiveOptionsHome = new ArrayList<>();
+        hiveIdsDiscover = new ArrayList<>();
+        hiveOptionsDiscover = new ArrayList<>();
+        hiveIds= new ArrayList(hiveIdsHome);
+        hiveOptions = new ArrayList(hiveOptionsHome);
+
+        homePostObjects = new ArrayList<>();
+        postObjects = new ArrayList(homePostObjects);
         discoverPostObjects = new ArrayList<>();
+
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -66,8 +80,8 @@ private RequestQueue queue;
 
         final RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), postObjects,hiveIds,hiveOptions); //dummy data for now
-        discoverAdapter = new HomeAdapter(getActivity().getApplicationContext(), discoverPostObjects,hiveIds,hiveOptions);
+        homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), homePostObjects,hiveIdsHome,hiveOptionsHome);
+        discoverAdapter = new HomeAdapter(getActivity().getApplicationContext(), discoverPostObjects,hiveIdsDiscover,hiveOptionsDiscover);
         recyclerView.setAdapter(homeAdapter);
 
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabLayout);
@@ -77,12 +91,21 @@ private RequestQueue queue;
             public void onTabSelected(TabLayout.Tab tab) {
                 selectedTab = tab.getPosition();
                 if(selectedTab == 0){
+
+                    postObjects = new ArrayList(homePostObjects);
+                    hiveIds = new ArrayList(hiveIdsHome);
+                    hiveOptions = new ArrayList(hiveOptionsHome);
+                    homeAdapter.notifyDataSetChanged();
                     recyclerView.setAdapter(homeAdapter);
                 }
                 else{
+                    postObjects = new ArrayList(discoverPostObjects);
+                    hiveIds = new ArrayList(hiveIdsDiscover);
+                    hiveOptions = new ArrayList(hiveOptionsDiscover);
+                    discoverAdapter.notifyDataSetChanged();
                     recyclerView.setAdapter(discoverAdapter);
                 }
-                Log.i("selected tab position:", ""+selectedTab);
+
             }
 
             @Override
@@ -92,10 +115,20 @@ private RequestQueue queue;
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 selectedTab = tab.getPosition();
+
                 if(selectedTab == 0){
+                    postObjects = new ArrayList(homePostObjects);
+                    hiveIds = new ArrayList(hiveIdsHome);
+                    hiveOptions = new ArrayList(hiveOptionsHome);
+
+                    homeAdapter.notifyDataSetChanged();
                     recyclerView.setAdapter(homeAdapter);
                 }
                 else{
+                    postObjects = new ArrayList(discoverPostObjects);
+                    hiveIds = new ArrayList(hiveIdsDiscover);
+                    hiveOptions = new ArrayList(hiveOptionsDiscover);
+                    discoverAdapter.notifyDataSetChanged();
                     recyclerView.setAdapter(discoverAdapter);
                 }
             }
@@ -103,9 +136,8 @@ private RequestQueue queue;
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         //Request: hive information of this user
-        String url ="http://10.24.227.37:8080/members/byUserId/1"; //for now, getting this user's hive information until we have login functionality
+        String url ="http://10.24.227.37:8080/members/byUserId/2"; //for now, getting this user's hive information until we have login functionality
 
-        if(selectedTab == 0) {
             JsonArrayRequest hiveRequest = new JsonArrayRequest
                     (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
@@ -115,13 +147,14 @@ private RequestQueue queue;
                                 for (int i = 0; i < response.length(); i++) {
                                     JSONObject member = response.getJSONObject(i); //should return user,hive pair
                                     Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-                                    hiveIds.add(hiveId);
+                                    hiveIdsHome.add(hiveId);
                                     String hiveName = member.getJSONObject("hive").getString("name");
-                                    hiveOptions.add(hiveName);
+                                    hiveOptionsHome.add(hiveName);
                                 }
+
                                 //here the hives' ids and names have been set appropriately
                                 //must get posts from all the hives this user has, then sort them
-                                getInfoFromPosts();
+                                getDiscoverPosts();
 
 
                             } catch (JSONException e) {
@@ -146,27 +179,109 @@ private RequestQueue queue;
 
             queue.add(hiveRequest);
 
-        }
-        else if(selectedTab ==1){
 
-        }
+
         return root;
     }
 
     private void sortPosts(){
-        Collections.sort(postObjects, new PostComparator());
+        Collections.sort(homePostObjects, new PostComparator());
+        Collections.sort(discoverPostObjects, new PostComparator());
         homeAdapter.notifyDataSetChanged();
+        discoverAdapter.notifyDataSetChanged();
     }
 
-    private void getInfoFromPosts(){
+    private void getDiscoverPosts(){
+        //request posts from all hives:
+        String url ="http://10.24.227.37:8080/posts"; //for now, getting all posts
+        JsonArrayRequest hivePostRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try{
+                            for(int i = 0; i <  response.length(); i++){
+                                JSONObject post = response.getJSONObject(i); //a post object
+                                Integer hiveId =  Integer.valueOf(post.getInt("hiveId"));
+                                //if the user is in this hive, should not display their posts on the discover page
+                                if(!hiveIdsHome.contains(hiveId)) {
+                                    hiveIdsDiscover.add(hiveId);
+                                    discoverPostObjects.add(post);
+                                }
+                            }
+                            Log.i("discover post size", String.valueOf(discoverPostObjects.size()));
+                            for(int i = 0; i<discoverPostObjects.size(); i++){
+                                Log.i("discover post title", discoverPostObjects.get(i).getString("title"));
+                            }
+                            //now get hive options for discover page
+                            getDiscoverHives();
+                            //info is set for discover page, now get info for home page
+                            getHomePosts();
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                            Log.i("jsonAppError",e.toString());
+                        }
 
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+
+                    }
+                });
+
+        queue.add(hivePostRequest);
+    }
+
+    private void getDiscoverHives(){
         //get each hive
-        for(int i = 0; i<hiveIds.size(); i++){
-            int hiveId = hiveIds.get(i);
+        for(int i = 0; i<hiveIdsDiscover.size(); i++){
+            int hiveId = hiveIdsDiscover.get(i);
+
+            //request posts from each hive:
+            String url ="http://10.24.227.37:8080/hives/byHiveId/" + hiveId; //for now, getting this user's hive information until we have login functionality
+
+
+            JsonObjectRequest hiveNameRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try{
+                              String name = response.getString("name");
+                              hiveOptionsDiscover.add(name);
+                            }
+                            catch (JSONException e){
+                                e.printStackTrace();
+                                Log.i("jsonAppError",e.toString());
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            Log.i("volleyAppError","Error: " + error.getMessage());
+                            Log.i("volleyAppError","VolleyError: "+ error);
+
+                        }
+                    });
+
+            queue.add(hiveNameRequest);
+        }
+
+
+    }
+
+    private void getHomePosts(){
+        //get each hive
+        for(int i = 0; i<hiveIdsHome.size(); i++){
+            int hiveId = hiveIdsHome.get(i);
 
             //request posts from each hive:
             String url ="http://10.24.227.37:8080/posts/byHiveId/" + hiveId; //for now, getting this user's hive information until we have login functionality
-            Log.i("status", "just before buzz request");
             JsonArrayRequest hivePostRequest = new JsonArrayRequest
                     (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                         @Override
@@ -174,11 +289,12 @@ private RequestQueue queue;
                             try{
                                 for(int i = 0; i <  response.length(); i++){
                                     JSONObject post = response.getJSONObject(i); //should a post object
-                                    postObjects.add(post);
+                                    homePostObjects.add(post);
                                 }
                                 //now have all the posts--must sort chronologically
                                 sortPosts();
                                 homeAdapter.notifyDataSetChanged();
+                                Log.i(" home post size: ", "" + homePostObjects.size());
                             }
                             catch (JSONException e){
                                 e.printStackTrace();
