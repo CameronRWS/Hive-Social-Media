@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -87,6 +88,7 @@ private RequestQueue queue;
                             //must get posts from all the hives this user has,
                             getInfoFromPosts();
 
+
                         }
                         catch (JSONException e){
                             e.printStackTrace();
@@ -113,6 +115,11 @@ private RequestQueue queue;
         return root;
     }
 
+    private void sortPosts(){
+        Collections.sort(postObjects, new PostComparator());
+        homeAdapter.notifyDataSetChanged();
+    }
+
     private void getInfoFromPosts(){
 
         //get each hive
@@ -131,6 +138,8 @@ private RequestQueue queue;
                                     JSONObject post = response.getJSONObject(i); //should a post object
                                     postObjects.add(post);
                                 }
+                                //now have all the posts--must sort chronologically
+                                sortPosts();
                                 homeAdapter.notifyDataSetChanged();
                             }
                             catch (JSONException e){
