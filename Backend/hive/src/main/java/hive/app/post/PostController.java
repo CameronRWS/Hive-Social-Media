@@ -4,6 +4,11 @@ package hive.app.post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import hive.app.hive.Hive;
+import hive.app.hive.HiveRepository;
+import hive.app.member.Member;
+import hive.app.member.MemberIdentity;
+import hive.app.member.MemberRepository;
 import hive.app.notification.Notification;
 import hive.app.notification.NotificationRepository;
 import hive.app.user.User;
@@ -22,6 +27,10 @@ public class PostController {
     UserRepository userRepository;
     @Autowired
     NotificationRepository notificationRepository;
+    @Autowired
+    MemberRepository memberRepository;
+    @Autowired
+    HiveRepository hiveRepository;
 
     @GetMapping("/")
     public String index2(){
@@ -56,6 +65,7 @@ public class PostController {
         int hiveId = Integer.parseInt(body.get("hiveId"));
         int userId = Integer.parseInt(body.get("userId"));
         User user = userRepository.findOne(userId);
+        Hive hive = hiveRepository.findOne(hiveId);
         String title = body.get("title");
         String textContent = body.get("textContent");
         Post post = postRepository.save(new Post(hiveId, user, title, textContent));
@@ -68,15 +78,17 @@ public class PostController {
     		}
     	}
         //create notification for all tagged users
+    	list.remove(user.getUserName());
     	for(String userName : list) {
     		User userToTag = userRepository.findByUserName(userName);
     		if(user != null) {
-    			notificationRepository.save(new Notification(userToTag.getUserId(), post.getPostId(), "post-mention", "You were mentioned in a post.", true));
+        		Member member = memberRepository.findOne(new MemberIdentity(hive, userToTag));
+        		if(member != null) {
+        			notificationRepository.save(new Notification(userToTag.getUserId(), post.getPostId(), "post-mention", "You were mentioned in a post.", true));
+        		}
     		}
     	}
         return post;
-
-
     }
 
     @PutMapping("/posts")
