@@ -4,8 +4,11 @@ package hive.app.post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import hive.app.notification.Notification;
+import hive.app.notification.NotificationRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
+import hive.app.utils.Regex;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,8 @@ public class PostController {
     PostRepository postRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
 
     @GetMapping("/")
     public String index2(){
@@ -53,7 +58,25 @@ public class PostController {
         User user = userRepository.findOne(userId);
         String title = body.get("title");
         String textContent = body.get("textContent");
-        return postRepository.save(new Post(hiveId, user, title, textContent));
+        Post post = postRepository.save(new Post(hiveId, user, title, textContent));
+    	List<String> list = Regex.getUserNamesMentionedInText(title);
+    	List<String> listBody = Regex.getUserNamesMentionedInText(textContent);
+    	//add the two lists together as a set
+    	for(String userName : listBody) {
+    		if(list.contains(userName) != true) {
+    			list.add(userName);
+    		}
+    	}
+        //create notification for all tagged users
+    	for(String userName : list) {
+    		User userToTag = userRepository.findByUserName(userName);
+    		if(user != null) {
+    			notificationRepository.save(new Notification(userToTag.getUserId(), post.getPostId(), "post-mention", "You were mentioned in a post.", true));
+    		}
+    	}
+        return post;
+
+
     }
 
     @PutMapping("/posts")

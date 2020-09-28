@@ -8,6 +8,7 @@ import hive.app.notification.Notification;
 import hive.app.notification.NotificationRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
+import hive.app.utils.Regex;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,14 @@ public class CommentController {
         String textContent = body.get("textContent");
         notificationRepository.save(new Notification(userId, postId, "comment", "@" + user.getUserName() + " commented on your buzz!", true));
         Comment comment = commentRepository.save(new Comment(postId, user, textContent));
+        //create notification for all usernames found in comment
+    	List<String> list = Regex.getUserNamesMentionedInText(textContent);
+    	for(String userName : list) {
+    		User userToTag = userRepository.findByUserName(userName);
+    		if(user != null) {
+    			notificationRepository.save(new Notification(userToTag.getUserId(), postId, "comment-mention", "You were mentioned in a comment on a post.", true));
+    		}
+    	}
         return comment;
     }
 

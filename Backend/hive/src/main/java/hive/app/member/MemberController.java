@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import hive.app.hive.Hive;
 import hive.app.hive.HiveRepository;
+import hive.app.notification.Notification;
+import hive.app.notification.NotificationRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
 
@@ -21,6 +23,8 @@ public class MemberController {
     UserRepository userRepository;
     @Autowired
     HiveRepository hiveRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
 
     
     
@@ -47,9 +51,8 @@ public class MemberController {
         int userId = Integer.parseInt(body.get("userId"));
         Hive hive = hiveRepository.findOne(hiveId);
         User user = userRepository.findOne(userId);
-        Boolean isModerator = Boolean.parseBoolean(body.get("isModerator"));
         MemberIdentity memberIdentity = new MemberIdentity(hive, user);
-        return memberRepository.save(new Member(memberIdentity, isModerator));
+        return memberRepository.save(new Member(memberIdentity, false));
     }
     
     @PutMapping("/members")
@@ -61,6 +64,11 @@ public class MemberController {
         Boolean isModerator = Boolean.parseBoolean(body.get("isModerator"));
         MemberIdentity memberIdentity = new MemberIdentity(hive, user);
         Member member = memberRepository.findOne(memberIdentity);
+        if(member.getIsModerator() == false && isModerator == true) {
+			notificationRepository.save(new Notification(userId, hiveId, "hive-role", "You are now a beekeeper of " + hive.getName()+ ".", true));
+        } else if(member.getIsModerator() == true && isModerator == false) {
+			notificationRepository.save(new Notification(userId, hiveId, "hive-role", "You are no longer a beekeeper of " + hive.getName()+ ".", true));
+        }
         member.setIsModerator(isModerator);
         return memberRepository.save(member);
     }
