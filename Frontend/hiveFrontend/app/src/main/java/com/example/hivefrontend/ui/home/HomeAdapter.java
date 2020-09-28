@@ -110,7 +110,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             int position = (Integer) v.getTag();
             Intent intent = new Intent(v.getContext(), PostDetailsActivity.class);
             try {
-                intent.putExtra("postTitle",posts.get(position).getString("title"));
+                //start new activity and pass the post ID to it
+                int postId = posts.get(position).getInt("postId");
+                intent.putExtra("postId", postId);
                 v.getContext().startActivity(intent);
             } catch (JSONException e) {
                 e.printStackTrace();
