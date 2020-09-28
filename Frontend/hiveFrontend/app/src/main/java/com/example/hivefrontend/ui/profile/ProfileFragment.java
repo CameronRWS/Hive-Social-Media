@@ -17,12 +17,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.R;
 
@@ -40,6 +42,9 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel mViewModel;
     private ArrayList<Integer> hiveIds;
     private ArrayList<String> hiveOptions;
+    private int userId = 2;
+    private RequestQueue queue;
+    private String pollen;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -80,7 +85,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         try{
-                            JSONObject user1 = response.getJSONObject(4);
+                            JSONObject user1 = response.getJSONObject(userId);
                             // Get the current user (json object) data
                             String name = user1.getString("displayName");
 
@@ -99,7 +104,6 @@ public class ProfileFragment extends Fragment {
                             // Display the formatted json data in text view
                             textView.setText(name);
                             displayLocation.setText(location);
-
                             // get rid of the location pin if the location is null
                             if (location == "null")
                             {
@@ -137,7 +141,7 @@ public class ProfileFragment extends Fragment {
                     }
                 });
         //second request: hive information
-        url ="http://10.24.227.37:8080/members/byUserId/1"; //for now, getting this user's hive information until we have login functionality
+        url ="http://10.24.227.37:8080/members/byUserId/" + userId; //for now, getting this user's hive information until we have login functionality
 
         JsonArrayRequest hiveRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -181,16 +185,39 @@ public class ProfileFragment extends Fragment {
                     }
                 });
 
+        //third request: pollen cunt
+        url ="http://10.24.227.37:8080/likeCount/byUserId/" + userId; //for now, getting this user's hive information until we have login functionality
+
+                StringRequest pollenCountRequest = new StringRequest
+                (Request.Method.GET, url, new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        pollenCount.setText(response.substring(13, response.length() - 1));
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+
+                        textView.setText("Error.");
+
+                    }
+                });
 
 
-// Add the request to the RequestQueue.
+
+    // Add the request to the RequestQueue.
         queue.add(jsonArrayRequest);
         queue.add(hiveRequest);
+        queue.add(pollenCountRequest);
 
         return rootView;
     }
-
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
