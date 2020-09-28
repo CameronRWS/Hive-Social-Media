@@ -1,5 +1,6 @@
 package com.example.hivefrontend.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -22,7 +24,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hivefrontend.PostDetailsActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.SettingsActivity;
 import com.example.hivefrontend.ui.profile.MyAdapter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -79,6 +83,7 @@ public class HomeFragment extends Fragment {
 
 
         final RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), homePostObjects,hiveIdsHome,hiveOptionsHome);
         discoverAdapter = new HomeAdapter(getActivity().getApplicationContext(), discoverPostObjects,hiveIdsDiscover,hiveOptionsDiscover);
@@ -170,6 +175,11 @@ public class HomeFragment extends Fragment {
         Collections.sort(discoverPostObjects, new PostComparator());
         homeAdapter.notifyDataSetChanged();
         discoverAdapter.notifyDataSetChanged();
+    }
+
+    public void viewPost(View view){
+        Intent intent = new Intent(this.getContext(), PostDetailsActivity.class);
+        startActivity(intent);
     }
 
     private void getDiscoverPosts(){
