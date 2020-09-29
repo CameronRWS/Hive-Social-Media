@@ -4,7 +4,6 @@ maven-build:
     script: 
         - cd Spring 
         - mvnpackage –B
-
 maven-test: 
     stage: maventest
     tags: - shell 
