@@ -6,13 +6,15 @@ stages:
 
 maven-build: 
     stage: mavenbuild
-    tags: - shell 
+    tags: 
+        - shell 
     script: 
         - cd Spring 
         - mvnpackage –B
 maven-test: 
     stage: maventest
-    tags: - shell 
+    tags: 
+        - shell
     script: 
         - cd Spring 
         - mvntest 
