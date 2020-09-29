@@ -1,0 +1,16 @@
+maven-build: 
+    stage: mavenbuild
+    tags: - shell 
+    script: 
+        - cd Spring 
+        - mvnpackage –B
+
+maven-test: 
+    stage: maventest
+    tags: - shell 
+    script: 
+        - cd Spring 
+        - mvntest 
+    artifacts: 
+        paths: 
+            - Spring/target/*.jar
