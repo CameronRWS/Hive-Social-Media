@@ -7,14 +7,14 @@ stages:
 maven-build: 
     stage: mavenbuild
     tags: 
-        - shell 
+        - BACKEND 
     script: 
         - cd Spring 
         - mvnpackage –B
 maven-test: 
     stage: maventest
     tags: 
-        - shell
+        - BACKEND
     script: 
         - cd Spring 
         - mvntest 
