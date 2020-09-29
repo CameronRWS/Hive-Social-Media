@@ -122,11 +122,11 @@ public class PostDetailsActivity extends AppCompatActivity {
         hive.setText(hiveName);
         //number likes
         TextView numLikes = this.findViewById(R.id.likeNumber);
-        String likes = String.valueOf(post.getJSONArray("likes").length())+" likes";
+        String likes = String.valueOf(post.getJSONArray("likes").length());
         numLikes.setText(likes);
         //number comments
         TextView numComments = this.findViewById(R.id.commentNumber);
-        String comment = String.valueOf(post.getJSONArray("comments").length())+" comments";
+        String comment = String.valueOf(post.getJSONArray("comments").length());
         numComments.setText(comment);
 
         JSONArray arrComments = post.getJSONArray("comments");

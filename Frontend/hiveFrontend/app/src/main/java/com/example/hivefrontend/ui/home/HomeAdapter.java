@@ -56,8 +56,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.userName.setText("@" + posts.get(position).getJSONObject("user").getString("userName"));
             holder.userDisplayName.setText(posts.get(position).getJSONObject("user").getString("displayName"));
             holder.postContent.setText(posts.get(position).getString("textContent"));
-            holder.commentNumber.setText(String.valueOf(posts.get(position).getJSONArray("comments").length())+ " comments");
-            holder.likeNumber.setText(String.valueOf(posts.get(position).getJSONArray("likes").length())+ " likes");
+            holder.commentNumber.setText(String.valueOf(posts.get(position).getJSONArray("comments").length()));
+            holder.likeNumber.setText(String.valueOf(posts.get(position).getJSONArray("likes").length()));
 
             int id = posts.get(position).getInt("hiveId");
             String hive = hiveNames.get(hiveIds.indexOf(id));

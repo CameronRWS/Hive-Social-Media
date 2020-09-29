@@ -108,13 +108,22 @@
                 android:id="@+id/likeNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="52dp"
                 android:text="Likes"
                 android:textAlignment="viewStart"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/commentNumber"
-                app:layout_constraintTop_toBottomOf="@+id/postContent"
-                tools:layout_editor_absoluteY="135dp"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/postContent"></TextView>
+
+            <ImageView
+                android:id="@+id/likeCountIcon"
+                android:layout_width="15dp"
+                android:layout_height="16dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/pollencount"
+                app:layout_constraintEnd_toStartOf="@+id/likeNumber"
+                app:layout_constraintTop_toBottomOf="@+id/postContent" />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
