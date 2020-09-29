@@ -9,9 +9,9 @@
         android:id="@+id/cardViewComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:textAlignment="viewStart"
         app:cardCornerRadius="8dp">
@@ -19,7 +19,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/commentLayout"
             android:layout_width="fill_parent"
-            android:layout_height="120dp">
+
+            android:layout_height="fill_parent"
+            app:layout_constraintBottom_toBottomOf="@+id/postContentComment">
 
             <TextView
                 android:id="@+id/userDisplayNameComment"
@@ -40,21 +42,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
 
-                android:layout_marginEnd="60dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginBottom="4dp"
                 android:text=" User name"
                 android:textAlignment="viewStart"
                 android:textColor="#817F7F"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/postContentComment"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.966"></TextView>
+                app:layout_constraintEnd_toEndOf="parent"></TextView>
 
             <TextView
                 android:id="@+id/postContentComment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:text="Post Content"
                 android:textAlignment="viewStart"
                 android:textSize="24sp"

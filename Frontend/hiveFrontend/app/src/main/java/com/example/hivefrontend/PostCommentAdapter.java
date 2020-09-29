@@ -64,7 +64,6 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
         public TextView postContent;
         public TextView userName;
         public TextView userDisplayName;
-
         public CardView cv;
 
         ConstraintLayout constraintLayout;
@@ -86,7 +85,7 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
             int position = (Integer) v.getTag();
             Intent intent = new Intent(v.getContext(), PostDetailsActivity.class);
             try {
-                //start new activity and pass the post ID to it
+                //TO DO: go to the profile of the user that posted this comment
                 int postId = comments.get(position).getInt("postId");
 
             } catch (JSONException e) {
@@ -98,7 +97,7 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
 
     // convenience method for getting data at click position
     String getItem(int id) throws JSONException {
-        return comments.get(id).getString("title");
+        return comments.get(id).getString("textContent");
     }
 
 }
