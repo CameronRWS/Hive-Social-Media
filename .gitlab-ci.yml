@@ -1,3 +1,9 @@
+stages:
+    - mavenbuild
+    - maventest
+    - androidbuild
+    - androidtest
+
 maven-build: 
     stage: mavenbuild
     tags: - shell 
@@ -13,3 +19,40 @@ maven-test:
     artifacts: 
         paths: 
             - Spring/target/*.jar
+            
+android-build:
+    image: javiersantos/android-ci:latest    
+    stage: androidbuild    
+    before_script:        
+        - export GRADLE_USER_HOME='pwd'/.gradle        
+        - chmod +x ./Frontend/hiveFrontend/gradlew    
+    tags:        
+        - FRONTEND    
+    script:        
+        - cd Frontend/hiveFrontend/        
+        - ./gradlew assemble    
+    artifacts:        
+        paths:            
+            - Frontend/hiveFrontend/app/build/outputs/
+    only: 
+        refs: 
+            - master 
+        changes: 
+            - Frontend/**/*
+    
+unitTests:    
+    image: javiersantos/android-ci:latest    
+    stage: androidtest    
+    before_script:        
+        - export GRADLE_USER_HOME='pwd'/.gradle
+        - chmod +x ./Frontend/hiveFrontend/gradlew    
+    tags:        
+        - FRONTEND    
+    script:        
+        - cd Frontend/hiveFrontend/        
+        - ./gradlew assemble
+    only: 
+        refs: 
+            - master 
+        changes: 
+            - Frontend/**/*
