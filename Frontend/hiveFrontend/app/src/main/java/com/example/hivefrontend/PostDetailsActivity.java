@@ -1,6 +1,8 @@
 package com.example.hivefrontend;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,15 +14,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hivefrontend.ui.home.HomeAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class PostDetailsActivity extends AppCompatActivity {
 
 
     private RequestQueue queue;
     private String hiveName;
+    private ArrayList<JSONObject> comments;
+    private PostCommentAdapter commentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +36,16 @@ public class PostDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_details);
         //intent should have grabbed post id
         int postId = getIntent().getIntExtra("postId",0);
-        TextView titleTextView = findViewById(R.id.postTitle);
-        titleTextView.setText(""+postId);
+
+        comments = new ArrayList<>();
+
+        final RecyclerView recyclerView = findViewById(R.id.postViewRecycler);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        commentAdapter = new PostCommentAdapter(getApplicationContext(), comments);
+        recyclerView.setAdapter(commentAdapter);
+
+
         queue = Volley.newRequestQueue(this);
 
         String url ="http://10.24.227.37:8080/posts/byPostId/" + postId;
@@ -110,7 +126,15 @@ public class PostDetailsActivity extends AppCompatActivity {
         numLikes.setText(likes);
         //number comments
         TextView numComments = this.findViewById(R.id.commentNumber);
-        String comments = String.valueOf(post.getJSONArray("comments").length())+" comments";
-        numComments.setText(comments);
+        String comment = String.valueOf(post.getJSONArray("comments").length())+" comments";
+        numComments.setText(comment);
+
+        JSONArray arrComments = post.getJSONArray("comments");
+        for(int i = 0; i<arrComments.length(); i++){
+            comments.add(arrComments.getJSONObject(i));
+        }
+        Log.i(" status ", "got to end of post info set");
+        Log.i(" comments ", comments.toString());
+        commentAdapter.notifyDataSetChanged();
     }
 }
