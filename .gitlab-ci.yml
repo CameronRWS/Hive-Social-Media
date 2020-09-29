@@ -36,12 +36,7 @@ android-build:
     artifacts:        
         paths:            
             - Frontend/hiveFrontend/app/build/outputs/
-    only: 
-        refs: 
-            - master 
-        changes: 
-            - Frontend/**/*
-    
+
 unitTests:    
     image: javiersantos/android-ci:latest    
     stage: androidtest    
@@ -53,8 +48,3 @@ unitTests:
     script:        
         - cd Frontend/hiveFrontend/        
         - ./gradlew assemble
-    only: 
-        refs: 
-            - master 
-        changes: 
-            - Frontend/**/*
