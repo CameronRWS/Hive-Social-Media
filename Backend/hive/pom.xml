@@ -30,17 +30,10 @@
    			<groupId>mysql</groupId>
     		<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
 		<dependency>
     		<groupId>com.google.firebase</groupId>
-    		<artifactId>firebase-server-sdk</artifactId>
-    		<version>3.0.1</version>
-		</dependency>
-		
-		<dependency>
-  			<groupId>com.google.firebase</groupId>
-  			<artifactId>firebase-admin</artifactId>
-  			<version>6.14.0</version>
+    		<artifactId>firebase-admin</artifactId>
+    		<version>7.0.0</version>
 		</dependency>
     </dependencies>
 
