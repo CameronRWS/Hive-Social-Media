@@ -22,7 +22,7 @@ maven-build:
         - BACKEND 
     script: 
         - cd Backend/hive
-        - mvn package –B
+        - mvn package -B
         
 maven-test: 
     stage: maventest
