@@ -33,7 +33,7 @@ maven-test:
         - mvntest 
     artifacts: 
         paths: 
-            - Spring/target/*.jar
+            - Spring/target/hive-0.0.1-SNAPSHOT.jar
             
 android-build:
     image: javiersantos/android-ci:latest    
