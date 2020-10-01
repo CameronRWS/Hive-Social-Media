@@ -1,8 +1,20 @@
 stages:
     - mavenbuild
     - maventest
+    - autoDeploy
     - androidbuild
     - androidtest
+    
+autoDeploy:
+    stage: autodeploy
+    tags:
+        - shell
+    script:
+        - cd Spring
+        - mvn package
+        - sudo mv target/*.jar /target/web-demo.jar
+        - sudo systemctl stop web-demo
+        - sudo systemctl start web-demo
 
 maven-build: 
     stage: mavenbuild
@@ -11,6 +23,7 @@ maven-build:
     script: 
         - cd Spring 
         - mvnpackage –B
+        
 maven-test: 
     stage: maventest
     tags: 
