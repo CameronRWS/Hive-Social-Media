@@ -11,7 +11,7 @@ autoDeploy:
         - BACKEND
     script:
         - cd Backend/hive
-        - mvn package
+        - mvn package -B
         - sudo mv target/hive-0.0.1-SNAPSHOT.jar /target/web-demo.jar
         - sudo systemctl stop web-demo
         - sudo systemctl start web-demo
@@ -21,19 +21,19 @@ maven-build:
     tags: 
         - BACKEND 
     script: 
-        - cd Spring 
-        - mvnpackage –B
+        - cd Backend/hive
+        - mvn package –B
         
 maven-test: 
     stage: maventest
     tags: 
         - BACKEND
     script: 
-        - cd Spring 
-        - mvntest 
+        - cd Backend/hive
+        - mvn test 
     artifacts: 
         paths: 
-            - Spring/target/hive-0.0.1-SNAPSHOT.jar
+            - Backend/hive/target/hive-0.0.1-SNAPSHOT.jar
             
 android-build:
     image: javiersantos/android-ci:latest    
