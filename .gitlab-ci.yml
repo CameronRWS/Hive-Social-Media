@@ -12,7 +12,7 @@ autoDeploy:
     script:
         - cd Spring
         - mvn package
-        - sudo mv target/*.jar /target/web-demo.jar
+        - sudo mv target/hive-0.0.1-SNAPSHOT.jar /target/web-demo.jar
         - sudo systemctl stop web-demo
         - sudo systemctl start web-demo
 
