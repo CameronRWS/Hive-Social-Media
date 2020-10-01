@@ -22,19 +22,18 @@ public class FirebaseService {
 	private StorageOptions storageOptions;
 	String bucketName = "https://console.firebase.google.com/project/hivephotodb/storage/hivephotodb.appspot.com/files";
 	
-	public String[] uploadFile(File file) throws IOException {
+	public void uploadFile(File file) throws IOException {
 //		File file = convertMultiPartToFile(multipartFile);
 		Path filePath = file.toPath();
 //		String objectName = generateFileName(multipartFile);
 		String objectName = "test";
-	
-		Storage storage = storageOptions.getService();
+		
+		Storage storage = StorageOptions.newBuilder().setProjectId("hivephotodb").build().getService();
 	
 		BlobId id = BlobId.of(bucketName, objectName);
 		BlobInfo info = BlobInfo.newBuilder(id).build();
-		Blob blob = storage.create(info, Files.readAllBytes(filePath));
+		storage.create(info, Files.readAllBytes(filePath));
 	
 		System.out.print("File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
-		return new String[]{"fileUrl", objectName};
 	}
 }
