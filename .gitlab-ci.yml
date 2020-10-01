@@ -10,7 +10,7 @@ autoDeploy:
     tags:
         - BACKEND
     script:
-        - cd Spring
+        - cd Backend/hive
         - mvn package
         - sudo mv target/hive-0.0.1-SNAPSHOT.jar /target/web-demo.jar
         - sudo systemctl stop web-demo
