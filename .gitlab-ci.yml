@@ -8,7 +8,7 @@ stages:
 autoDeploy:
     stage: autodeploy
     tags:
-        - shell
+        - BACKEND
     script:
         - cd Spring
         - mvn package
