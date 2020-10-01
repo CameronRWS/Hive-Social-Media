@@ -7,10 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.hivefrontend.R;
 
 import com.example.hivefrontend.PostDetailsActivity;
 import com.example.hivefrontend.R;
@@ -23,7 +32,7 @@ import java.util.List;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
 
-
+    private RequestQueue queue;
     private Context context;
     private List<JSONObject> notifications;
 
@@ -49,6 +58,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             holder.notiText.setText(notifications.get(position).getString("notiText"));
             String date = notifications.get(position).getString("dateCreated");
             holder.notiDateTime.setText(date);
+            holder.notiIsNew.setText("isNew: " + notifications.get(position).getString("isNew"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -64,6 +74,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView notiText;
         public TextView notiDateTime;
+        public TextView notiIsNew;
         public CardView cv;
 
         ConstraintLayout constraintLayout;
@@ -72,6 +83,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             super(itemView);
             notiText = itemView.findViewById(R.id.noti_text);
             notiDateTime = itemView.findViewById(R.id.noti_datetime);
+            notiIsNew = itemView.findViewById(R.id.noti_isnew);
             constraintLayout=itemView.findViewById(R.id.notiViewLayout);
             cv = itemView.findViewById(R.id.cardView);
             cv.setOnClickListener(this);
@@ -85,6 +97,11 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             try {
                 //start new activity and pass the post ID to it
                 int entityId = notifications.get(position).getInt("entityId");
+                int notiId = notifications.get(position).getInt("notiId");
+                Boolean isNew = notifications.get(position).getBoolean("isNew");
+                if(isNew) {
+                    readNotification(notiId);
+                }
                 String notiType = notifications.get(position).getString("notiType");
                 if(notiType.equals("like") || notiType.equals("comment") || notiType.equals("post-mention")) {
                     Log.i("OK", "notiType:" + notiType);
@@ -97,6 +114,25 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             }
         }
 
+    }
+
+    public void readNotification(int notiId) {
+        queue = Volley.newRequestQueue(context);
+        String url ="http://10.24.227.37:8080/readNotification/byNotiId/" + notiId;
+        // Server name http://coms-309-tc-03.cs.iastate.edu:8080
+        final JSONObject putObject = new JSONObject();
+        Log.i("request","OK!" + url);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url,
+                putObject, new Response.Listener<JSONObject>(){
+            public void onResponse(JSONObject response) {
+                Log.i("request","success!");
+            }
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error){
+                Log.i("request","fail!");
+            }
+        });
+        queue.add(jsonObjectRequest);
     }
 
     // convenience method for getting data at click position
