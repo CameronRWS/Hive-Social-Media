@@ -62,8 +62,12 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         });
 
+        getPostJson();
 
 
+    }
+
+    private void getPostJson(){
         String url ="http://10.24.227.37:8080/posts/byPostId/" + postId;
         JsonObjectRequest postDetailsRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -133,7 +137,7 @@ public class PostDetailsActivity extends AppCompatActivity {
             postObject.put("postId",postId);
             postObject.put("userId",2);
 
-            Toast.makeText(this, "Buzz liked successfully!", Toast.LENGTH_LONG).show();
+
 
         } catch (JSONException e){
             e.printStackTrace();
@@ -145,6 +149,8 @@ public class PostDetailsActivity extends AppCompatActivity {
                 postObject, new Response.Listener<JSONObject>(){
 
             public void onResponse(JSONObject response) {
+                getPostJson();
+                Toast.makeText(getApplicationContext(), "Buzz liked successfully!", Toast.LENGTH_LONG).show();
                 Log.i("request","success!");
             }
 
