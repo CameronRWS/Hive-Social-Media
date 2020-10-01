@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.hivefrontend.ui.buzz.BuzzFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
         final BottomNavigationView navView = findViewById(R.id.nav_view);
         final ImageView hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
         final ImageButton gearIcon = (ImageButton) findViewById(R.id.gearIcon);
+        hiveLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(

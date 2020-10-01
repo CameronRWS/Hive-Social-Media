@@ -42,7 +42,7 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel mViewModel;
     private ArrayList<Integer> hiveIds;
     private ArrayList<String> hiveOptions;
-    private int userId = 2;
+    private int userId = 1;
     private RequestQueue queue;
     private String pollen;
 
