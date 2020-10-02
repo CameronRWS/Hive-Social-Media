@@ -11,6 +11,7 @@ import hive.app.notification.NotificationRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,24 @@ public class MemberController {
         int theUserId = Integer.parseInt(userId);
         return memberRepository.findByUserId(theUserId); 
     }
+    
+    @GetMapping("/memberCount/byHiveId/{hiveId}")
+    public Map<String, Object> getNotiCount(@PathVariable String hiveId){
+        int theHiveId = Integer.parseInt(hiveId);
+        int memberCount = memberRepository.findByHiveId(theHiveId).size();
+        Map<String, Object> map = new HashMap<>();
+        map.put("memberCount", memberCount);
+        return map;
+    }
+    
+    @GetMapping("/memberCount/byUserId/{userId}")
+    public Map<String, Object> getHiveCount(@PathVariable String userId){
+        int theUserId = Integer.parseInt(userId);
+        int memberCount = memberRepository.findByUserId(theUserId).size();
+        Map<String, Object> map = new HashMap<>();
+        map.put("memberCount", memberCount);
+        return map;
+    }
 
     @PostMapping("/members")
     public Member create(@RequestBody Map<String, String> body){
@@ -65,9 +84,9 @@ public class MemberController {
         MemberIdentity memberIdentity = new MemberIdentity(hive, user);
         Member member = memberRepository.findOne(memberIdentity);
         if(member.getIsModerator() == false && isModerator == true) {
-			notificationRepository.save(new Notification(userId, hiveId, "hive-role", "You are now a beekeeper of " + hive.getName()+ ".", true));
+			notificationRepository.save(new Notification(userId, -1, hiveId, "hive-rolePromotion"));
         } else if(member.getIsModerator() == true && isModerator == false) {
-			notificationRepository.save(new Notification(userId, hiveId, "hive-role", "You are no longer a beekeeper of " + hive.getName()+ ".", true));
+			notificationRepository.save(new Notification(userId, -1, hiveId, "hive-roleDemotion"));
         }
         member.setIsModerator(isModerator);
         return memberRepository.save(member);

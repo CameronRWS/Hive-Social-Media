@@ -4,7 +4,9 @@ package hive.app.notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class NotificationController {
@@ -27,6 +29,15 @@ public class NotificationController {
     public List<Notification> getNotisByUserId(@PathVariable String userId){
         int theUserId = Integer.parseInt(userId);
         return notificationRepository.findByUserId(theUserId); 
+    }
+    
+    @GetMapping("/notificationCount/byUserId/{userId}")
+    public Map<String, Object> getNotiCount(@PathVariable String userId){
+        int theUserId = Integer.parseInt(userId);
+        int notiCount = notificationRepository.findByUserId(theUserId).size();
+        Map<String, Object> map = new HashMap<>();
+        map.put("notiCount", notiCount);
+        return map;
     }
     
     @PutMapping("/readNotification/byNotiId/{id}")

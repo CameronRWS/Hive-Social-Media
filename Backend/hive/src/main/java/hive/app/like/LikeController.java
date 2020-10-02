@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import hive.app.comment.Comment;
 import hive.app.notification.Notification;
 import hive.app.notification.NotificationRepository;
+import hive.app.post.Post;
+import hive.app.post.PostRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
 
@@ -20,6 +22,8 @@ public class LikeController {
 
     @Autowired
     LikeRepository likeRepository;
+    @Autowired
+    PostRepository postRepository;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -54,11 +58,12 @@ public class LikeController {
     public Like create(@RequestBody Map<String, String> body){
         int postId = Integer.parseInt(body.get("postId"));
         int userId = Integer.parseInt(body.get("userId"));
+        Post post = postRepository.findOne(postId);
         User user = userRepository.findOne(userId);
         LikeIdentity likeIdentity = new LikeIdentity(postId, user);
         System.out.println(likeRepository.findOne(likeIdentity) == null);
-        if(likeRepository.findOne(likeIdentity) == null) {
-            notificationRepository.save(new Notification(userId, postId, "like", "@" + user.getUserName() + " liked your buzz!", true));
+        if(likeRepository.findOne(likeIdentity) == null && post.getUser().getUserId() != userId) {
+            notificationRepository.save(new Notification(post.getUser().getUserId(), userId, postId, "post-likeReceived"));
         }
         return likeRepository.save(new Like(likeIdentity));
     }
