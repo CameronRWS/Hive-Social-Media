@@ -54,8 +54,15 @@ public class NotificationsFragment extends Fragment {
         recyclerView.setAdapter(notiAdapter);
 
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
         //String url ="http://localhost:8080/notifications";
+        Log.i("rightBefore","rightBefore: ");
+
+        setNotifications();
+        return root;
+    }
+
+    public void setNotifications() {
+        Log.i("setNotifications","setNotifications: ");
         String url ="http://10.24.227.37:8080/notifications"; // add /byUserId/{userId} once we have user ID stored globally
         JsonArrayRequest notiRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -64,9 +71,8 @@ public class NotificationsFragment extends Fragment {
                         try {
                             //have array populate backwards cuz we want to scroll down for old stuff.
                             for(int i = response.length()-1; i >= 0; i--){
-                                notifications.add(response.getJSONObject(i));
+                                addEntity(response.getJSONObject(i));
                             }
-                            notiAdapter.notifyDataSetChanged();
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
@@ -81,6 +87,85 @@ public class NotificationsFragment extends Fragment {
                     }
                 });
         queue.add(notiRequest);
-        return root;
+    }
+
+    public void addEntity(final JSONObject notification) {
+        Log.i("addEntity","addEntity: ");
+        String url = "";
+        try {
+            int entityId = notification.getInt("entityId");
+            String notiType = notification.getString("notiType");
+            String entityType = notiType.split("-")[0];
+            if(entityType.equals("post")) {
+                url = "http://10.24.227.37:8080/posts/byPostId/" + entityId;
+            } else if (entityType.equals("hive")) {
+                url = "http://10.24.227.37:8080/hives/byHiveId/" + entityId;
+            }
+        } catch (Exception e) {
+            Log.i("addRelatedEntities","Error: " + e.getMessage());
+        }
+
+        JsonObjectRequest entityRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject noti = new JSONObject(notification.toString());
+                            noti.put("entity", response);
+                            addCreator(noti);
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+                    }
+                });
+        queue.add(entityRequest);
+    }
+
+    public void addCreator(final JSONObject notification) {
+        Log.i("addCreator","addCreator: ");
+        String url = "";
+        try {
+            int creatorUserId = notification.getInt("creatorUserId");
+            if(creatorUserId != -1) {
+                url = "http://10.24.227.37:8080/users/byUserId/" + creatorUserId;
+            } else {
+                notifications.add(notification);
+                notiAdapter.notifyDataSetChanged();
+                return;
+            }
+        } catch (Exception e) {
+            Log.i("addRelatedEntities","Error: " + e.getMessage());
+        }
+        JsonObjectRequest userRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject noti = new JSONObject(notification.toString());
+                            noti.put("creator", response);
+                            notifications.add(noti);
+                            notiAdapter.notifyDataSetChanged();
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+                    }
+                });
+        queue.add(userRequest);
     }
 }
