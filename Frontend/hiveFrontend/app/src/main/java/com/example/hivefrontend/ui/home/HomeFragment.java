@@ -123,52 +123,63 @@ public class HomeFragment extends Fragment {
         });
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        //Request: hive information of this user
-        String url ="http://10.24.227.37:8080/members/byUserId/2"; //for now, getting this user's hive information until we have login functionality
-
-            JsonArrayRequest hiveRequest = new JsonArrayRequest
-                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            try {
-                                for (int i = 0; i < response.length(); i++) {
-                                    JSONObject member = response.getJSONObject(i); //should return user,hive pair
-                                    Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-                                    hiveIdsHome.add(hiveId);
-                                    String hiveName = member.getJSONObject("hive").getString("name");
-                                    hiveOptionsHome.add(hiveName);
-                                }
-
-                                //here the hives' ids and names have been set appropriately
-                                //can use them to get discover page posts and home posts
-                                //start with discover page posts--methods to get home page posts called from within
-                                getDiscoverPosts();
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Log.i("jsonAppError", e.toString());
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            Log.i("volleyAppError", "Error: " + error.getMessage());
-                            Log.i("volleyAppError", "VolleyError: " + error);
-
-                        }
-                    });
-
-            // Add the request to the RequestQueue.
-            queue.add(hiveRequest);
+        setUserHives();
 
         return root;
     }
 
+    @Override
+    public void onResume() {
+        Log.e("DEBUG", "onResume of LoginFragment");
+        super.onResume();
+        updatePosts();
+        homeAdapter.notifyDataSetChanged();
+        discoverAdapter.notifyDataSetChanged();
+    }
+
+
+    private void setUserHives(){
+        //Request: hive information of this user
+        String url ="http://10.24.227.37:8080/members/byUserId/2"; //for now, getting this user's hive information until we have login functionality
+
+        JsonArrayRequest hiveRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject member = response.getJSONObject(i); //should return user,hive pair
+                                Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
+                                hiveIdsHome.add(hiveId);
+                                String hiveName = member.getJSONObject("hive").getString("name");
+                                hiveOptionsHome.add(hiveName);
+                            }
+
+                            //here the hives' ids and names have been set appropriately
+                            //can use them to get discover page posts and home posts
+                            //updatePosts();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.i("jsonAppError", e.toString());
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError", "Error: " + error.getMessage());
+                        Log.i("volleyAppError", "VolleyError: " + error);
+
+                    }
+                });
+
+        // Add the request to the RequestQueue.
+        queue.add(hiveRequest);
+    }
     //sorts the discover and home page posts chronologically, notifies the adapters of the changes
     private void sortPosts(){
         Collections.sort(homePostObjects, new PostComparator());
@@ -180,6 +191,17 @@ public class HomeFragment extends Fragment {
     public void viewPost(View view){
         Intent intent = new Intent(this.getContext(), PostDetailsActivity.class);
         startActivity(intent);
+    }
+
+    public void updatePosts(){
+        discoverPostObjects.clear();
+        homePostObjects.clear();
+        hiveIdsDiscover.clear();
+        //hiveIdsHome.clear();
+        //hiveOptionsHome.clear();
+        hiveOptionsDiscover.clear();
+        getDiscoverPosts();
+        //getHomePosts();
     }
 
     private void getDiscoverPosts(){
