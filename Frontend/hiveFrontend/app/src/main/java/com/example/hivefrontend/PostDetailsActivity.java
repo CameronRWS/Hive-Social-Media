@@ -57,15 +57,11 @@ public class PostDetailsActivity extends AppCompatActivity {
         likeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Log.i(" liked "," liked ");
                 checkLikesAndPost();
-                postLike();
             }
         });
 
         getPostJson();
-
-
     }
 
     private void getPostJson(){
@@ -138,8 +134,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         try{
             postObject.put("postId",postId);
             postObject.put("userId",2);
-
-
+            Toast.makeText(getApplicationContext(), "Buzz liked successfully!", Toast.LENGTH_LONG).show();
 
         } catch (JSONException e){
             e.printStackTrace();
@@ -152,7 +147,7 @@ public class PostDetailsActivity extends AppCompatActivity {
 
             public void onResponse(JSONObject response) {
                 getPostJson();
-                Toast.makeText(getApplicationContext(), "Buzz liked successfully!", Toast.LENGTH_LONG).show();
+
                 Log.i("request","success!");
             }
 
