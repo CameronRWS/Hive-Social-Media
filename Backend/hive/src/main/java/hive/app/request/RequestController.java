@@ -51,7 +51,16 @@ public class RequestController {
 		int hiveId = Integer.parseInt(body.get("hiveId"));
 		int userId = Integer.parseInt(body.get("userId"));
 		String requestMessage = body.get("requestMessage");
+		Hive hive = hiveRepository.findOne(hiveId);
 		User user = userRepository.findOne(userId);
+		if(memberRepository.findOne(new MemberIdentity(hive, user)) != null) {
+			System.out.println("Cannot create a request if you are already apart of the hive.");
+			return null;
+		}
+		List<Member> modsOfHive = memberRepository.findByHiveIdAndIsMod(hiveId);
+		for(Member m : modsOfHive) {
+			notificationRepository.save(new Notification(m.getUser().getUserId(), userId, hiveId, "hive-requestReceived"));
+		}
 		RequestIdentity requestIdentity = new RequestIdentity(hiveId, user);
 		return requestRepository.save(new Request(requestIdentity, requestMessage));
 	}
@@ -79,11 +88,13 @@ public class RequestController {
 			MemberIdentity memberIdentity = new MemberIdentity(hive, user);
 			Member member = new Member(memberIdentity, false);
 			memberRepository.save(member);
-	        notificationRepository.save(new Notification(userId, hiveId, "request-accepted", "Your request to join the hive " + hive.getName() + " was accepted.", true));
+	        notificationRepository.save(new Notification(userId, -1, hiveId, "hive-requestAccepted"));
 		} else {
-	        notificationRepository.save(new Notification(userId, hiveId, "request-declined", "Your request to join the hive " + hive.getName() + " was declined.", true));
+	        notificationRepository.save(new Notification(userId, -1, hiveId, "hive-requestDeclined"));
 		}
-		requestRepository.delete(requestIdentity);
+		Request r = requestRepository.findOne(requestIdentity);
+		r.setIsActive(false);
+		requestRepository.save(r);
 		return true;
 	}
 }

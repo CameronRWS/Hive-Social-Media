@@ -19,12 +19,12 @@ public class Notification {
     private int notiId;
     @Column(name = "owner_user_id")
     private int ownerUserId;
+    @Column(name = "creator_user_id")
+    private int creatorUserId;
     @Column(name = "entity_id")
     private int entityId;
     @Column(name = "noti_type")
     private String notiType;
-    @Column(name = "noti_text")
-    private String notiText;
     @Column(name = "date_created")
     private String dateCreated;
     @Column(name = "is_new")
@@ -32,13 +32,13 @@ public class Notification {
     
     public Notification() {  }
     
-    public Notification(int ownerUserId, int entityId, String notiType, String notiText, Boolean isNew) {
+    public Notification(int ownerUserId, int creatorUserId, int entityId, String notiType) {
         this.setOwnerUserId(ownerUserId);
+        this.setCreatorUserId(creatorUserId);
         this.setEntityId(entityId);
         this.setNotiType(notiType);
-        this.setNotiText(notiText);
         this.setDateCreated(DateTime.GetCurrentDateTime());
-        this.setIsNew(isNew);
+        this.setIsNew(true);
     }
     
     public int getNotiId() {
@@ -47,14 +47,6 @@ public class Notification {
 
 	public void setNotiId(int notiId) {
 		this.notiId = notiId;
-	}
-    
-    public String getNotiText() {
-        return notiText;
-    }
-    
-    public void setNotiText(String notiText) {
-    	this.notiText = notiText;
 	}
     
     public String getNotiType() {
@@ -79,6 +71,14 @@ public class Notification {
 
 	public void setOwnerUserId(int ownerUserId) {
 		this.ownerUserId = ownerUserId;
+	}
+	
+    public int getCreatorUserId() {
+        return creatorUserId;
+    }
+
+	public void setCreatorUserId(int creatorUserId) {
+		this.creatorUserId = creatorUserId;
 	}
     
     public String getDateCreated() {

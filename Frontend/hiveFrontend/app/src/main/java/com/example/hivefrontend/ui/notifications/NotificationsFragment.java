@@ -55,6 +55,7 @@ public class NotificationsFragment extends Fragment {
 
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
+        //String url ="http://localhost:8080/notifications";
         String url ="http://10.24.227.37:8080/notifications"; // add /byUserId/{userId} once we have user ID stored globally
         JsonArrayRequest notiRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {

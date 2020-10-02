@@ -84,7 +84,7 @@ public class PostController {
     		if(user != null) {
         		Member member = memberRepository.findOne(new MemberIdentity(hive, userToTag));
         		if(member != null) {
-        			notificationRepository.save(new Notification(userToTag.getUserId(), post.getPostId(), "post-mention", "You were mentioned in a post.", true));
+        			notificationRepository.save(new Notification(userToTag.getUserId(), user.getUserId(), post.getPostId(), "post-postMention"));
         		}
     		}
     	}

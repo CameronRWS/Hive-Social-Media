@@ -61,7 +61,9 @@ public class CommentController {
         Post post = postRepository.findOne(postId);
         Hive hive = hiveRepository.findOne(post.getHiveId());
         String textContent = body.get("textContent");
-        notificationRepository.save(new Notification(post.getUser().getUserId(), postId, "comment", "@" + user.getUserName() + " commented on your buzz!", true));
+        if(post.getUser().getUserId() != user.getUserId()) {
+        	notificationRepository.save(new Notification(post.getUser().getUserId(), user.getUserId(), postId, "post-commentReceived"));
+        }
         Comment comment = commentRepository.save(new Comment(postId, user, textContent));
         //create notification for all usernames found in comment
     	List<String> list = Regex.getUserNamesMentionedInText(textContent);
@@ -71,7 +73,7 @@ public class CommentController {
     		if(user != null) {
         		Member member = memberRepository.findOne(new MemberIdentity(hive, user));
         		if(member != null) {
-        			notificationRepository.save(new Notification(userToTag.getUserId(), postId, "comment-mention", "You were mentioned in a comment on a post.", true));
+        			notificationRepository.save(new Notification(userToTag.getUserId(), user.getUserId(), postId, "post-commentMention"));
         		}
     		}
     	}

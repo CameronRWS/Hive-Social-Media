@@ -54,8 +54,32 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public void onBindViewHolder(NotificationsAdapter.ViewHolder holder, final int position) {
         try {
+            Log.i("volleyAppError","HERE!");
             holder.cv.setTag(position);
-            holder.notiText.setText(notifications.get(position).getString("notiText"));
+            String notiType = notifications.get(position).getString("notiType");
+            int userId = notifications.get(position).getInt("");
+            String notiDesc = notiType.split("-")[1];
+            String notiText = "";
+            if(notiDesc.equals("likeReceived")) {
+                notiText = "You received a like on your buzz.";
+            } else if(notiDesc.equals("commentReceived")) {
+                notiText = "You received a comment on your buzz.";
+            } else if(notiDesc.equals("postMention")) {
+                notiText = "You were tagged in a buzz.";
+            } else if(notiDesc.equals("requestReceived")) {
+                notiText = "You received a new hive join request";
+            } else if(notiDesc.equals("requestAccepted")) {
+                notiText = "You were accepted to join a hive";
+            } else if(notiDesc.equals("requestDeclined")) {
+                notiText = "You were declined to join a hive";
+            } else if(notiDesc.equals("rolePromotion")) {
+                notiText = "You were promoted to a beekeeper in a hive.";
+            } else if(notiDesc.equals("roleDemotion")) {
+                notiText = "You were demoted to a bee in a hive.";
+            } else {
+                notiText = "Unsupported notification type - Notify Cam! xD";
+            }
+            holder.notiText.setText(notiText);
             String date = notifications.get(position).getString("dateCreated");
             holder.notiDateTime.setText(date);
             holder.notiIsNew.setText("isNew: " + notifications.get(position).getString("isNew"));
@@ -103,7 +127,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                     readNotification(notiId);
                 }
                 String notiType = notifications.get(position).getString("notiType");
-                if(notiType.equals("like") || notiType.equals("comment") || notiType.equals("post-mention")) {
+                String entityType = notiType.split("-")[0];
+                if(entityType.equals("post")) {
                     Log.i("OK", "notiType:" + notiType);
                     intent.putExtra("postId", entityId);
                     v.getContext().startActivity(intent);

@@ -19,16 +19,26 @@ public class Request {
 	
 	@Column (name = "date_created")
 	private String dateCreated;
-	
 	@Column(name = "request_message")
     private String requestMessage;
+	@Column(name = "is_active")
+    private Boolean isActive;
 	
 	public Request() {}
 	
 	public Request(RequestIdentity requestIdentity, String requestMessage){
-		this.requestIdentity = requestIdentity;
-		this.dateCreated = DateTime.GetCurrentDateTime();
-		this.requestMessage = requestMessage;
+		this.setRequestIdentity(requestIdentity);
+		this.setDateCreated(DateTime.GetCurrentDateTime());
+		this.setRequestMessage(requestMessage);
+		this.setIsActive(true);
+	}
+	
+	public RequestIdentity getRequestIdentity() {
+		return requestIdentity;
+	}
+	
+	public void setRequestIdentity(RequestIdentity rI) {
+		requestIdentity = rI;
 	}
 	
 	public int getHiveId() {
@@ -62,4 +72,12 @@ public class Request {
 	public void setRequestMessage(String requestMessage) {
 		this.requestMessage = requestMessage;
 	}
+	
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    } 
 }
