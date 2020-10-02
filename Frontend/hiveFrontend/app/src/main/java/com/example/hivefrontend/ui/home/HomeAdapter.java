@@ -6,19 +6,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.PostDetailsActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.buzz.BuzzFragment;
 import com.example.hivefrontend.ui.profile.MyAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,12 +60,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, final int position) {
         try {
             holder.cv.setTag(position);
+            holder.icon.setTag(position);
             holder.postTitle.setText(posts.get(position).getString("title"));
             holder.userName.setText("@" + posts.get(position).getJSONObject("user").getString("userName"));
             holder.userDisplayName.setText(posts.get(position).getJSONObject("user").getString("displayName"));
             holder.postContent.setText(posts.get(position).getString("textContent"));
-            holder.commentNumber.setText(String.valueOf(posts.get(position).getJSONArray("comments").length())+ " comments");
-            holder.likeNumber.setText(String.valueOf(posts.get(position).getJSONArray("likes").length())+ " likes");
+            holder.commentNumber.setText(String.valueOf(posts.get(position).getJSONArray("comments").length()));
+            holder.likeNumber.setText(String.valueOf(posts.get(position).getJSONArray("likes").length()));
 
             int id = posts.get(position).getInt("hiveId");
             String hive = hiveNames.get(hiveIds.indexOf(id));
@@ -87,8 +96,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         public TextView likeNumber;
         public TextView hiveName;
         public CardView cv;
+        public ImageView icon;
 
         ConstraintLayout constraintLayout;
+        private RequestQueue queue;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -100,9 +111,27 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             commentNumber = itemView.findViewById(R.id.commentNumber);
             likeNumber = itemView.findViewById(R.id.likeNumber);
             hiveName = itemView.findViewById(R.id.hiveName);
+            icon = itemView.findViewById(R.id.likeCountIcon);
+            icon.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(final View view) {
+
+                    Log.i(" icon clicked ", " icon clicked ! ");
+                    int position = (Integer) view.getTag();
+                    try {
+                        int postId = posts.get(position).getInt("postId");
+                        Log.i("post id in adapter ", " " + postId);
+                        HomeFragment.likePost(postId);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
             cv = itemView.findViewById(R.id.cardView);
             cv.setOnClickListener(this);
         }
+
 
         @Override
         public void onClick(View v) {
