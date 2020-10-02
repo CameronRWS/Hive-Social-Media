@@ -57,7 +57,10 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             Log.i("volleyAppError","HERE!");
             holder.cv.setTag(position);
             String notiType = notifications.get(position).getString("notiType");
-            int userId = notifications.get(position).getInt("");
+            int userId = notifications.get(position).getInt("creatorUserId");
+            if(userId != -1) {
+                //String userName = getUserName(userId);
+            }
             String notiDesc = notiType.split("-")[1];
             String notiText = "";
             if(notiDesc.equals("likeReceived")) {
@@ -108,7 +111,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             notiText = itemView.findViewById(R.id.noti_text);
             notiDateTime = itemView.findViewById(R.id.noti_datetime);
             notiIsNew = itemView.findViewById(R.id.noti_isnew);
-            constraintLayout=itemView.findViewById(R.id.notiViewLayout);
+            constraintLayout = itemView.findViewById(R.id.notiViewLayout);
             cv = itemView.findViewById(R.id.cardView);
             cv.setOnClickListener(this);
         }
@@ -123,12 +126,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 int entityId = notifications.get(position).getInt("entityId");
                 int notiId = notifications.get(position).getInt("notiId");
                 Boolean isNew = notifications.get(position).getBoolean("isNew");
-                if(isNew) {
+                if (isNew) {
                     readNotification(notiId);
                 }
                 String notiType = notifications.get(position).getString("notiType");
                 String entityType = notiType.split("-")[0];
-                if(entityType.equals("post")) {
+                if (entityType.equals("post")) {
                     Log.i("OK", "notiType:" + notiType);
                     intent.putExtra("postId", entityId);
                     v.getContext().startActivity(intent);
@@ -138,7 +141,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 e.printStackTrace();
             }
         }
-
     }
 
     public void readNotification(int notiId) {
