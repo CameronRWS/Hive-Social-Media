@@ -17,18 +17,23 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.R;
 
 import com.example.hivefrontend.PostDetailsActivity;
 import com.example.hivefrontend.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
 
@@ -54,38 +59,54 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public void onBindViewHolder(NotificationsAdapter.ViewHolder holder, final int position) {
         try {
-            Log.i("volleyAppError","HERE!");
             holder.cv.setTag(position);
             String notiType = notifications.get(position).getString("notiType");
-            int userId = notifications.get(position).getInt("creatorUserId");
-            if(userId != -1) {
-                //String userName = getUserName(userId);
-            }
+            //Log.i("OK","entity:" + notifications.get(position).getJSONObject("entity"));
+            JSONObject entity = notifications.get(position).getJSONObject("entity");
             String notiDesc = notiType.split("-")[1];
             String notiText = "";
-            if(notiDesc.equals("likeReceived")) {
-                notiText = "You received a like on your buzz.";
-            } else if(notiDesc.equals("commentReceived")) {
-                notiText = "You received a comment on your buzz.";
-            } else if(notiDesc.equals("postMention")) {
-                notiText = "You were tagged in a buzz.";
-            } else if(notiDesc.equals("requestReceived")) {
-                notiText = "You received a new hive join request";
-            } else if(notiDesc.equals("requestAccepted")) {
-                notiText = "You were accepted to join a hive";
-            } else if(notiDesc.equals("requestDeclined")) {
-                notiText = "You were declined to join a hive";
-            } else if(notiDesc.equals("rolePromotion")) {
-                notiText = "You were promoted to a beekeeper in a hive.";
-            } else if(notiDesc.equals("roleDemotion")) {
-                notiText = "You were demoted to a bee in a hive.";
-            } else {
-                notiText = "Unsupported notification type - Notify Cam! xD";
+            JSONObject creator;
+            String userName;
+            switch (notiDesc) {
+                case "likeReceived":
+                    creator = notifications.get(position).getJSONObject("creator");
+                    userName = creator.getString("userName");
+                    notiText = "@" + userName + " liked your buzz titled: \"" + entity.getString("title") + "\".";
+                    break;
+                case "commentReceived":
+                    creator = notifications.get(position).getJSONObject("creator");
+                    userName = creator.getString("userName");
+                    notiText = "@" + userName + " commented your buzz titled: \"" + entity.getString("title") + "\".";
+                    break;
+                case "postMention":
+                    notiText = "You were tagged in a buzz titled: \"" + entity.getString("title")  + "\".";
+                    break;
+                case "requestReceived":
+                    creator = notifications.get(position).getJSONObject("creator");
+                    userName = creator.getString("userName");
+                    notiText = "@" + userName + " requested to join your hive named: \"" + entity.getString("name") + "\".";
+                    break;
+                case "requestAccepted":
+                    notiText = "Your request to join the hive named: \"" + entity.getString("name") + "\" was accepted!";
+                    break;
+                case "requestDeclined":
+                    notiText = "Your request to join the hive named: \"" + entity.getString("name") + "\" was declined!";
+                    break;
+                case "rolePromotion":
+                    notiText = "You were promoted to a beekeeper in your hive named: \"" + entity.getString("name") + "\".";
+                    break;
+                case "roleDemotion":
+                    notiText = "You were demoted to a bee in your hive named: \"" + entity.getString("name") + "\".";
+                    break;
+                default:
+                    notiText = "Unsupported notification type - Notify Cam! xD";
+                    break;
             }
             holder.notiText.setText(notiText);
             String date = notifications.get(position).getString("dateCreated");
             holder.notiDateTime.setText(date);
-            holder.notiIsNew.setText("isNew: " + notifications.get(position).getString("isNew"));
+            String isNewText = "isNew: " + notifications.get(position).getString("isNew");
+            holder.notiIsNew.setText(isNewText);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -118,14 +139,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
         @Override
         public void onClick(View v) {
-            //for find item that hold in list
             int position = (Integer) v.getTag();
             Intent intent = new Intent(v.getContext(), PostDetailsActivity.class);
             try {
-                //start new activity and pass the post ID to it
                 int entityId = notifications.get(position).getInt("entityId");
                 int notiId = notifications.get(position).getInt("notiId");
-                Boolean isNew = notifications.get(position).getBoolean("isNew");
+                boolean isNew = notifications.get(position).getBoolean("isNew");
                 if (isNew) {
                     readNotification(notiId);
                 }
