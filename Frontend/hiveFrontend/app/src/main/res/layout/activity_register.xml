@@ -18,6 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/hivebackground_register" />
 
+    <ImageView
+        android:id="@+id/honeycombBg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="275dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/halfhoneycomb" />
+
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
@@ -134,7 +144,7 @@
         android:id="@+id/usernameField"
         android:layout_width="300dp"
         android:layout_height="45dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/rect_border_filled_bg_register"
         android:ems="10"
         android:fontFamily="@font/helveticaneuelight"
@@ -243,8 +253,8 @@
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="15dp"
         android:background="@null"
         android:fontFamily="@font/helveticaneuemedium"
         android:text="Cancel"
