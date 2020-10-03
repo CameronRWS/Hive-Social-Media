@@ -61,6 +61,15 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         });
 
+        ImageView commentButton = findViewById(R.id.commentIcon);
+        commentButton.setClickable(true);
+        commentButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                postComment();
+            }
+        });
+
         getPostJson();
     }
 
@@ -86,6 +95,43 @@ public class PostDetailsActivity extends AppCompatActivity {
                     }
                 });
         queue.add(postDetailsRequest);
+    }
+
+
+    //post comment
+    private void postComment(){
+        String url ="http://10.24.227.37:8080/comments";
+
+
+        final JSONObject postObject = new JSONObject();
+        try{
+            postObject.put("postId",postId);
+            postObject.put("userId",2);
+            postObject.put("textContent", "testing");
+
+        } catch (JSONException e){
+            e.printStackTrace();
+            Toast.makeText(this, "Error liking this post. Try again.", Toast.LENGTH_LONG).show();
+        }
+
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                postObject, new Response.Listener<JSONObject>(){
+
+            public void onResponse(JSONObject response) {
+                getPostJson();
+
+                Log.i("request","success!");
+            }
+
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error){
+                Log.i("request","fail!");
+            }
+        });
+        // Add the request to the RequestQueue.
+
+        queue.add(jsonObjectRequest);
     }
 
     //checks if the user has already liked this post--if not, will add the like

@@ -97,6 +97,7 @@
                 android:id="@+id/commentNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:ellipsize="end"
                 android:text="Comments"
                 android:textAlignment="viewStart"
@@ -115,6 +116,14 @@
                 app:layout_constraintStart_toEndOf="@+id/commentNumber"
                 app:layout_constraintTop_toBottomOf="@+id/postContent"></TextView>
 
+            <ImageView
+                android:id="@+id/commentIcon"
+                android:layout_width="15dp"
+                android:layout_height="16dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/comment"
+                app:layout_constraintEnd_toStartOf="@+id/commentNumber"
+                app:layout_constraintTop_toBottomOf="@+id/postContent" />
             <ImageView
                 android:id="@+id/likeCountIcon"
                 android:layout_width="15dp"
