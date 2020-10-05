@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,7 +65,62 @@ public class PostDetailsActivity extends AppCompatActivity {
             }
         });
 
+        ImageView commentButton = findViewById(R.id.commentIcon);
+        commentButton.setClickable(true);
+        commentButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //prompts a dialog box, will post the comment
+                promptDialog();
+            }
+        });
+
         getPostJson();
+    }
+
+    private void promptDialog(){
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.prompts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+                                if(userInput.getText().toString().length()==0){
+                                    Toast.makeText(getApplicationContext(),"Cannot submit an empty comment!", Toast.LENGTH_LONG);
+                                }
+                                else {
+                                    postComment(userInput.getText().toString());
+                                }
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     private void getPostJson(){
@@ -86,6 +145,47 @@ public class PostDetailsActivity extends AppCompatActivity {
                     }
                 });
         queue.add(postDetailsRequest);
+    }
+
+
+    //post comment
+    private void postComment(String comment){
+
+        Log.i(" status ", "got into post comment ");
+
+        String url ="http://10.24.227.37:8080/comments";
+
+
+        final JSONObject postObject = new JSONObject();
+        try{
+            postObject.put("postId",postId);
+            postObject.put("userId",2);
+            postObject.put("textContent", comment);
+
+        } catch (JSONException e){
+            e.printStackTrace();
+            Toast.makeText(this, "Error commenting on this post. Try again.", Toast.LENGTH_LONG).show();
+        }
+
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                postObject, new Response.Listener<JSONObject>(){
+
+            public void onResponse(JSONObject response) {
+                comments.clear();
+                commentAdapter.notifyDataSetChanged();
+                getPostJson();
+                Log.i("request","success!");
+            }
+
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error){
+                Log.i("request","fail!");
+            }
+        });
+        // Add the request to the RequestQueue.
+
+        queue.add(jsonObjectRequest);
     }
 
     //checks if the user has already liked this post--if not, will add the like
