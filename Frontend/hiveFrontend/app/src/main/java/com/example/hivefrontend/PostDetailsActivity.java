@@ -101,7 +101,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog,int id) {
                                 // get user input and set it to result
                                 // edit text
-                                if(userInput.getText().toString()==""){
+                                if(userInput.getText().toString().length()==0){
                                     Toast.makeText(getApplicationContext(),"Cannot submit an empty comment!", Toast.LENGTH_LONG);
                                 }
                                 else {
