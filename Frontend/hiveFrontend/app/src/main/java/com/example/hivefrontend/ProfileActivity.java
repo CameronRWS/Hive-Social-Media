@@ -1,32 +1,24 @@
-package com.example.hivefrontend.ui.profile;
+package com.example.hivefrontend;
 
-import androidx.lifecycle.ViewModelProviders;
-
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.hivefrontend.R;
+import com.example.hivefrontend.ui.profile.MyAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,59 +26,69 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment {
+public class ProfileActivity extends AppCompatActivity {
 
-    //private RecyclerView recyclerView;
-    //private RecyclerView.Adapter mAdapter;
-    //private RecyclerView.LayoutManager layoutManager;
-    private ProfileViewModel mViewModel;
     private ArrayList<Integer> hiveIds;
     private ArrayList<String> hiveOptions;
-    private int userId = 1;
     private RequestQueue queue;
-    private String pollen;
-
-    public static ProfileFragment newInstance() {
-        return new ProfileFragment();
-    }
+    private TextView textView;
+    private ImageView locationPin;
+    private TextView userName;
+    private TextView pollenCount;
+    private TextView displayLocation;
+    private TextView hiveListHeading;
+    private TextView bio;
+    private TextView dateJoined;
+    private MyAdapter myAdapter;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+        int userId = getIntent().getIntExtra("userId", -1);
 
-        final View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
+        queue = Volley.newRequestQueue(getApplicationContext());
+        hiveIds = new ArrayList<>();
+        hiveOptions = new ArrayList<>();
+        TextView userDisplayName = findViewById(R.id.displayName);
+
         hiveIds= new ArrayList<>();
         hiveOptions = new ArrayList<>();
-        final TextView textView = (TextView) rootView.findViewById(R.id.displayName);
-        final ImageView locationPin = (ImageView) rootView.findViewById(R.id.locationPin);
-        final TextView userName = (TextView) rootView.findViewById(R.id.userName);
-        final TextView pollenCount = (TextView) rootView.findViewById(R.id.pollenCount);
-        final TextView displayLocation = (TextView) rootView.findViewById(R.id.displayLocation);
-        final TextView hiveListHeading = (TextView) rootView.findViewById(R.id.hiveListHeading);
-        final TextView bio = (TextView) rootView.findViewById(R.id.bio);
-        final TextView dateJoined = (TextView) rootView.findViewById(R.id.dateJoined);
-        RecyclerView recyclerView = rootView.findViewById(R.id.hiveListRecyler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        final MyAdapter myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
+        textView = (TextView) findViewById(R.id.displayName);
+        locationPin = (ImageView) findViewById(R.id.locationPin);
+        userName = (TextView) findViewById(R.id.userName);
+        pollenCount = (TextView) findViewById(R.id.pollenCount);
+        displayLocation = (TextView) findViewById(R.id.displayLocation);
+        hiveListHeading = (TextView) findViewById(R.id.hiveListHeading);
+        bio = (TextView) findViewById(R.id.bio);
+        dateJoined = (TextView) findViewById(R.id.dateJoined);
+        RecyclerView recyclerView = findViewById(R.id.hiveListRecyler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        myAdapter = new MyAdapter(getApplicationContext(), hiveOptions);
         recyclerView.setAdapter(myAdapter);
 
+        getUserMemberships(userId);
+
+    }
+
+    //looks through memberships for this user, if hive is public, adds to list
+    private void getUserMemberships(int userId) {
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        String url ="http://10.24.227.37:8080/users";
+
+        String url ="http://10.24.227.37:8080/users/byUserId/" + userId;
 
         // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
 
         //first request: user information
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
                         try{
-                            JSONObject user1 = response.getJSONObject(userId);
                             // Get the current user (json object) data
-                            String name = user1.getString("displayName");
+                            String name = response.getString("displayName");
 
                             // Gets first name out of whole name, but checks if a space exists.
                             String firstName = "";
@@ -94,9 +96,9 @@ public class ProfileFragment extends Fragment {
                                 firstName = name.substring(0, name.indexOf(" "));
                             }
 
-                            String uName = user1.getString("userName");
+                            String uName = response.getString("userName");
                             // Formats username and concatenates an '@' before.
-                            String location = user1.getString("location");
+                            String location = response.getString("location");
                             // Formats username and concatenates an '@' before.
                             uName = uName.toLowerCase();
                             uName = "@" + uName;
@@ -110,7 +112,7 @@ public class ProfileFragment extends Fragment {
                                 locationPin.setVisibility(View.INVISIBLE);
                             }
                             userName.setText(uName);
-                            bio.setText(user1.getString("biography"));
+                            bio.setText(response.getString("biography"));
                             // TODO: replace '(4)' with actual count.
                             if (firstName.length() == 0)
                             {
@@ -135,8 +137,6 @@ public class ProfileFragment extends Fragment {
                         Log.i("volleyAppError","Error: " + error.getMessage());
                         Log.i("volleyAppError","VolleyError: "+ error);
 
-                        textView.setText("Error.");
-
                     }
                 });
         //second request: hive information
@@ -150,10 +150,12 @@ public class ProfileFragment extends Fragment {
                         try{
                             for(int i = 0; i < response.length(); i++){
                                 JSONObject member = response.getJSONObject(i); //should return user,hive pair
-                                Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-                                hiveIds.add(hiveId);
-                                String hiveName =  member.getJSONObject("hive").getString("name");
-                                hiveOptions.add(hiveName);
+                                if(!member.getJSONObject("hive").getString("type").equals("private")) {
+                                    Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
+                                    hiveIds.add(hiveId);
+                                    String hiveName = member.getJSONObject("hive").getString("name");
+                                    hiveOptions.add(hiveName);
+                                }
                             }
                             //here the hives' ids and names have been set appropriately
 
@@ -162,7 +164,7 @@ public class ProfileFragment extends Fragment {
 //                           MyAdapter myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
 //                           recyclerView.setAdapter(myAdapter);
 
-                           myAdapter.notifyDataSetChanged();
+                            myAdapter.notifyDataSetChanged();
 
                         }
                         catch (JSONException e){
@@ -179,7 +181,6 @@ public class ProfileFragment extends Fragment {
                         Log.i("volleyAppError","Error: " + error.getMessage());
                         Log.i("volleyAppError","VolleyError: "+ error);
 
-                        textView.setText("Error.");
 
                     }
                 });
@@ -187,7 +188,7 @@ public class ProfileFragment extends Fragment {
         //third request: pollen cunt
         url ="http://10.24.227.37:8080/likeCount/byUserId/" + userId; //for now, getting this user's hive information until we have login functionality
 
-                StringRequest pollenCountRequest = new StringRequest
+        StringRequest pollenCountRequest = new StringRequest
                 (Request.Method.GET, url, new Response.Listener<String>() {
 
                     @Override
@@ -203,30 +204,24 @@ public class ProfileFragment extends Fragment {
                         Log.i("volleyAppError","Error: " + error.getMessage());
                         Log.i("volleyAppError","VolleyError: "+ error);
 
-                        textView.setText("Error.");
-
                     }
                 });
 
 
 
-    // Add the request to the RequestQueue.
-        queue.add(jsonArrayRequest);
+        // Add the request to the RequestQueue.
+        queue.add(jsonObjectRequest);
         queue.add(hiveRequest);
         queue.add(pollenCountRequest);
-
-        return rootView;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
-        // TODO: Use the ViewModel
-
+    //gets information to display about the user
+    private void getUserInfoFromId(int userId){
 
     }
 
 
+    private void setUserInfo(JSONObject userInfo){
 
+    }
 }

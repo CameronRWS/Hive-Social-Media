@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -325,5 +326,29 @@ public class PostDetailsActivity extends AppCompatActivity {
         Log.i(" status ", "got to end of post info set");
         Log.i(" comments ", comments.toString());
         commentAdapter.notifyDataSetChanged();
+
+
+        final int userId = post.getJSONObject("user").getInt("userId");
+        displayName.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                onUserClick(userId, view);
+            }
+        });
+        userNameTextView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                onUserClick(userId, view);
+
+            }
+        });
+    }
+
+    private void onUserClick(int userId, View view){
+        Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+
+            //start new activity and pass the user ID to it
+            intent.putExtra("userId", userId);
+            view.getContext().startActivity(intent);
     }
 }
