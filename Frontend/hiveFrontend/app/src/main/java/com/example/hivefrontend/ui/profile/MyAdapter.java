@@ -20,7 +20,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
 
 
-    MyAdapter(Context context, List<String> data) {
+    public MyAdapter(Context context, List<String> data) {
         this.mData = data;
         this.context = context;
     }
