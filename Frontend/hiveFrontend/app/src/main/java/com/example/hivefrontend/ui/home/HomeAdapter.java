@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.PostDetailsActivity;
+import com.example.hivefrontend.ProfileActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.buzz.BuzzFragment;
 import com.example.hivefrontend.ui.profile.MyAdapter;
@@ -61,6 +62,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         try {
             holder.cv.setTag(position);
             holder.icon.setTag(position);
+            holder.userDisplayName.setTag(position);
+            holder.userName.setTag(position);
             holder.postTitle.setText(posts.get(position).getString("title"));
             holder.userName.setText("@" + posts.get(position).getJSONObject("user").getString("userName"));
             holder.userDisplayName.setText(posts.get(position).getJSONObject("user").getString("displayName"));
@@ -107,7 +110,41 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             postContent = itemView.findViewById(R.id.postContent);
             constraintLayout=itemView.findViewById(R.id.postViewLayout);
             userDisplayName = itemView.findViewById(R.id.userDisplayName);
+            userDisplayName.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(final View view) {
+                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                    int position = (Integer) view.getTag();
+                    try {
+                        int userId = posts.get(position).getJSONObject("user").getInt("userId");
+                        //start new activity and pass the user ID to it
+                        intent.putExtra("userId", userId);
+                        view.getContext().startActivity(intent);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }});
+
             userName = itemView.findViewById(R.id.userName);
+            userName.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(final View view) {
+                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                    int position = (Integer) view.getTag();
+                    try {
+                        int userId = posts.get(position).getJSONObject("user").getInt("userId");
+                        //start new activity and pass the user ID to it
+                        intent.putExtra("userId", userId);
+                        view.getContext().startActivity(intent);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }});
+
             commentNumber = itemView.findViewById(R.id.commentNumber);
             likeNumber = itemView.findViewById(R.id.likeNumber);
             hiveName = itemView.findViewById(R.id.hiveName);

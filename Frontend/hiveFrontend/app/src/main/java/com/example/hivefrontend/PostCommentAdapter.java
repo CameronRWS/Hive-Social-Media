@@ -43,6 +43,8 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
     public void onBindViewHolder(PostCommentAdapter.ViewHolder holder, final int position) {
         try {
             holder.cv.setTag(position);
+            holder.userDisplayName.setTag(position);
+            holder.userName.setTag(position);
 
             holder.userName.setText("@" + comments.get(position).getJSONObject("user").getString("userName"));
             holder.userDisplayName.setText(comments.get(position).getJSONObject("user").getString("displayName"));
@@ -76,17 +78,23 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
             userName = itemView.findViewById(R.id.userNameComment);
 
             cv = itemView.findViewById(R.id.cardViewComment);
-            cv.setOnClickListener(this);
+            userName.setOnClickListener(this);
+            userDisplayName.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             //for find item that hold in list
             int position = (Integer) v.getTag();
-            Intent intent = new Intent(v.getContext(), PostDetailsActivity.class);
+            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
             try {
                 //TO DO: go to the profile of the user that posted this comment
-                int postId = comments.get(position).getInt("postId");
+                int userId = comments.get(position).getJSONObject("user").getInt("userId");
+
+                //start new activity and pass the user ID to it
+                intent.putExtra("userId", userId);
+                v.getContext().startActivity(intent);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
