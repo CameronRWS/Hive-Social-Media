@@ -77,7 +77,7 @@
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/confirmEmailAddressField"
+        app:layout_constraintBottom_toTopOf="@+id/emailAddressField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.328"
         app:layout_constraintStart_toStartOf="parent" />
@@ -93,7 +93,7 @@
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/emailAddressField"
+        app:layout_constraintBottom_toTopOf="@+id/confirmEmailAddressField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.364"
         app:layout_constraintStart_toStartOf="parent" />
@@ -112,7 +112,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailAddressField" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmEmailAddressField" />
 
     <TextView
         android:id="@+id/registrationHeading"
@@ -196,7 +196,7 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordField" />
 
     <EditText
-        android:id="@+id/confirmEmailAddressField"
+        android:id="@+id/emailAddressField"
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_marginTop="35dp"
@@ -218,7 +218,7 @@
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordField" />
 
     <EditText
-        android:id="@+id/emailAddressField"
+        android:id="@+id/confirmEmailAddressField"
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_marginTop="35dp"
@@ -237,7 +237,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmEmailAddressField" />
+        app:layout_constraintTop_toBottomOf="@+id/emailAddressField" />
 
     <Button
         android:id="@+id/cancelButton"
