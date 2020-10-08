@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "808202377372",
+    "firebase_url": "https://photodb-43576.firebaseio.com",
+    "project_id": "photodb-43576",
+    "storage_bucket": "photodb-43576.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808202377372:android:47ad5098dd433913603559",
+        "android_client_info": {
+          "package_name": "com.example.hivefrontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808202377372-p1a8b8ukafmggj5sh3n2s30j56a3l5kk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb_wkgdore-ZKhPKDd0Vr3TEePxGN-ntE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808202377372-p1a8b8ukafmggj5sh3n2s30j56a3l5kk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
