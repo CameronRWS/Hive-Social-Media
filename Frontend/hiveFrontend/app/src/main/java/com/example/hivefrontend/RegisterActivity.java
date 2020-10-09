@@ -16,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
@@ -90,37 +91,23 @@ public class RegisterActivity extends AppCompatActivity {
             passwordField.requestFocus();
             return;
         }
-        Toast.makeText(getApplicationContext(), "Great!", Toast.LENGTH_LONG).show();
+        JSONObject object = new JSONObject();
+        try {
+            object.put("email", emailAddress);
+            object.put("userRegistrationIdentity", null);
+            object.put("password", password);
+            object.put("birthday", "test birthday");
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         String url = "http://10.24.227.37:8080/userRegistrations";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest
+                (Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    JSONObject obj = response.getJSONObject(1);
-                    if (!obj.getBoolean("error")) {
-                        Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-
-                        JSONObject userJson = obj.getJSONObject("user");
-
-                        Toast.makeText(getApplicationContext(), "So", Toast.LENGTH_LONG).show();
-                        User user = new User(
-                                userJson.getInt("userId"),
-                                userJson.getString("userName"),
-                                userJson.getString("email")
-                        );
-                        Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_LONG).show();
-
-                        SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-
-                        finish();
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    } else {
-                        Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onResponse(JSONObject response) {
+                Toast.makeText(getApplicationContext(), "Welcome to Hive!", Toast.LENGTH_SHORT).show();
             }
         },
                 new Response.ErrorListener() {
@@ -128,16 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }) {
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Toast.makeText(getApplicationContext(), "Great!", Toast.LENGTH_LONG).show();
-                                Map<String, String> params = new HashMap<>();
-                                params.put("userName", username);
-                                params.put("email", emailAddress);
-                                return params;
-                            }
-        };
+                });
 
                         VolleySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
     }

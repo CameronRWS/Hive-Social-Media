@@ -121,7 +121,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="90dp"
         android:fontFamily="@font/helveticaneuemedium"
-        android:text="Bee Apart of the Buzz."
+        android:text="Bee A Part of the Buzz."
         android:textAlignment="viewStart"
         android:textColor="#FFFFFF"
         android:textSize="36sp"

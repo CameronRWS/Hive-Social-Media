@@ -10,6 +10,8 @@ public class SharedPrefManager {
     private static final String KEY_USERNAME = "keyusername";
     private static final String KEY_EMAIL = "keyemail";
     private static final String KEY_ID = "keyid";
+    private static final String KEY_BIRTHDAY = "keybirthday";
+    private static final String KEY_DISPLAY_NAME = "keydisplayname";
 
     private static SharedPrefManager mInstance;
     private static Context mCtx;
@@ -31,6 +33,8 @@ public class SharedPrefManager {
         editor.putInt(KEY_ID, user.getId());
         editor.putString(KEY_USERNAME, user.getUsername());
         editor.putString(KEY_EMAIL, user.getEmailAddress());
+        editor.putString(KEY_BIRTHDAY, user.getBirthday());
+        editor.putString(KEY_DISPLAY_NAME, user.getDisplayName());
         editor.apply();
     }
 
@@ -43,8 +47,9 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return new User(sharedPreferences.getInt(KEY_ID, -1),
                 sharedPreferences.getString(KEY_USERNAME, null),
-                sharedPreferences.getString(KEY_EMAIL, null)
-                );
+                sharedPreferences.getString(KEY_EMAIL, null),
+                sharedPreferences.getString(KEY_BIRTHDAY, null),
+                sharedPreferences.getString(KEY_DISPLAY_NAME, null));
     }
 
     public void logout() {
