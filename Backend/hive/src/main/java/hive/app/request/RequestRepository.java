@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import hive.app.like.Like;
-
 @Repository
 public interface RequestRepository extends JpaRepository<Request, RequestIdentity> {
 	@Query("SELECT l FROM Request l WHERE l.requestIdentity.hiveId = :hiveId")
