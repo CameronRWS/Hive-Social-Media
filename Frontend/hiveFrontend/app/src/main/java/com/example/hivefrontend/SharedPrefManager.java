@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.android.volley.toolbox.StringRequest;
+
 public class SharedPrefManager {
 
     private static final String SHARED_PREF_NAME = "simplifiedcodingsharedpref";
@@ -12,6 +14,7 @@ public class SharedPrefManager {
     private static final String KEY_ID = "keyid";
     private static final String KEY_BIRTHDAY = "keybirthday";
     private static final String KEY_DISPLAY_NAME = "keydisplayname";
+    private static final String KEY_PASSWORD = "keypassword";
 
     private static SharedPrefManager mInstance;
     private static Context mCtx;
@@ -30,26 +33,24 @@ public class SharedPrefManager {
     public void userLogin(User user) {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(KEY_ID, user.getId());
-        editor.putString(KEY_USERNAME, user.getUsername());
+//        editor.putInt(KEY_ID, user.getId());
+//        editor.putString(KEY_USERNAME, user.getUsername());
         editor.putString(KEY_EMAIL, user.getEmailAddress());
-        editor.putString(KEY_BIRTHDAY, user.getBirthday());
-        editor.putString(KEY_DISPLAY_NAME, user.getDisplayName());
+        editor.putString(KEY_PASSWORD, user.getPassword());
+//        editor.putString(KEY_BIRTHDAY, user.getBirthday());
+//        editor.putString(KEY_DISPLAY_NAME, user.getDisplayName());
         editor.apply();
     }
 
     public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(KEY_USERNAME, null) != null;
+        return sharedPreferences.getString(KEY_EMAIL, null) != null;
     }
 
     public User getUser() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        return new User(sharedPreferences.getInt(KEY_ID, -1),
-                sharedPreferences.getString(KEY_USERNAME, null),
-                sharedPreferences.getString(KEY_EMAIL, null),
-                sharedPreferences.getString(KEY_BIRTHDAY, null),
-                sharedPreferences.getString(KEY_DISPLAY_NAME, null));
+        return new User(sharedPreferences.getString(KEY_EMAIL, null),
+                        sharedPreferences.getString(KEY_PASSWORD, null));
     }
 
     public void logout() {

@@ -9,8 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.hivefrontend.ui.buzz.BuzzFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,14 +33,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (!(SharedPrefManager.getInstance(this).isLoggedIn())) {
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+
         final BottomNavigationView navView = findViewById(R.id.nav_view);
         final ImageView hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
         final ImageButton gearIcon = (ImageButton) findViewById(R.id.gearIcon);
-        hiveLogo.setOnClickListener(new View.OnClickListener() {
+        final Button logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                SharedPrefManager.getInstance(getApplicationContext()).logout();
             }
         });
         // Passing each menu ID as a set of Ids because each
