@@ -82,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if ((username.compareTo(member.getString("email")) == 0) && (password.compareTo(member.getString("password")) == 0)) {
                                       userExists = true;
                                     User user = new User(username, password);
+
                                     SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 }
