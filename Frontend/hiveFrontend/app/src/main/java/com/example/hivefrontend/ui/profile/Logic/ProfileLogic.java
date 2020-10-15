@@ -7,12 +7,13 @@ import android.view.View;
 import com.android.volley.VolleyError;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 import com.example.hivefrontend.ui.profile.ProfileFragment;
+import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ProfileLogic {
+public class ProfileLogic implements ProfileVolleyListener{
     ProfileFragment profile;
     public Context context;
     public int userId;
@@ -23,6 +24,13 @@ public class ProfileLogic {
         userId = p.userId;
     }
 
+    public int getUserId(){
+        return userId;
+    }
+
+    public Context getProfileContext(){
+        return profile.getContext();
+    }
     public void displayProfile(){
         ServerRequest server = new ServerRequest(this);
         server.userInfoRequest();

@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.hivefrontend.VolleySingleton;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.ProfileFragment;
+import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,10 +21,10 @@ import org.json.JSONObject;
 public class ServerRequest {
     private String tag_json_obj = "json_obj_req";
 
-    private ProfileLogic profileLogic;
+    private ProfileVolleyListener profileVolleyListener;
 
-    public ServerRequest (ProfileLogic r) {
-        this.profileLogic = r;
+    public ServerRequest (ProfileVolleyListener r) {
+        this.profileVolleyListener = r;
     }
 
     public void userInfoRequest(){
@@ -38,7 +39,7 @@ public class ServerRequest {
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        profileLogic.onUserInfoSuccess(response);
+                        profileVolleyListener.onUserInfoSuccess(response);
                     }
                 }, new Response.ErrorListener() {
 
@@ -48,50 +49,50 @@ public class ServerRequest {
 
                     }
                 });
-        VolleySingleton.getInstance(profileLogic.context).addToRequestQueue(jsonArrayRequest);
+        VolleySingleton.getInstance(profileVolleyListener.getProfileContext()).addToRequestQueue(jsonArrayRequest);
     }
 
     public void hiveListRequest(){
         //second request: hive information
-        String url ="http://10.24.227.37:8080/members/byUserId/" + profileLogic.userId; //for now, getting this user's hive information until we have login functionality
+        String url ="http://10.24.227.37:8080/members/byUserId/" + profileVolleyListener.getUserId(); //for now, getting this user's hive information until we have login functionality
 
         JsonArrayRequest hiveRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        profileLogic.onHiveListSuccess(response);
+                        profileVolleyListener.onHiveListSuccess(response);
 
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        profileLogic.onHiveListError(error);
+                        profileVolleyListener.onHiveListError(error);
                     }
                 });
-        VolleySingleton.getInstance(profileLogic.context).addToRequestQueue(hiveRequest);
+        VolleySingleton.getInstance(profileVolleyListener.getProfileContext()).addToRequestQueue(hiveRequest);
     }
 
     public void pollenCountRequest(){
         //third request: pollen count
-        String url ="http://10.24.227.37:8080/likeCount/byUserId/" + profileLogic.userId; //for now, getting this user's hive information until we have login functionality
+        String url ="http://10.24.227.37:8080/likeCount/byUserId/" + profileVolleyListener.getUserId(); //for now, getting this user's hive information until we have login functionality
 
         StringRequest pollenCountRequest = new StringRequest
                 (Request.Method.GET, url, new Response.Listener<String>() {
 
                     @Override
                     public void onResponse(String response) {
-                        profileLogic.pollenCountSuccess(response);
+                        profileVolleyListener.pollenCountSuccess(response);
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        profileLogic.pollenCountError(error);
+                        profileVolleyListener.pollenCountError(error);
                     }
                 });
-        VolleySingleton.getInstance(profileLogic.context).addToRequestQueue(pollenCountRequest);
+        VolleySingleton.getInstance(profileVolleyListener.getProfileContext()).addToRequestQueue(pollenCountRequest);
     }
 
 
