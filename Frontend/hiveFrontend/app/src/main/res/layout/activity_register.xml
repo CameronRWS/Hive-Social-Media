@@ -18,16 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/hivebackground_register" />
 
-    <ImageView
-        android:id="@+id/honeycombBg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="275dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/halfhoneycomb" />
-
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
@@ -87,7 +77,7 @@
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/confirmEmailAddressField"
+        app:layout_constraintBottom_toTopOf="@+id/emailAddressField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.328"
         app:layout_constraintStart_toStartOf="parent" />
@@ -103,7 +93,7 @@
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/emailAddressField"
+        app:layout_constraintBottom_toTopOf="@+id/confirmEmailAddressField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.364"
         app:layout_constraintStart_toStartOf="parent" />
@@ -122,7 +112,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailAddressField" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmEmailAddressField" />
 
     <TextView
         android:id="@+id/registrationHeading"
@@ -131,7 +121,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="90dp"
         android:fontFamily="@font/helveticaneuemedium"
-        android:text="Bee Apart of the Buzz."
+        android:text="Bee A Part of the Buzz."
         android:textAlignment="viewStart"
         android:textColor="#FFFFFF"
         android:textSize="36sp"
@@ -144,12 +134,12 @@
         android:id="@+id/usernameField"
         android:layout_width="300dp"
         android:layout_height="45dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/rect_border_filled_bg_register"
         android:ems="10"
         android:maxLength="15"
         android:fontFamily="@font/helveticaneuelight"
-        android:hint="@queen_bee"
+        android:hint="/@queen_bee"
         android:inputType="textPersonName"
         android:paddingLeft="15dp"
         android:textColor="#000000"
@@ -173,7 +163,7 @@
         android:hint="*  *  *  *  *  *  *  *"
         android:inputType="textPersonName"
         android:paddingLeft="15dp"
-        android:paddingTop="7dp"
+        android:paddingTop="5dp"
         android:textColor="#000000"
         android:textColorHighlight="#31000000"
         android:textColorHint="#40000000"
@@ -197,8 +187,8 @@
         android:inputType="textPersonName"
         android:paddingLeft="15dp"
         android:paddingTop="7dp"
-        android:textColor="#000000"
         android:password="true"
+        android:textColor="#000000"
         android:textColorHighlight="#31000000"
         android:textColorHint="#40000000"
         android:textColorLink="#FFFFFF"
@@ -207,28 +197,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordField" />
-
-    <EditText
-        android:id="@+id/confirmEmailAddressField"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="35dp"
-        android:background="@drawable/rect_border_filled_bg_register"
-        android:ems="10"
-        android:fontFamily="@font/helveticaneuelight"
-        android:hint="bumblebee@hive.com"
-        android:inputType="textPersonName"
-        android:paddingLeft="15dp"
-        android:paddingTop="0dp"
-        android:textColor="#000000"
-        android:textColorHighlight="#31000000"
-        android:textColorHint="#40000000"
-        android:textColorLink="#FFFFFF"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordField" />
 
     <EditText
         android:id="@+id/emailAddressField"
@@ -250,14 +218,36 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmEmailAddressField" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordField" />
+
+    <EditText
+        android:id="@+id/confirmEmailAddressField"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/rect_border_filled_bg_register"
+        android:ems="10"
+        android:fontFamily="@font/helveticaneuelight"
+        android:hint="bumblebee@hive.com"
+        android:inputType="textPersonName"
+        android:paddingLeft="15dp"
+        android:paddingTop="0dp"
+        android:textColor="#000000"
+        android:textColorHighlight="#31000000"
+        android:textColorHint="#40000000"
+        android:textColorLink="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailAddressField" />
 
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginBottom="20dp"
         android:background="@null"
         android:fontFamily="@font/helveticaneuemedium"
         android:text="Cancel"
