@@ -23,9 +23,9 @@ public class ServerRequest {
 
     private ProfileVolleyListener profileVolleyListener;
 
-    public ServerRequest (ProfileVolleyListener r) {
-        this.profileVolleyListener = r;
-    }
+   public void addVolleyListener(ProfileVolleyListener logic){
+       profileVolleyListener = logic;
+   }
 
     public void userInfoRequest(){
 

@@ -17,11 +17,13 @@ public class ProfileLogic implements ProfileVolleyListener{
     ProfileFragment profile;
     public Context context;
     public int userId;
+    ServerRequest server;
 
-    public ProfileLogic(ProfileFragment p){
+    public ProfileLogic(ProfileFragment p, ServerRequest serverRequest){
         this.profile = p;
         context = p.getContext();
         userId = p.userId;
+        serverRequest.addVolleyListener(this);
     }
 
     public int getUserId(){
@@ -32,7 +34,6 @@ public class ProfileLogic implements ProfileVolleyListener{
         return profile.getContext();
     }
     public void displayProfile(){
-        ServerRequest server = new ServerRequest(this);
         server.userInfoRequest();
         server.hiveListRequest();
         server.pollenCountRequest();

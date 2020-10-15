@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
+import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 
 import java.util.ArrayList;
 
@@ -68,7 +69,10 @@ public class ProfileFragment extends Fragment {
         myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
         recyclerView.setAdapter(myAdapter);
 
-        ProfileLogic logic = new ProfileLogic(this);
+
+
+        ServerRequest serverRequest = new ServerRequest();
+        ProfileLogic logic = new ProfileLogic(this, serverRequest);
         logic.displayProfile();
 
         return rootView;
