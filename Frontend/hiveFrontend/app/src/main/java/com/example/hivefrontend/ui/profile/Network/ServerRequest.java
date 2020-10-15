@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.hivefrontend.VolleySingleton;
+import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.ProfileFragment;
 
 import org.json.JSONArray;
@@ -19,159 +20,79 @@ import org.json.JSONObject;
 public class ServerRequest {
     private String tag_json_obj = "json_obj_req";
 
-    private ProfileFragment profile;
+    private ProfileLogic profileLogic;
 
-    public ServerRequest (ProfileFragment r) {
-        this.profile = r;
+    public ServerRequest (ProfileLogic r) {
+        this.profileLogic = r;
     }
 
+    public void userInfoRequest(){
+
+        String url ="http://10.24.227.37:8080/users";
+
+        // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
+
+        //first request: user information
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        profileLogic.onUserInfoSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
 
-    public void profileRequest(){
-        final TextView textView = (TextView) profile.displayName;
-            String url ="http://10.24.227.37:8080/users";
+                    }
+                });
+        VolleySingleton.getInstance(profileLogic.context).addToRequestQueue(jsonArrayRequest);
+    }
 
-            // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
+    public void hiveListRequest(){
+        //second request: hive information
+        String url ="http://10.24.227.37:8080/members/byUserId/" + profileLogic.userId; //for now, getting this user's hive information until we have login functionality
 
-            //first request: user information
-            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest hiveRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            try{
-                                JSONObject user1 = response.getJSONObject(profile.userId);
-                                // Get the current user (json object) data
-                                String name = user1.getString("displayName");
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        profileLogic.onHiveListSuccess(response);
 
-                                // Gets first name out of whole name, but checks if a space exists.
-                                String firstName = "";
-                                if (name.contains(" ")) {
-                                    firstName = name.substring(0, name.indexOf(" "));
-                                }
+                    }
+                }, new Response.ErrorListener() {
 
-                                String uName = user1.getString("userName");
-                                // Formats username and concatenates an '@' before.
-                                String location = user1.getString("location");
-                                // Formats username and concatenates an '@' before.
-                                uName = uName.toLowerCase();
-                                uName = "@" + uName;
-                                // Display the formatted json data in text view
-                                profile.displayName.setText(name);
-                                profile.displayLocation.setText(location);
-                                // get rid of the location pin if the location is null
-                                if (location == "null")
-                                {
-                                    profile.displayLocation.setVisibility(View.INVISIBLE);
-                                    profile.locationPin.setVisibility(View.INVISIBLE);
-                                }
-                                profile.userName.setText(uName);
-                                profile.bio.setText(user1.getString("biography"));
-                                // TODO: replace '(4)' with actual count.
-                                if (firstName.length() == 0)
-                                {
-                                    profile.hiveListHeading.setText("Their Public Hives:");
-                                }
-                                else {
-                                    profile.hiveListHeading.setText((firstName + "'s Public Hives:"));
-                                }
-                                //dateJoined.setText(user1.getString("dateCreated"));
-                            }
-                            catch (JSONException e){
-                                e.printStackTrace();
-                                Log.i("jsonAppError",e.toString());
-                            }
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        profileLogic.onHiveListError(error);
+                    }
+                });
+        VolleySingleton.getInstance(profileLogic.context).addToRequestQueue(hiveRequest);
+    }
 
-                        }
-                    }, new Response.ErrorListener() {
+    public void pollenCountRequest(){
+        //third request: pollen count
+        String url ="http://10.24.227.37:8080/likeCount/byUserId/" + profileLogic.userId; //for now, getting this user's hive information until we have login functionality
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            Log.i("volleyAppError","Error: " + error.getMessage());
-                            Log.i("volleyAppError","VolleyError: "+ error);
+        StringRequest pollenCountRequest = new StringRequest
+                (Request.Method.GET, url, new Response.Listener<String>() {
 
-                            textView.setText("Error.");
+                    @Override
+                    public void onResponse(String response) {
+                        profileLogic.pollenCountSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
 
-                        }
-                    });
-            //second request: hive information
-            url ="http://10.24.227.37:8080/members/byUserId/" + profile.userId; //for now, getting this user's hive information until we have login functionality
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        profileLogic.pollenCountError(error);
+                    }
+                });
+        VolleySingleton.getInstance(profileLogic.context).addToRequestQueue(pollenCountRequest);
+    }
 
-            JsonArrayRequest hiveRequest = new JsonArrayRequest
-                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            try{
-                                for(int i = 0; i < response.length(); i++){
-                                    JSONObject member = response.getJSONObject(i); //should return user,hive pair
-                                    Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-                                    profile.hiveIds.add(hiveId);
-                                    String hiveName =  member.getJSONObject("hive").getString("name");
-                                    profile.hiveOptions.add(hiveName);
-                                }
-                                //here the hives' ids and names have been set appropriately
-
-//                           RecyclerView recyclerView = rootView.findViewById(R.id.hiveListRecyler);
-//                           recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-//                           MyAdapter myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
-//                           recyclerView.setAdapter(myAdapter);
-
-                                profile.myAdapter.notifyDataSetChanged();
-
-                            }
-                            catch (JSONException e){
-                                e.printStackTrace();
-                                Log.i("jsonAppError",e.toString());
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            Log.i("volleyAppError","Error: " + error.getMessage());
-                            Log.i("volleyAppError","VolleyError: "+ error);
-
-                            textView.setText("Error.");
-
-                        }
-                    });
-
-            //third request: pollen count
-            url ="http://10.24.227.37:8080/likeCount/byUserId/" + profile.userId; //for now, getting this user's hive information until we have login functionality
-
-            StringRequest pollenCountRequest = new StringRequest
-                    (Request.Method.GET, url, new Response.Listener<String>() {
-
-                        @Override
-                        public void onResponse(String response) {
-                            profile.pollenCount.setText(response.substring(13, response.length() - 1));
-
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                            Log.i("volleyAppError","Error: " + error.getMessage());
-                            Log.i("volleyAppError","VolleyError: "+ error);
-
-                            textView.setText("Error.");
-
-                        }
-                    });
-
-        VolleySingleton.getInstance(profile.getContext()).addToRequestQueue(jsonArrayRequest);
-        VolleySingleton.getInstance(profile.getContext()).addToRequestQueue(hiveRequest);
-        VolleySingleton.getInstance(profile.getContext()).addToRequestQueue(pollenCountRequest);
-
-        //AppController.getInstance().addToRequestQueue(jsonArrayRequest, tag_json_obj);
-        //AppController.getInstance().addToRequestQueue(hiveRequest, tag_json_obj);
-        //AppController.getInstance().addToRequestQueue(pollenCountRequest, tag_json_obj);
-
-        }
 
 }
