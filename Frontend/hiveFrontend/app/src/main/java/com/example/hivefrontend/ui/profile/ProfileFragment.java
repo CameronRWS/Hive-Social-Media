@@ -2,6 +2,7 @@ package com.example.hivefrontend.ui.profile;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,9 +22,11 @@ import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements IProfileView{
 
     //private RecyclerView recyclerView;
     //private RecyclerView.Adapter mAdapter;
@@ -31,7 +34,7 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel mViewModel;
     public ArrayList<Integer> hiveIds;
     public ArrayList<String> hiveOptions;
-    public int userId = 1;
+    public int userId = 2;
     private RequestQueue queue;
     private String pollen;
     public TextView displayName;
@@ -89,4 +92,64 @@ public class ProfileFragment extends Fragment {
 
 
 
+    @Override
+    public Context getProfileContext() {
+        return this.getContext();
+    }
+
+    @Override
+    public int getUserId() {
+        return userId;
+    }
+
+    @Override
+    public void setDisplayName(String name) {
+        displayName.setText(name);
+    }
+
+    @Override
+    public void setDisplayLocation(String location) {
+        displayLocation.setText(location);
+    }
+
+    @Override
+    public void setLocationInvisible() {
+        displayLocation.setVisibility(View.INVISIBLE);
+        locationPin.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void setUserName(String uName) {
+        userName.setText(uName);
+    }
+
+    @Override
+    public void setBio(String biography) {
+        bio.setText(biography);
+    }
+
+    @Override
+    public void setHiveListHeading(String your_hives) {
+        hiveListHeading.setText(your_hives);
+    }
+
+    @Override
+    public void addHiveId(Integer hiveId) {
+        hiveIds.add(hiveId);
+    }
+
+    @Override
+    public void addToHiveOptions(String hiveName) {
+        hiveOptions.add(hiveName);
+    }
+
+    @Override
+    public void notifyChangeForAdapter() {
+        myAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setPollenCountText(String substring) {
+        pollenCount.setText(substring);
+    }
 }

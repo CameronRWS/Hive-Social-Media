@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.android.volley.VolleyError;
 import com.example.hivefrontend.ui.profile.IProfileServerRequest;
+import com.example.hivefrontend.ui.profile.IProfileView;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 import com.example.hivefrontend.ui.profile.ProfileFragment;
 import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
@@ -15,15 +16,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ProfileLogic implements ProfileVolleyListener{
-    ProfileFragment profile;
+    IProfileView profileView;
     public Context context;
     public int userId;
     IProfileServerRequest server;
 
-    public ProfileLogic(ProfileFragment p, IProfileServerRequest serverRequest){
-        this.profile = p;
-        context = p.getContext();
-        userId = p.userId;
+    public ProfileLogic(IProfileView p, IProfileServerRequest serverRequest){
+        this.profileView = p;
+        context = p.getProfileContext();
+        userId = p.getUserId();
         this.server = serverRequest;
         server.addVolleyListener(this);
     }
@@ -34,7 +35,7 @@ public class ProfileLogic implements ProfileVolleyListener{
     }
 
     public Context getProfileContext(){
-        return profile.getContext();
+        return profileView.getProfileContext();
     }
     public void displayProfile(){
         server.userInfoRequest();
@@ -44,7 +45,7 @@ public class ProfileLogic implements ProfileVolleyListener{
 
     public void onUserInfoSuccess(JSONArray response){
         try{
-            JSONObject user1 = response.getJSONObject(profile.userId);
+            JSONObject user1 = response.getJSONObject(userId);
             // Get the current user (json object) data
             String name = user1.getString("displayName");
 
@@ -61,25 +62,28 @@ public class ProfileLogic implements ProfileVolleyListener{
             uName = uName.toLowerCase();
             uName = "@" + uName;
             // Display the formatted json data in text view
-            profile.displayName.setText(name);
-            profile.displayLocation.setText(location);
+
+
+            profileView.setDisplayName(name);
+
+            //profile.displayLocation.setText(location);
+            profileView.setDisplayLocation(location);
+
             // get rid of the location pin if the location is null
             if (location == "null")
             {
-                profile.displayLocation.setVisibility(View.INVISIBLE);
-                profile.locationPin.setVisibility(View.INVISIBLE);
+                profileView.setLocationInvisible();
             }
-            profile.userName.setText(uName);
-            profile.bio.setText(user1.getString("biography"));
+            //profile.userName.setText(uName);
+            profileView.setUserName(uName);
+            //profile.bio.setText(user1.getString("biography"));
+            profileView.setBio(user1.getString("biography"));
             // TODO: replace '(4)' with actual count.
-            if (firstName.length() == 0)
-            {
-                profile.hiveListHeading.setText("Their Public Hives:");
-            }
-            else {
-                profile.hiveListHeading.setText((firstName + "'s Public Hives:"));
-            }
-            //dateJoined.setText(user1.getString("dateCreated"));
+
+
+            //profile.hiveListHeading.setText("Your Hives:");
+            profileView.setHiveListHeading("Your Hives");
+
         }
         catch (JSONException e){
             e.printStackTrace();
@@ -91,7 +95,8 @@ public class ProfileLogic implements ProfileVolleyListener{
         // TODO: Handle error
         Log.i("volleyAppError","Error: " + error.getMessage());
         Log.i("volleyAppError","VolleyError: "+ error);
-        profile.displayName.setText("Error.");
+        //profile.displayName.setText("Error.");
+        profileView.setDisplayName("Error.");
     }
 
     public void onHiveListSuccess(JSONArray response){
@@ -99,9 +104,11 @@ public class ProfileLogic implements ProfileVolleyListener{
             for(int i = 0; i < response.length(); i++){
                 JSONObject member = response.getJSONObject(i); //should return user,hive pair
                 Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-                profile.hiveIds.add(hiveId);
+                //profile.hiveIds.add(hiveId);
+                profileView.addHiveId(hiveId);
                 String hiveName =  member.getJSONObject("hive").getString("name");
-                profile.hiveOptions.add(hiveName);
+                //profile.hiveOptions.add(hiveName);
+                profileView.addToHiveOptions(hiveName);
             }
             //here the hives' ids and names have been set appropriately
 
@@ -110,7 +117,8 @@ public class ProfileLogic implements ProfileVolleyListener{
 //                           MyAdapter myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
 //                           recyclerView.setAdapter(myAdapter);
 
-            profile.myAdapter.notifyDataSetChanged();
+            //profile.myAdapter.notifyDataSetChanged();
+            profileView.notifyChangeForAdapter();
 
         }
         catch (JSONException e){
@@ -124,10 +132,12 @@ public class ProfileLogic implements ProfileVolleyListener{
         Log.i("volleyAppError","Error: " + error.getMessage());
         Log.i("volleyAppError","VolleyError: "+ error);
 
-        profile.displayName.setText("Error.");
+        //profile.displayName.setText("Error.");
+        profileView.setDisplayName("Error.");
     }
     public void pollenCountSuccess(String response){
-        profile.pollenCount.setText(response.substring(13, response.length() - 1));
+        //profile.pollenCount.setText(response.substring(13, response.length() - 1));
+        profileView.setPollenCountText(response.substring(13,response.length()-1));
     }
 
     public void pollenCountError(VolleyError error){
@@ -135,7 +145,8 @@ public class ProfileLogic implements ProfileVolleyListener{
         Log.i("volleyAppError","Error: " + error.getMessage());
         Log.i("volleyAppError","VolleyError: "+ error);
 
-        profile.displayName.setText("Error.");
+        //profile.displayName.setText("Error.");
+        profileView.setDisplayName("Error.");
     }
 
 
