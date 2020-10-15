@@ -6,6 +6,8 @@ stages:
     - androidtest
     
 autoDeploy:
+    only:
+        - master
     stage: autodeploy
     tags:
         - BACKEND

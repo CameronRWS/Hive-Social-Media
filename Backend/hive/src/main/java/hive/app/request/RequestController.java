@@ -3,15 +3,6 @@ package hive.app.request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import hive.app.hive.Hive;
-import hive.app.hive.HiveRepository;
-import hive.app.member.Member;
-import hive.app.member.MemberIdentity;
-import hive.app.member.MemberRepository;
-import hive.app.notification.Notification;
-import hive.app.notification.NotificationRepository;
-import hive.app.user.User;
-import hive.app.user.UserRepository;
 import java.util.List;
 import java.util.Map;
 
@@ -19,82 +10,35 @@ import java.util.Map;
 public class RequestController {
 	
 	@Autowired
-	RequestRepository requestRepository;
-	@Autowired
-	UserRepository userRepository;
-	@Autowired
-	HiveRepository hiveRepository;
-	@Autowired
-	NotificationRepository notificationRepository;
-	@Autowired
-	MemberRepository memberRepository;
+	RequestService requestService;
 	
 	@GetMapping("/requests")
-	public List<Request> index() {
-		return requestRepository.findAll();
+	public List<Request> findAll() {
+		return requestService.findAll();
 	}
 	
 	@GetMapping("/requests/byHiveId/{hiveId}")
-	public List<Request> getRequestsByHiveId(@PathVariable String hiveId){
-		int theHiveId = Integer.parseInt(hiveId);
-		return requestRepository.findByHiveId(theHiveId);
+	public List<Request> findByHiveId(@PathVariable String hiveId){
+		return requestService.findByHiveId(hiveId);
 	}
 	
 	@GetMapping("/requests/byUserId/{userId}")
-	public List<Request> getRequestsByUserId(@PathVariable String userId){
-		int theUserId = Integer.parseInt(userId);
-		return requestRepository.findByUserId(theUserId);
+	public List<Request> findByUserId(@PathVariable String userId){
+		return requestService.findByUserId(userId);
 	}
 	
 	@PostMapping("/requests")
 	public Request create(@RequestBody Map<String, String> body) {
-		int hiveId = Integer.parseInt(body.get("hiveId"));
-		int userId = Integer.parseInt(body.get("userId"));
-		String requestMessage = body.get("requestMessage");
-		Hive hive = hiveRepository.findOne(hiveId);
-		User user = userRepository.findOne(userId);
-		if(memberRepository.findOne(new MemberIdentity(hive, user)) != null) {
-			System.out.println("Cannot create a request if you are already apart of the hive.");
-			return null;
-		}
-		List<Member> modsOfHive = memberRepository.findByHiveIdAndIsMod(hiveId);
-		for(Member m : modsOfHive) {
-			notificationRepository.save(new Notification(m.getUser().getUserId(), userId, hiveId, "hive-requestReceived"));
-		}
-		RequestIdentity requestIdentity = new RequestIdentity(hiveId, user);
-		return requestRepository.save(new Request(requestIdentity, requestMessage));
+		return requestService.create(body);
 	}
 	
 	@PutMapping("/requests")
     public Request update(@RequestBody Map<String, String> body){
-        int hiveId = Integer.parseInt(body.get("hiveId"));
-        int userId = Integer.parseInt(body.get("userId"));
-        User user = userRepository.findOne(userId);
-        RequestIdentity requestIdentity = new RequestIdentity(hiveId, user);
-        Request request = requestRepository.findOne(requestIdentity);
-        request.setRequestMessage(body.get("requestMessage"));
-        return requestRepository.save(request);
+        return requestService.update(body);
     }
 	
 	@DeleteMapping("/requests")
 	public boolean delete(@RequestBody Map<String, String> body) {
-		int hiveId = Integer.parseInt(body.get("hiveId"));
-		int userId = Integer.parseInt(body.get("userId"));
-		String status = body.get("status");
-		Hive hive = hiveRepository.findOne(hiveId);
-		User user = userRepository.findOne(userId);
-		RequestIdentity requestIdentity = new RequestIdentity(hiveId, user);
-		if(status.equals("accepted")) {
-			MemberIdentity memberIdentity = new MemberIdentity(hive, user);
-			Member member = new Member(memberIdentity, false);
-			memberRepository.save(member);
-	        notificationRepository.save(new Notification(userId, -1, hiveId, "hive-requestAccepted"));
-		} else {
-	        notificationRepository.save(new Notification(userId, -1, hiveId, "hive-requestDeclined"));
-		}
-		Request r = requestRepository.findOne(requestIdentity);
-		r.setIsActive(false);
-		requestRepository.save(r);
-		return true;
+		return requestService.delete(body);
 	}
 }

@@ -16,39 +16,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class InterestController {
 	
     @Autowired
-    InterestRepository interestRepository;
+    InterestService interestService;
     
     @GetMapping("/interests")
-    public List<Interest> index(){
-        return interestRepository.findAll();
+    public List<Interest> findAll(){
+        return interestService.findAll();
     }
 
     @GetMapping("/interests/byInterestId/{id}")
     public Interest show(@PathVariable String id){
-        int interestId = Integer.parseInt(id);
-        return interestRepository.findOne(interestId);
+        return interestService.findByInterestId(id);
     }
     
     @PostMapping("/interests")
     public Interest create(@RequestBody Map<String, String> body){
-        String interestText = body.get("interestText");
-        return interestRepository.save(new Interest(interestText));
+    	return interestService.create(body);
     }
 
     @PutMapping("/interests")
     public Interest update(@RequestBody Map<String, String> body){
-        int interestId = Integer.parseInt(body.get("interestId"));
-        Interest interest = interestRepository.findOne(interestId);
-        String interestText = body.get("interestText");
-        interest.setInterestText(interestText);
-        return interestRepository.save(interest);
+    	return interestService.update(body);
     }
 
-    @DeleteMapping("/Interests")
+    @DeleteMapping("/interests")
     public boolean delete(@RequestBody Map<String, String> body){
-        int interestId = Integer.parseInt(body.get("interestId"));
-        interestRepository.delete(interestId);
-        return true;
+    	return interestService.delete(body);
     }
 }
 

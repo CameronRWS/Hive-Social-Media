@@ -11,51 +11,30 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
     
     @GetMapping("/users")
-    public List<User> index(){
-        return userRepository.findAll();
+    public List<User> findAll(){
+        return userService.findAll();
     }
 
     @GetMapping("/users/byUserId/{id}")
-    public User show(@PathVariable String id){
-        int userId = Integer.parseInt(id);
-        return userRepository.findOne(userId);
+    public User findByUserId(@PathVariable String id){
+        return userService.findByUserId(id);
     }
-    
     
     @PostMapping("/users")
     public User create(@RequestBody Map<String, String> body){
-        String userName = body.get("userName");
-        String displayName = body.get("displayName");
-        String birthday = body.get("birthday");
-        String biography = body.get("biography");
-        String location = body.get("location");
-        return userRepository.save(new User(userName, displayName, birthday, biography, location));
+    	return userService.create(body);
     }
     
     @PutMapping("/users")
     public User update(@RequestBody Map<String, String> body){
-    	int userId = Integer.parseInt(body.get("userId"));
-        String userName = body.get("userName");
-        String displayName = body.get("displayName");
-        String birthday = body.get("birthday");
-        String biography = body.get("biography");
-        String location = body.get("location");
-        User user = userRepository.findOne(userId);
-        user.setUserName(userName);
-        user.setDisplayName(displayName);
-        user.setBirthday(birthday);
-        user.setBiography(biography);
-        user.setLocation(location);
-        return userRepository.save(user);
+    	return userService.update(body);
     }
 
     @DeleteMapping("/users")
     public boolean delete(@RequestBody Map<String, String> body){
-        int userId = Integer.parseInt(body.get("userId"));
-        userRepository.delete(userId);
-        return true;
+    	return userService.delete(body);
     }
 }

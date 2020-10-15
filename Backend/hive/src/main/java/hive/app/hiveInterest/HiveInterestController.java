@@ -11,41 +11,30 @@ import java.util.Map;
 public class HiveInterestController {
 
     @Autowired
-    HiveInterestRepository hiveInterestRepository;
+    HiveInterestService hiveInterestService;
     
     @GetMapping("/hiveInterests")
     public List<HiveInterest> index(){
-        return hiveInterestRepository.findAll();
+        return hiveInterestService.findAll();
     }
     
     @GetMapping("/hiveInterests/byHiveId/{hiveId}")
     public List<HiveInterest> getHiveInterestsByHiveId(@PathVariable String hiveId){
-        int theHiveId = Integer.parseInt(hiveId);
-        return hiveInterestRepository.findByHiveId(theHiveId); 
+        return hiveInterestService.findByHiveId(hiveId); 
     }
     
     @GetMapping("/hiveInterests/byInterestId/{interestId}")
     public List<HiveInterest> getHiveInterestsByInterestId(@PathVariable String interestId){
-        int theInterestId = Integer.parseInt(interestId);
-        return hiveInterestRepository.findByInterestId(theInterestId); 
+        return hiveInterestService.findByInterestId(interestId); 
     }
 
     @PostMapping("/hiveInterests")
     public HiveInterest create(@RequestBody Map<String, String> body){
-        int hiveId = Integer.parseInt(body.get("hiveId"));
-        int interestId = Integer.parseInt(body.get("interestId"));
-        HiveInterestIdentity hiveInterestIdentity = new HiveInterestIdentity(hiveId, interestId);
-        return hiveInterestRepository.save(new HiveInterest(hiveInterestIdentity));
+        return hiveInterestService.create(body);
     }
 
     @DeleteMapping("/hiveInterests")
     public boolean delete(@RequestBody Map<String, String> body){
-        int hiveId = Integer.parseInt(body.get("hiveId"));
-        int interestId = Integer.parseInt(body.get("interestId"));
-        HiveInterestIdentity hiveInterestIdentity = new HiveInterestIdentity(hiveId, interestId);
-        hiveInterestRepository.delete(hiveInterestIdentity);
-        return true;
+        return hiveInterestService.delete(body);
     }
-
-
 }
