@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.hivefrontend.VolleySingleton;
+import com.example.hivefrontend.ui.profile.IProfileServerRequest;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.ProfileFragment;
 import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
@@ -18,7 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ServerRequest {
+public class ServerRequest implements IProfileServerRequest {
     private String tag_json_obj = "json_obj_req";
 
     private ProfileVolleyListener profileVolleyListener;

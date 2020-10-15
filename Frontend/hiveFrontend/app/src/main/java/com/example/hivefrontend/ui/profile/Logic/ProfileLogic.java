@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.android.volley.VolleyError;
+import com.example.hivefrontend.ui.profile.IProfileServerRequest;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 import com.example.hivefrontend.ui.profile.ProfileFragment;
 import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
@@ -17,14 +18,16 @@ public class ProfileLogic implements ProfileVolleyListener{
     ProfileFragment profile;
     public Context context;
     public int userId;
-    ServerRequest server;
+    IProfileServerRequest server;
 
-    public ProfileLogic(ProfileFragment p, ServerRequest serverRequest){
+    public ProfileLogic(ProfileFragment p, IProfileServerRequest serverRequest){
         this.profile = p;
         context = p.getContext();
         userId = p.userId;
-        serverRequest.addVolleyListener(this);
+        this.server = serverRequest;
+        server.addVolleyListener(this);
     }
+
 
     public int getUserId(){
         return userId;
