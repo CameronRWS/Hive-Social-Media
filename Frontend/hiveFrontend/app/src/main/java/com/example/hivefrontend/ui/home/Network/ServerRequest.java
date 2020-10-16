@@ -20,10 +20,11 @@ import org.json.JSONObject;
 
 import java.util.Collections;
 
-public class ServerRequest {
+public class ServerRequest implements IServerRequest{
 
     private static IHomeVolleyListener logic;
-    public ServerRequest(IHomeVolleyListener l){
+
+    public void addVolleyListener(IHomeVolleyListener l){
         logic = l;
     }
 
@@ -63,7 +64,7 @@ public class ServerRequest {
         getDiscoverPosts();
     }
 
-    private void getDiscoverPosts() {
+    public void getDiscoverPosts() {
         //request posts from all hives:
         String url = "http://10.24.227.37:8080/posts"; //for now, getting all posts
         JsonArrayRequest hivePostRequest = new JsonArrayRequest

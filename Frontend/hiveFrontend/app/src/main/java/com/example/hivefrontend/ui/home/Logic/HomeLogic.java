@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.example.hivefrontend.ui.home.HomeFragment;
+import com.example.hivefrontend.ui.home.Network.IServerRequest;
 import com.example.hivefrontend.ui.home.Network.ServerRequest;
 import com.example.hivefrontend.ui.home.PostComparator;
 
@@ -18,28 +19,28 @@ import java.util.Collections;
 public class HomeLogic implements IHomeVolleyListener{
 
     HomeFragment home;
-    public HomeLogic(HomeFragment homeFragment) {
+    IServerRequest server;
+    public HomeLogic(HomeFragment homeFragment, IServerRequest req) {
         home = homeFragment;
+        server = req;
+        server.addVolleyListener(this);
     }
 
     public void setUserHives() {
-        ServerRequest server = new ServerRequest(this);
+
         server.setUserHiveRequest();
     }
 
     public void onPageResume() {
-        ServerRequest server = new ServerRequest(this);
         server.pageResumeRequests();
     }
 
     public void updatePostLogic() {
-        ServerRequest server = new ServerRequest(this);
         server.updatePostRequest();
     }
 
     //gets the info about this post to see if the user has already liked it
     public void likePostLogic(int postId){
-        ServerRequest server = new ServerRequest(this);
         server.checkLikes(postId);
     }
 

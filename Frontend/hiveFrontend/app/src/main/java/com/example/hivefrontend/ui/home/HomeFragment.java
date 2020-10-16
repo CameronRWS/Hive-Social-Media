@@ -31,6 +31,7 @@ import com.example.hivefrontend.R;
 import com.example.hivefrontend.SettingsActivity;
 import com.example.hivefrontend.VolleySingleton;
 import com.example.hivefrontend.ui.home.Logic.HomeLogic;
+import com.example.hivefrontend.ui.home.Network.ServerRequest;
 import com.example.hivefrontend.ui.profile.MyAdapter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -129,7 +130,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        logic = new HomeLogic(this);
+
+        ServerRequest serverRequest = new ServerRequest();
+        logic = new HomeLogic(this, serverRequest);
         logic.setUserHives();
 
         context = root.getContext();
