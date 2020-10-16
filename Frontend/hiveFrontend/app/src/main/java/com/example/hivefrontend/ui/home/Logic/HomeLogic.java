@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.example.hivefrontend.ui.home.HomeFragment;
+import com.example.hivefrontend.ui.home.IHomeView;
 import com.example.hivefrontend.ui.home.Network.IServerRequest;
 import com.example.hivefrontend.ui.home.Network.ServerRequest;
 import com.example.hivefrontend.ui.home.PostComparator;
@@ -18,9 +19,9 @@ import java.util.Collections;
 
 public class HomeLogic implements IHomeVolleyListener{
 
-    HomeFragment home;
+    IHomeView home;
     IServerRequest server;
-    public HomeLogic(HomeFragment homeFragment, IServerRequest req) {
+    public HomeLogic(IHomeView homeFragment, IServerRequest req) {
         home = homeFragment;
         server = req;
         server.addVolleyListener(this);
@@ -49,9 +50,9 @@ public class HomeLogic implements IHomeVolleyListener{
             for (int i = 0; i < response.length(); i++) {
                 JSONObject member = response.getJSONObject(i); //should return user,hive pair
                 Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-                home.hiveIdsHome.add(hiveId);
+                home.addToHiveIdsHome(hiveId);
                 String hiveName = member.getJSONObject("hive").getString("name");
-                home.hiveOptionsHome.add(hiveName);
+                home.addToHiveOptionsHome(hiveName);
             }
 
         } catch (JSONException e) {
@@ -66,52 +67,53 @@ public class HomeLogic implements IHomeVolleyListener{
     }
 
     public Context getHomeContext(){
-        return home.getContext();
+        return home.getHomeContext();
     }
 
     public void notifyDataSetChanged() {
-        home.homeAdapter.notifyDataSetChanged();
-        home.discoverAdapter.notifyDataSetChanged();
+        home.notifyDataChange();
+
     }
 
     public void clearAdapterData() {
-        home.discoverPostObjects.clear();
-        home.homePostObjects.clear();
-        home.hiveIdsDiscover.clear();
-        home.hiveOptionsDiscover.clear();
+        home.clearData();
     }
 
     public  ArrayList<Integer> getHiveIdsHome(){
-        return home.hiveIdsHome;
+        //return home.hiveIdsHome;
+        return home.getHiveIdsHome();
     }
     public ArrayList<String> getHiveOptionsHome(){
-        return home.hiveOptionsHome;
+        //return home.hiveOptionsHome;
+        return home.getHiveOptionsHome();
     }
     public ArrayList<Integer> getHiveIdsDiscover(){
-        return home.hiveIdsDiscover;
+        //return home.hiveIdsDiscover;
+        return home.getHiveIdsDiscover();
     }
     public ArrayList<String> getHiveOptionsDiscover(){
-        return home.hiveOptionsDiscover;
+        //return home.hiveOptionsDiscover;
+        return home.getHiveOptionsDiscover();
+
     }
 
     public void addToDiscoverIds(int hiveId){
-        home.hiveIdsDiscover.add(hiveId);
+        home.addToHiveIdsDiscover(hiveId);
     }
 
     public void addToDiscoverPosts(JSONObject post){
-        home.discoverPostObjects.add(post);
+        home.addToDiscoverPosts(post);
     }
 
     public void sortData() {
-        Collections.sort(home.homePostObjects, new PostComparator());
-        Collections.sort(home.discoverPostObjects, new PostComparator());
+        home.sortPosts();
     }
 
     public void addToDiscoverOptions(String name) {
-        home.hiveOptionsDiscover.add(name);
+        home.addToHiveOptionsDiscover(name);
     }
 
     public void addToHomePosts(JSONObject post) {
-        home.homePostObjects.add(post);
+        home.addToHomePosts(post);
     }
 }

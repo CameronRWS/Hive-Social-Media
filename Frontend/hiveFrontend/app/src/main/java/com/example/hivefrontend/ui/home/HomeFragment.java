@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements IHomeView{
 
     private HomeViewModel homeViewModel;
     public static ArrayList<Integer> hiveIds;
@@ -149,6 +149,71 @@ public class HomeFragment extends Fragment {
         logic.onPageResume();
     }
 
+    public void addToHiveIdsHome(int hiveId){
+        hiveIdsHome.add(hiveId);
+    }
+    public void addToHiveOptionsHome(String hiveName){
+        hiveOptionsHome.add(hiveName);
+    }
+    public void addToHiveIdsDiscover(int hiveId){
+        hiveIdsDiscover.add(hiveId);
+    }
+    public void addToHiveOptionsDiscover(String hiveName){
+        hiveOptionsDiscover.add(hiveName);
+    }
+
+    @Override
+    public void notifyDataChange() {
+        homeAdapter.notifyDataSetChanged();
+        discoverAdapter.notifyDataSetChanged();
+    }
+
+    public Context getHomeContext(){
+        return this.getContext();
+    }
+
+    public void clearData(){
+        discoverPostObjects.clear();
+        homePostObjects.clear();
+        hiveIdsDiscover.clear();
+        hiveOptionsDiscover.clear();
+    }
+
+    @Override
+    public void sortPosts() {
+        Collections.sort(homePostObjects, new PostComparator());
+        Collections.sort(discoverPostObjects, new PostComparator());
+    }
+
+    @Override
+    public void addToDiscoverPosts(JSONObject post) {
+        discoverPostObjects.add(post);
+    }
+
+    @Override
+    public void addToHomePosts(JSONObject post) {
+        homePostObjects.add(post);
+    }
+
+    @Override
+    public ArrayList<Integer> getHiveIdsHome() {
+        return hiveIdsHome;
+    }
+
+    @Override
+    public ArrayList<String> getHiveOptionsHome() {
+        return hiveOptionsHome;
+    }
+
+    @Override
+    public ArrayList<Integer> getHiveIdsDiscover() {
+        return hiveIdsDiscover;
+    }
+
+    @Override
+    public ArrayList<String> getHiveOptionsDiscover() {
+        return hiveOptionsDiscover;
+    }
 
 
 }
