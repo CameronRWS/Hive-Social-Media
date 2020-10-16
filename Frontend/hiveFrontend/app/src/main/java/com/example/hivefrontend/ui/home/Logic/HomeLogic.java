@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class HomeLogic {
+public class HomeLogic implements IHomeVolleyListener{
 
     HomeFragment home;
     public HomeLogic(HomeFragment homeFragment) {

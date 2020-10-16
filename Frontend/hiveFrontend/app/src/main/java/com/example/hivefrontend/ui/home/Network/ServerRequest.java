@@ -11,6 +11,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.hivefrontend.VolleySingleton;
 import com.example.hivefrontend.ui.home.HomeFragment;
 import com.example.hivefrontend.ui.home.Logic.HomeLogic;
+import com.example.hivefrontend.ui.home.Logic.IHomeVolleyListener;
 import com.example.hivefrontend.ui.home.PostComparator;
 
 import org.json.JSONArray;
@@ -21,8 +22,8 @@ import java.util.Collections;
 
 public class ServerRequest {
 
-    private static HomeLogic logic;
-    public ServerRequest(HomeLogic l){
+    private static IHomeVolleyListener logic;
+    public ServerRequest(IHomeVolleyListener l){
         logic = l;
     }
 
