@@ -10,6 +10,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.hivefrontend.VolleySingleton;
 import com.example.hivefrontend.ui.home.HomeFragment;
+import com.example.hivefrontend.ui.home.Logic.HomeLogic;
 import com.example.hivefrontend.ui.home.PostComparator;
 
 import org.json.JSONArray;
@@ -20,9 +21,9 @@ import java.util.Collections;
 
 public class ServerRequest {
 
-    private static HomeFragment home;
-    public ServerRequest(HomeFragment h){
-        home = h;
+    private static HomeLogic logic;
+    public ServerRequest(HomeLogic l){
+        logic = l;
     }
 
     public void setUserHiveRequest(){
@@ -34,51 +35,30 @@ public class ServerRequest {
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        try {
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject member = response.getJSONObject(i); //should return user,hive pair
-                                Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-                                home.hiveIdsHome.add(hiveId);
-                                String hiveName = member.getJSONObject("hive").getString("name");
-                                home.hiveOptionsHome.add(hiveName);
-                            }
 
-                            //here the hives' ids and names have been set appropriately
-                            //can use them to get discover page posts and home posts
-                            //updatePosts();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.i("jsonAppError", e.toString());
-                        }
-
+                        logic.onHiveRequestSuccess(response);
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
-                        Log.i("volleyAppError", "Error: " + error.getMessage());
-                        Log.i("volleyAppError", "VolleyError: " + error);
+                        logic.onError(error);
 
                     }
                 });
 
         // Add the request to the RequestQueue.
-        VolleySingleton.getInstance(home.getContext()).addToRequestQueue(hiveRequest);
+        VolleySingleton.getInstance(logic.getHomeContext()).addToRequestQueue(hiveRequest);
     }
 
     public void pageResumeRequests(){
         updatePostRequest();
-        home.homeAdapter.notifyDataSetChanged();
-        home.discoverAdapter.notifyDataSetChanged();
+        logic.notifyDataSetChanged();
     }
 
     public void updatePostRequest() {
-        home.discoverPostObjects.clear();
-        home.homePostObjects.clear();
-        home.hiveIdsDiscover.clear();
-        home.hiveOptionsDiscover.clear();
+        logic.clearAdapterData();
         getDiscoverPosts();
     }
 
@@ -95,9 +75,9 @@ public class ServerRequest {
                                 Integer hiveId = Integer.valueOf(post.getInt("hiveId"));
                                 //if the user is in this hive, should not display their posts on the discover page
                                 //if they aren't add to the list
-                                if (!home.hiveIdsHome.contains(hiveId)) {
-                                    home.hiveIdsDiscover.add(hiveId);
-                                    home.discoverPostObjects.add(post);
+                                if (!logic.getHiveIdsHome().contains(hiveId)) {
+                                    logic.addToDiscoverIds(hiveId);
+                                    logic.addToDiscoverPosts(post);
                                 }
                             }
                             //now get hive options for discover page for the adapter to use
@@ -119,21 +99,19 @@ public class ServerRequest {
                     }
                 });
 
-        VolleySingleton.getInstance(home.getContext()).addToRequestQueue(hivePostRequest);
+        VolleySingleton.getInstance(logic.getHomeContext()).addToRequestQueue(hivePostRequest);
     }
 
     //sorts the discover and home page posts chronologically, notifies the adapters of the changes
     private static void sortPosts(){
-        Collections.sort(home.homePostObjects, new PostComparator());
-        Collections.sort(home.discoverPostObjects, new PostComparator());
-        home.homeAdapter.notifyDataSetChanged();
-        home.discoverAdapter.notifyDataSetChanged();
+        logic.sortData();
+        logic.notifyDataSetChanged();
     }
 
     private static void getDiscoverHives(){
         //get each hive
-        for(int i = 0; i<home.hiveIdsDiscover.size(); i++){
-            int hiveId = home.hiveIdsDiscover.get(i);
+        for(int i = 0; i<logic.getHiveIdsDiscover().size(); i++){
+            int hiveId = logic.getHiveIdsDiscover().get(i);
             //request posts from each hive:
             String url ="http://10.24.227.37:8080/hives/byHiveId/" + hiveId; //for now, getting this user's hive information until we have login functionality
             JsonObjectRequest hiveNameRequest = new JsonObjectRequest
@@ -142,7 +120,7 @@ public class ServerRequest {
                         public void onResponse(JSONObject response) {
                             try{
                                 String name = response.getString("name");
-                                home.hiveOptionsDiscover.add(name);
+                                logic.addToDiscoverOptions(name);
                             }
                             catch (JSONException e){
                                 e.printStackTrace();
@@ -158,14 +136,14 @@ public class ServerRequest {
                             Log.i("volleyAppError","VolleyError: "+ error);
                         }
                     });
-            VolleySingleton.getInstance(home.getContext()).addToRequestQueue(hiveNameRequest);
+            VolleySingleton.getInstance(logic.getHomeContext()).addToRequestQueue(hiveNameRequest);
         }
     }
 
     private static void getHomePosts(){
         //get each hive id
-        for(int i = 0; i<home.hiveIdsHome.size(); i++){
-            int hiveId = home.hiveIdsHome.get(i);
+        for(int i = 0; i<logic.getHiveIdsHome().size(); i++){
+            int hiveId = logic.getHiveIdsHome().get(i);
 
             //request posts from each hive:
             String url ="http://10.24.227.37:8080/posts/byHiveId/" + hiveId; //for now, getting this user's hive information until we have login functionality
@@ -176,7 +154,7 @@ public class ServerRequest {
                             try{
                                 for(int i = 0; i <  response.length(); i++){
                                     JSONObject post = response.getJSONObject(i); //should a post object
-                                    home.homePostObjects.add(post);
+                                    logic.addToHomePosts(post);
                                 }
                                 //now have all the posts--must sort chronologically
                                 sortPosts();
@@ -196,7 +174,7 @@ public class ServerRequest {
 
                         }
                     });
-            VolleySingleton.getInstance(home.getContext()).addToRequestQueue(hivePostRequest);
+            VolleySingleton.getInstance(logic.getHomeContext()).addToRequestQueue(hivePostRequest);
         }
     }
 
@@ -218,7 +196,7 @@ public class ServerRequest {
                                 postLike(postId);
                             }
                             else{
-                                Toast.makeText(home.getContext(), "You've already liked this buzz!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(logic.getHomeContext(), "You've already liked this buzz!", Toast.LENGTH_LONG).show();
                             }
                         }
                         catch (JSONException e) {
@@ -233,7 +211,7 @@ public class ServerRequest {
                         Log.i("volleyAppError","VolleyError: "+ error);
                     }
                 });
-        VolleySingleton.getInstance(home.getContext()).addToRequestQueue(likeRequest);
+        VolleySingleton.getInstance(logic.getHomeContext()).addToRequestQueue(likeRequest);
         updatePostRequest();
     }
     public void postLike(int postId){
@@ -267,6 +245,6 @@ public class ServerRequest {
         });
         // Add the request to the RequestQueue.
 
-        VolleySingleton.getInstance(home.getContext()).addToRequestQueue(jsonObjectRequest);
+        VolleySingleton.getInstance(logic.getHomeContext()).addToRequestQueue(jsonObjectRequest);
     }
 }
