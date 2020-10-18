@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class PostDetailsActivity extends AppCompatActivity {
+public class PostDetailsActivity extends AppCompatActivity implements IPostView{
 
 
     private RequestQueue queue;
@@ -85,10 +86,6 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     }
 
-
-    //checks if the user has already liked this post--if not, will add the like
-
-
     public void onUserClick(int userId, View view){
         logic.onUserClick(userId, view);
 
@@ -99,7 +96,77 @@ public class PostDetailsActivity extends AppCompatActivity {
             view.getContext().startActivity(intent);
     }
 
+    @Override
+    public Context getPostContext() {
+        return this.getApplicationContext();
+    }
+
     public int getPostId() {
         return postId;
+    }
+
+    @Override
+    public void setHiveName(String name) {
+        hiveName = name;
+    }
+
+    @Override
+    public void setPost(JSONObject post) throws JSONException {
+        //title
+        TextView titleText = findViewById(R.id.postTitle);
+        String title = post.getString("title");
+        titleText.setText(title);
+
+        //content
+        TextView postContent = findViewById(R.id.postContent);
+        String content = post.getString("textContent");
+        postContent.setText(content);
+
+        //user display name
+        TextView displayName = findViewById(R.id.userDisplayName);
+        String name = post.getJSONObject("user").getString("displayName");
+        displayName.setText(name);
+        //user name
+        TextView userNameTextView = findViewById(R.id.userName);
+        String userName = post.getJSONObject("user").getString("userName");
+        userNameTextView.setText(userName);
+        //hive name
+        TextView hive = findViewById(R.id.hiveName);
+        hive.setText(hiveName);
+        //number likes
+        TextView numLikes = findViewById(R.id.likeNumber);
+        String likes = String.valueOf(post.getJSONArray("likes").length());
+        numLikes.setText(likes);
+        //number comments
+        TextView numComments = findViewById(R.id.commentNumber);
+        String comment = String.valueOf(post.getJSONArray("comments").length());
+        numComments.setText(comment);
+
+        JSONArray arrComments = post.getJSONArray("comments");
+        for(int i = 0; i<arrComments.length(); i++){
+            comments.add(arrComments.getJSONObject(i));
+        }
+        commentAdapter.notifyDataSetChanged();
+
+        final int userId = post.getJSONObject("user").getInt("userId");
+        displayName.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                onUserClick(userId, view);
+            }
+        });
+        userNameTextView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                onUserClick(userId, view);
+
+            }
+        });
+    }
+
+    @Override
+    public void handleCommentSuccess() {
+        comments.clear();
+        commentAdapter.notifyDataSetChanged();
     }
 }

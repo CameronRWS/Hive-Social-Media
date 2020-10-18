@@ -39,7 +39,6 @@ public class ServerRequest implements IPostServerRequest{
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
                         logic.onError(error);
 
                     }

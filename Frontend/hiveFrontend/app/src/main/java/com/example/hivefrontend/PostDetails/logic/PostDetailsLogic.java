@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.hivefrontend.PostDetails.IPostView;
 import com.example.hivefrontend.PostDetails.Network.IPostServerRequest;
 import com.example.hivefrontend.PostDetails.Network.ServerRequest;
 import com.example.hivefrontend.PostDetails.PostDetailsActivity;
@@ -24,16 +25,16 @@ import org.json.JSONObject;
 
 public class PostDetailsLogic implements IPostVolleyListener{
 
-    PostDetailsActivity p;
+    IPostView p;
     IPostServerRequest server;
-    public PostDetailsLogic(PostDetailsActivity p, IPostServerRequest server){
+    public PostDetailsLogic(IPostView p, IPostServerRequest server){
         this.p = p;
         this.server=server;
         server.addVolleyListener(this);
     }
 
     public Context getPostContext(){
-        return p.getApplicationContext();
+        return p.getPostContext();
     }
 
     public int getPostId(){
@@ -46,11 +47,11 @@ public class PostDetailsLogic implements IPostVolleyListener{
 
 
     public void promptDialog() {
-        LayoutInflater li = LayoutInflater.from(p);
+        LayoutInflater li = LayoutInflater.from(p.getPostContext());
         View promptsView = li.inflate(R.layout.prompts, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                p);
+                p.getPostContext());
 
         // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);
@@ -65,9 +66,8 @@ public class PostDetailsLogic implements IPostVolleyListener{
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 // get user input and set it to result
-                                // edit text
                                 if(userInput.getText().toString().length()==0){
-                                    Toast.makeText(p.getApplicationContext(),"Cannot submit an empty comment!", Toast.LENGTH_LONG);
+                                    Toast.makeText(p.getPostContext(),"Cannot submit an empty comment!", Toast.LENGTH_LONG);
                                 }
                                 else {
                                     ServerRequest server = new ServerRequest();
@@ -107,7 +107,7 @@ public class PostDetailsLogic implements IPostVolleyListener{
 
     public void onPostRequestSuccess(JSONObject response, JSONObject post) {
         try {
-            this.p.hiveName = response.getString("name");
+            p.setHiveName(response.getString("name"));
             setPostInfo(post);
         }
         catch (JSONException e) {
@@ -117,64 +117,13 @@ public class PostDetailsLogic implements IPostVolleyListener{
     }
 
     private void setPostInfo(JSONObject post) throws JSONException {
-        //title
-        TextView titleText = p.findViewById(R.id.postTitle);
-        String title = post.getString("title");
-        titleText.setText(title);
-        //content
-        TextView postContent = p.findViewById(R.id.postContent);
-        String content = post.getString("textContent");
-        postContent.setText(content);
-        //user display name
-        TextView displayName = p.findViewById(R.id.userDisplayName);
-        String name = post.getJSONObject("user").getString("displayName");
-        displayName.setText(name);
-        //user name
-        TextView userNameTextView = p.findViewById(R.id.userName);
-        String userName = post.getJSONObject("user").getString("userName");
-        userNameTextView.setText(userName);
-        //hive name
-        TextView hive = p.findViewById(R.id.hiveName);
-        hive.setText(p.hiveName);
-        //number likes
-        TextView numLikes = p.findViewById(R.id.likeNumber);
-        String likes = String.valueOf(post.getJSONArray("likes").length());
-        numLikes.setText(likes);
-        //number comments
-        TextView numComments = p.findViewById(R.id.commentNumber);
-        String comment = String.valueOf(post.getJSONArray("comments").length());
-        numComments.setText(comment);
 
-        JSONArray arrComments = post.getJSONArray("comments");
-        for(int i = 0; i<arrComments.length(); i++){
-            p.comments.add(arrComments.getJSONObject(i));
-        }
-        Log.i(" status ", "got to end of post info set");
-        Log.i(" comments ", p.comments.toString());
-        p.commentAdapter.notifyDataSetChanged();
-
-
-        final int userId = post.getJSONObject("user").getInt("userId");
-        displayName.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                p.onUserClick(userId, view);
-            }
-        });
-        userNameTextView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                p.onUserClick(userId, view);
-
-            }
-        });
+        p.setPost(post);
 
     }
 
     public void onCommentPostSuccess() {
-        p.comments.clear();
-        p.commentAdapter.notifyDataSetChanged();
-        getPostInfoJson(p.postId);
-        Log.i("request","success!");
+        p.handleCommentSuccess();
+        getPostInfoJson(p.getPostId());
     }
 }
