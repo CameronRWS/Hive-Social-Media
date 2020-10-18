@@ -1,4 +1,4 @@
-package com.example.hivefrontend;
+package com.example.hivefrontend.PostDetails;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,8 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.hivefrontend.ui.home.HomeAdapter;
+import com.example.hivefrontend.ProfileActivity;
+import com.example.hivefrontend.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
