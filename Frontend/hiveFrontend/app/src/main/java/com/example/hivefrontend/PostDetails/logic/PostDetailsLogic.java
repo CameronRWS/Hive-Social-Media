@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.hivefrontend.PostDetails.Network.IPostServerRequest;
 import com.example.hivefrontend.PostDetails.Network.ServerRequest;
 import com.example.hivefrontend.PostDetails.PostDetailsActivity;
 import com.example.hivefrontend.ProfileActivity;
@@ -24,8 +25,8 @@ import org.json.JSONObject;
 public class PostDetailsLogic implements IPostVolleyListener{
 
     PostDetailsActivity p;
-    ServerRequest server;
-    public PostDetailsLogic(PostDetailsActivity p, ServerRequest server){
+    IPostServerRequest server;
+    public PostDetailsLogic(PostDetailsActivity p, IPostServerRequest server){
         this.p = p;
         this.server=server;
         server.addVolleyListener(this);

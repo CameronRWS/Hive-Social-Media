@@ -20,7 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ServerRequest {
+public class ServerRequest implements IPostServerRequest{
     private IPostVolleyListener logic;
 
     public void requestPostJson(int postId){
