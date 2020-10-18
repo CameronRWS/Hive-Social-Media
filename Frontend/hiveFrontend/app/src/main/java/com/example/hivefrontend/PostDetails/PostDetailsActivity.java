@@ -42,7 +42,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     public ArrayList<JSONObject> likes;
     public PostCommentAdapter commentAdapter;
     public int postId;
-
+    public PostDetailsLogic logic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         postId = getIntent().getIntExtra("postId",0);
         queue = Volley.newRequestQueue(this);
         comments = new ArrayList<>();
-        final PostDetailsLogic logic = new PostDetailsLogic(this);
+        logic = new PostDetailsLogic(this);
         final RecyclerView recyclerView = findViewById(R.id.postViewRecycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -88,10 +88,16 @@ public class PostDetailsActivity extends AppCompatActivity {
 
 
     public void onUserClick(int userId, View view){
+        logic.onUserClick(userId, view);
+
         Intent intent = new Intent(view.getContext(), ProfileActivity.class);
 
             //start new activity and pass the user ID to it
             intent.putExtra("userId", userId);
             view.getContext().startActivity(intent);
+    }
+
+    public int getPostId() {
+        return postId;
     }
 }
