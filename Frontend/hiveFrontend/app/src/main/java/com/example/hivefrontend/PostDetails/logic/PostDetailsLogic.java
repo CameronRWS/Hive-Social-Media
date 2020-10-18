@@ -24,8 +24,11 @@ import org.json.JSONObject;
 public class PostDetailsLogic implements IPostVolleyListener{
 
     PostDetailsActivity p;
-    public PostDetailsLogic(PostDetailsActivity p){
+    ServerRequest server;
+    public PostDetailsLogic(PostDetailsActivity p, ServerRequest server){
         this.p = p;
+        this.server=server;
+        server.addVolleyListener(this);
     }
 
     public Context getPostContext(){
@@ -37,7 +40,6 @@ public class PostDetailsLogic implements IPostVolleyListener{
     }
 
     public void getPostInfoJson(int postId){
-        ServerRequest server = new ServerRequest(this);
         server.requestPostJson(postId);
     }
 
@@ -55,7 +57,6 @@ public class PostDetailsLogic implements IPostVolleyListener{
         final EditText userInput = (EditText) promptsView
                 .findViewById(R.id.editTextDialogUserInput);
 
-        final PostDetailsLogic l = this;
         // set dialog message
         alertDialogBuilder
                 .setCancelable(false)
@@ -68,7 +69,7 @@ public class PostDetailsLogic implements IPostVolleyListener{
                                     Toast.makeText(p.getApplicationContext(),"Cannot submit an empty comment!", Toast.LENGTH_LONG);
                                 }
                                 else {
-                                    ServerRequest server = new ServerRequest(l);
+                                    ServerRequest server = new ServerRequest();
                                     server.postComment(userInput.getText().toString());
                                 }
                             }
@@ -88,7 +89,6 @@ public class PostDetailsLogic implements IPostVolleyListener{
     }
 
     public void checkLikesAndPost(){
-        ServerRequest server = new ServerRequest(this);
         server.checkLikesAndPost();
     }
 

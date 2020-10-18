@@ -23,10 +23,6 @@ import org.json.JSONObject;
 public class ServerRequest {
     private IPostVolleyListener logic;
 
-    public ServerRequest(IPostVolleyListener l){
-        logic = l;
-    }
-
     public void requestPostJson(int postId){
         String url ="http://10.24.227.37:8080/posts/byPostId/" + postId;
         JsonObjectRequest postDetailsRequest = new JsonObjectRequest
@@ -184,5 +180,7 @@ public class ServerRequest {
     }
 
 
-
+    public void addVolleyListener(IPostVolleyListener l) {
+        logic = l;
+    }
 }

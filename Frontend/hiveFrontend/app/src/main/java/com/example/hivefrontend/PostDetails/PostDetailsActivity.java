@@ -24,6 +24,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.PostDetails.Logic.PostDetailsLogic;
+import com.example.hivefrontend.PostDetails.Network.ServerRequest;
 import com.example.hivefrontend.ProfileActivity;
 import com.example.hivefrontend.R;
 
@@ -52,7 +53,8 @@ public class PostDetailsActivity extends AppCompatActivity {
         postId = getIntent().getIntExtra("postId",0);
         queue = Volley.newRequestQueue(this);
         comments = new ArrayList<>();
-        logic = new PostDetailsLogic(this);
+        ServerRequest server = new ServerRequest();
+        logic = new PostDetailsLogic(this,server);
         final RecyclerView recyclerView = findViewById(R.id.postViewRecycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
