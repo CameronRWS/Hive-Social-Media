@@ -1,41 +1,42 @@
-package com.example.hivefrontend.ui.profile;
+package com.example.hivefrontend.Profile;
 
-import androidx.lifecycle.ViewModelProviders;
-
-import android.content.Context;
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.R;
-import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
+import com.example.hivefrontend.ui.profile.IProfileView;
+import com.example.hivefrontend.ui.profile.MyAdapter;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
+import com.example.hivefrontend.ui.profile.ProfileViewModel;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment implements IProfileView{
+public class ProfileActivity extends AppCompatActivity implements IProfileView {
 
-    //private RecyclerView recyclerView;
-    //private RecyclerView.Adapter mAdapter;
-    //private RecyclerView.LayoutManager layoutManager;
     private ProfileViewModel mViewModel;
     public ArrayList<Integer> hiveIds;
     public ArrayList<String> hiveOptions;
-    public int userId = 2;
-    private RequestQueue queue;
+    public int userId;
     private String pollen;
     public TextView displayName;
     public ImageView locationPin;
@@ -48,50 +49,44 @@ public class ProfileFragment extends Fragment implements IProfileView{
     public RecyclerView recyclerView;
     public MyAdapter myAdapter;
 
-    public static ProfileFragment newInstance() {
-        return new ProfileFragment();
-    }
-
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        //new AppController();
-        final View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+        userId = getIntent().getIntExtra("userId", -1);
+
+
+        //final ProfileLogic logic = new ProfileLogic(this);
+        hiveIds = new ArrayList<>();
+        hiveOptions = new ArrayList<>();
+        TextView userDisplayName = findViewById(R.id.displayName);
+
         hiveIds= new ArrayList<>();
         hiveOptions = new ArrayList<>();
-        displayName = (TextView) rootView.findViewById(R.id.displayName);
-        locationPin = (ImageView) rootView.findViewById(R.id.locationPin);
-        userName = (TextView) rootView.findViewById(R.id.userName);
-        pollenCount = (TextView) rootView.findViewById(R.id.pollenCount);
-        displayLocation = (TextView) rootView.findViewById(R.id.displayLocation);
-        hiveListHeading = (TextView) rootView.findViewById(R.id.hiveListHeading);
-        bio = (TextView) rootView.findViewById(R.id.bio);
-        dateJoined = (TextView) rootView.findViewById(R.id.dateJoined);
-        recyclerView = rootView.findViewById(R.id.hiveListRecyler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
+        displayName = (TextView) findViewById(R.id.displayName);
+        locationPin = (ImageView) findViewById(R.id.locationPin);
+        userName = (TextView) findViewById(R.id.userName);
+        pollenCount = (TextView) findViewById(R.id.pollenCount);
+        displayLocation = (TextView) findViewById(R.id.displayLocation);
+        hiveListHeading = (TextView) findViewById(R.id.hiveListHeading);
+        bio = (TextView) findViewById(R.id.bio);
+        dateJoined = (TextView) findViewById(R.id.dateJoined);
+        RecyclerView recyclerView = findViewById(R.id.hiveListRecyler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        myAdapter = new MyAdapter(getApplicationContext(), hiveOptions);
         recyclerView.setAdapter(myAdapter);
 
+
         ServerRequest serverRequest = new ServerRequest();
-        ProfileLogic logic = new ProfileLogic(this, serverRequest);
+        com.example.hivefrontend.ui.profile.Logic.ProfileLogic logic = new com.example.hivefrontend.ui.profile.Logic.ProfileLogic(this, serverRequest);
         logic.displayProfile();
 
-        return rootView;
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
-        // TODO: Use the ViewModel
-
-    }
-
 
 
     @Override
     public Context getProfileContext() {
-        return this.getContext();
+        return this.getApplicationContext();
     }
 
     @Override
@@ -127,7 +122,8 @@ public class ProfileFragment extends Fragment implements IProfileView{
 
     @Override
     public void setHiveListHeading(String your_hives) {
-        hiveListHeading.setText("Your Hives:");
+        String heading = your_hives + "'s Public Hives:";
+        hiveListHeading.setText(heading);
     }
 
     @Override
