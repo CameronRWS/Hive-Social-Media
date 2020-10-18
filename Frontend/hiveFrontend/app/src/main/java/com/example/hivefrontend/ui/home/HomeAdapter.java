@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
 import com.example.hivefrontend.PostDetails.PostDetailsActivity;
-import com.example.hivefrontend.ProfileActivity;
+import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
 
 import org.json.JSONException;

@@ -8,18 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.hivefrontend.PostDetails.IPostView;
 import com.example.hivefrontend.PostDetails.Network.IPostServerRequest;
 import com.example.hivefrontend.PostDetails.Network.ServerRequest;
-import com.example.hivefrontend.PostDetails.PostDetailsActivity;
-import com.example.hivefrontend.ProfileActivity;
+import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

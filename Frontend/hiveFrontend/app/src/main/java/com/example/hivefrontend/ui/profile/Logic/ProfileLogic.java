@@ -45,7 +45,7 @@ public class ProfileLogic implements ProfileVolleyListener{
 
     public void onUserInfoSuccess(JSONArray response){
         try{
-            JSONObject user1 = response.getJSONObject(userId);
+            JSONObject user1 = response.getJSONObject(userId-1);
             // Get the current user (json object) data
             String name = user1.getString("displayName");
 
@@ -80,9 +80,7 @@ public class ProfileLogic implements ProfileVolleyListener{
             profileView.setBio(user1.getString("biography"));
             // TODO: replace '(4)' with actual count.
 
-
-            //profile.hiveListHeading.setText("Your Hives:");
-            profileView.setHiveListHeading("Your Hives");
+            profileView.setHiveListHeading(firstName);
 
         }
         catch (JSONException e){
