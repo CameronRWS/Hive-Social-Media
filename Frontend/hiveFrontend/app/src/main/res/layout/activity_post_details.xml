@@ -5,7 +5,7 @@
     android:id="@+id/postDetailLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="com.example.hivefrontend.PostDetailsActivity">
+    tools:context="com.example.hivefrontend.PostDetails.PostDetailsActivity">
 
     <TextView
         android:id="@+id/userDisplayName"
