@@ -21,7 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PostDetailsLogic {
+public class PostDetailsLogic implements IPostVolleyListener{
 
     PostDetailsActivity p;
     public PostDetailsLogic(PostDetailsActivity p){
@@ -35,6 +35,7 @@ public class PostDetailsLogic {
     public int getPostId(){
         return p.getPostId();
     }
+
     public void getPostInfoJson(int postId){
         ServerRequest server = new ServerRequest(this);
         server.requestPostJson(postId);

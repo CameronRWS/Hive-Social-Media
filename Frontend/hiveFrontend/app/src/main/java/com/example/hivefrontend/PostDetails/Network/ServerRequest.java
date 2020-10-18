@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.hivefrontend.PostDetails.Logic.IPostVolleyListener;
 import com.example.hivefrontend.PostDetails.Logic.PostDetailsLogic;
 import com.example.hivefrontend.PostDetails.PostDetailsActivity;
 import com.example.hivefrontend.R;
@@ -20,9 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ServerRequest {
-    private PostDetailsLogic logic;
+    private IPostVolleyListener logic;
 
-    public ServerRequest(PostDetailsLogic l){
+    public ServerRequest(IPostVolleyListener l){
         logic = l;
     }
 
