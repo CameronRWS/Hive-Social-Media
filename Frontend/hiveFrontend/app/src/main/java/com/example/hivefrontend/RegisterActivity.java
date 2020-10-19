@@ -11,20 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -44,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         usernameField = (EditText) findViewById(R.id.usernameField);
         passwordField = (EditText) findViewById(R.id.passwordField);
-        emailAddressField = (EditText) findViewById(R.id.emailAddressField);
+        emailAddressField = (EditText) findViewById(R.id.emailUsernameField);
         final Button cancelButton = (Button) findViewById(R.id.cancelButton);
 
         findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
@@ -107,10 +100,18 @@ public class RegisterActivity extends AppCompatActivity {
                 (Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+
+                try {
+                    Toast.makeText(getApplicationContext(), "hey", Toast.LENGTH_LONG).show();
+                    JSONObject generatedUser = response.getJSONObject("user");
+                    int generatedId = generatedUser.getInt("userId");
+                    Toast.makeText(getApplicationContext(), generatedId, Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 User user = new User(username, password);
                 SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                Toast.makeText(getApplicationContext(), "Welcome to Hive!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
             }
         },
                 new Response.ErrorListener() {
