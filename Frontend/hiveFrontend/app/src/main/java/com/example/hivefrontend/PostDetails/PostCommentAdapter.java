@@ -11,13 +11,8 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-<<<<<<< HEAD:Frontend/hiveFrontend/app/src/main/java/com/example/hivefrontend/PostDetails/PostCommentAdapter.java
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
-=======
-import com.example.hivefrontend.ui.home.HomeAdapter;
-import com.example.hivefrontend.ui.profile.ProfileFragment;
->>>>>>> edit-profile-screen:Frontend/hiveFrontend/app/src/main/java/com/example/hivefrontend/PostCommentAdapter.java
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,7 +87,7 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
         public void onClick(View v) {
             //for find item that hold in list
             int position = (Integer) v.getTag();
-            Intent intent = new Intent(v.getContext(), ProfileFragment.class);
+            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
             try {
                 //TO DO: go to the profile of the user that posted this comment
                 int userId = comments.get(position).getJSONObject("user").getInt("userId");
