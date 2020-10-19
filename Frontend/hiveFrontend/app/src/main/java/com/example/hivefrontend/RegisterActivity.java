@@ -107,10 +107,18 @@ public class RegisterActivity extends AppCompatActivity {
                 (Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+
+                try {
+                    Toast.makeText(getApplicationContext(), "hey", Toast.LENGTH_LONG).show();
+                    JSONObject generatedUser = response.getJSONObject("user");
+                    int generatedId = generatedUser.getInt("userId");
+                    Toast.makeText(getApplicationContext(), generatedId, Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 User user = new User(username, password);
                 SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                Toast.makeText(getApplicationContext(), "Welcome to Hive!", Toast.LENGTH_SHORT).show();
             }
         },
                 new Response.ErrorListener() {

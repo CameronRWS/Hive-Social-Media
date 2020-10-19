@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfileActivity">
+
+    <ImageButton
+        android:id="@+id/headerActual"
+        android:layout_width="405dp"
+        android:layout_height="151dp"
+        android:scaleType="fitXY"
+        android:src="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/editHeader"
+        android:layout_width="409dp"
+        android:layout_height="163dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/editheader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/profilePictureBorder"
+        android:layout_width="146dp"
+        android:layout_height="126dp"
+        android:layout_marginTop="92dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/profpicborder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/headerActual" />
+
+    <ImageButton
+    android:id="@+id/profilePictureActual"
+    android:layout_width="121dp"
+    android:layout_height="106dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@null"
+    android:scaleType="fitXY"
+    android:src="@null"
+    app:layout_constraintBottom_toBottomOf="@+id/profilePictureBorder"
+    app:layout_constraintEnd_toEndOf="@+id/profilePictureBorder"
+    app:layout_constraintStart_toStartOf="@+id/profilePictureBorder"
+    app:layout_constraintTop_toTopOf="@+id/profilePictureBorder"
+    app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/editProfilePicture"
+        android:layout_width="121dp"
+        android:layout_height="106dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/editprofpic"
+        app:layout_constraintBottom_toBottomOf="@+id/profilePictureBorder"
+        app:layout_constraintEnd_toEndOf="@+id/profilePictureBorder"
+        app:layout_constraintStart_toStartOf="@+id/profilePictureBorder"
+        app:layout_constraintTop_toTopOf="@+id/profilePictureBorder"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
