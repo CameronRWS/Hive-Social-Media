@@ -56,9 +56,12 @@ public class PostService {
         int userId = Integer.parseInt(body.get("userId"));
         User user = userRepository.findOne(userId);
         Hive hive = hiveRepository.findOne(hiveId);
+        System.out.println(user.getLocation());
         String title = body.get("title");
         String textContent = body.get("textContent");
         Post post = postRepository.save(new Post(hiveId, user, title, textContent));
+        System.out.println(post.getTextContent());
+        System.out.println("1");
     	List<String> list = Regex.getUserNamesMentionedInText(title);
     	List<String> listBody = Regex.getUserNamesMentionedInText(textContent);
     	//add the two lists together as a set
@@ -67,6 +70,7 @@ public class PostService {
     			list.add(userName);
     		}
     	}
+        System.out.println("2");
         //create notification for all tagged users
     	list.remove(user.getUserName());
     	for(String userName : list) {
@@ -78,6 +82,7 @@ public class PostService {
         		}
     		}
     	}
+        System.out.println("3");
         return post;
     }
 
