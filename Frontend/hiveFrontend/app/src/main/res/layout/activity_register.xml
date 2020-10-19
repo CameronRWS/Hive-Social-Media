@@ -139,7 +139,7 @@
         android:ems="10"
         android:maxLength="15"
         android:fontFamily="@font/helveticaneuelight"
-        android:hint="/@queen_bee"
+        android:hint="@queen_bee"
         android:inputType="textPersonName"
         android:paddingLeft="15dp"
         android:textColor="#000000"
