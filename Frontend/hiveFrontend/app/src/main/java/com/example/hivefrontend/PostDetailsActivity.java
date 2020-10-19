@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.ui.home.HomeAdapter;
 import com.example.hivefrontend.ui.home.HomeFragment;
+import com.example.hivefrontend.ui.profile.ProfileFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -345,7 +346,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     }
 
     private void onUserClick(int userId, View view){
-        Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+        Intent intent = new Intent(view.getContext(), ProfileFragment.class);
 
             //start new activity and pass the user ID to it
             intent.putExtra("userId", userId);

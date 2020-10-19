@@ -22,10 +22,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.PostDetailsActivity;
-import com.example.hivefrontend.ProfileActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.buzz.BuzzFragment;
 import com.example.hivefrontend.ui.profile.MyAdapter;
+import com.example.hivefrontend.ui.profile.ProfileFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,7 +114,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
                 @Override
                 public void onClick(final View view) {
-                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                    Intent intent = new Intent(view.getContext(), ProfileFragment.class);
                     int position = (Integer) view.getTag();
                     try {
                         int userId = posts.get(position).getJSONObject("user").getInt("userId");
@@ -132,7 +132,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
                 @Override
                 public void onClick(final View view) {
-                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
+                    Intent intent = new Intent(view.getContext(), ProfileFragment.class);
                     int position = (Integer) view.getTag();
                     try {
                         int userId = posts.get(position).getJSONObject("user").getInt("userId");

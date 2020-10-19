@@ -2,6 +2,7 @@ package com.example.hivefrontend.ui.profile;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +28,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hivefrontend.EditProfileActivity;
+import com.example.hivefrontend.LoginActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.RegisterActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,11 +69,19 @@ public class ProfileFragment extends Fragment {
         final TextView displayLocation = (TextView) rootView.findViewById(R.id.displayLocation);
         final TextView hiveListHeading = (TextView) rootView.findViewById(R.id.hiveListHeading);
         final TextView bio = (TextView) rootView.findViewById(R.id.bio);
-        final TextView dateJoined = (TextView) rootView.findViewById(R.id.dateJoined);
+        final Button editProfile = (Button) rootView.findViewById(R.id.editprofile);
         RecyclerView recyclerView = rootView.findViewById(R.id.hiveListRecyler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         final MyAdapter myAdapter = new MyAdapter(getActivity().getApplicationContext(), hiveOptions);
         recyclerView.setAdapter(myAdapter);
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         // Instantiate the RequestQueue.
