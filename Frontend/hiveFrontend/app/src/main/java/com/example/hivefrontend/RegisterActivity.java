@@ -109,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 User user = new User(username, password);
                 SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
                 Toast.makeText(getApplicationContext(), "Welcome to Hive!", Toast.LENGTH_SHORT).show();
             }
         },

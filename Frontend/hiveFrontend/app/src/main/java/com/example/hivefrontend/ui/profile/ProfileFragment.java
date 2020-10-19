@@ -3,6 +3,7 @@ package com.example.hivefrontend.ui.profile;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,10 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
+import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
@@ -40,6 +44,7 @@ public class ProfileFragment extends Fragment implements IProfileView{
     public TextView displayName;
     public ImageView locationPin;
     public TextView userName;
+    public Button editProfile;
     public TextView pollenCount;
     public TextView displayLocation;
     public TextView hiveListHeading;
@@ -61,6 +66,13 @@ public class ProfileFragment extends Fragment implements IProfileView{
         hiveOptions = new ArrayList<>();
         displayName = (TextView) rootView.findViewById(R.id.displayName);
         locationPin = (ImageView) rootView.findViewById(R.id.locationPin);
+        editProfile = (Button) rootView.findViewById(R.id.editprofile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity().getApplicationContext(), EditProfileActivity.class));
+            }
+        });
         userName = (TextView) rootView.findViewById(R.id.userName);
         pollenCount = (TextView) rootView.findViewById(R.id.pollenCount);
         displayLocation = (TextView) rootView.findViewById(R.id.displayLocation);
