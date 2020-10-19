@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,8 @@ import com.example.hivefrontend.ui.profile.IProfileView;
 import com.example.hivefrontend.ui.profile.MyAdapter;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 import com.example.hivefrontend.ui.profile.ProfileViewModel;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,12 +52,23 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
     public RecyclerView recyclerView;
     public MyAdapter myAdapter;
 
+    private ImageView profilePic;
+    private ImageView header;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         userId = getIntent().getIntExtra("userId", -1);
 
+        profilePic = findViewById(R.id.profilePicture);
+        header = findViewById(R.id.header);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         //final ProfileLogic logic = new ProfileLogic(this);
         hiveIds = new ArrayList<>();
