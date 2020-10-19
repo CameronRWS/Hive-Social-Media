@@ -2,7 +2,11 @@ package hive.app.postTests;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -13,7 +17,10 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,6 +32,7 @@ import hive.app.hive.HiveRepository;
 import hive.app.member.Member;
 import hive.app.member.MemberIdentity;
 import hive.app.member.MemberRepository;
+import hive.app.notification.Notification;
 import hive.app.notification.NotificationRepository;
 import hive.app.post.Post;
 import hive.app.post.PostRepository;
@@ -84,41 +92,98 @@ public class PostServiceTest {
 	
 	@Autowired
 	private NotificationRepository nr;
-
-	Map<String, String> body;
 	
-	@Before
-	public void setup() {
-		body = new HashMap<String, String>();
-		body.put("hiveId", "3");
-		body.put("userId", "1");
-		body.put("title", "post title test @CameronX @AnotherGuy @NewGuy");
-		body.put("textContent", "post content test @CameronX @TestUser @NewGuy");
-		
-		Hive testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
-		User testUser = new User("userName", "displayName", "birthday", "biography", "location");
-//		Post testPost = new Post(Integer.getInteger(body.get("hiveId")), testUser, body.get("title"), body.get("textContent"));
-		when(hr.findOne(3)).thenReturn(testHive);
-		when(ur.findOne(1)).thenReturn(testUser);
-//		when(pr.save((Post)any(Post.class))).thenReturn(new Post(Integer.getInteger(body.get("hiveId")), testUser, body.get("title"), body.get("textContent")));
-	}
+	@Autowired
+	private MemberRepository mr;
+
 	
 	@Test
 	public void testCreate() {
-//		Post post = ps.create(body);
-//		System.out.println(post);
-//		assertEquals(3, post.getHiveId());
-		assertEquals(true, "post title test @CameronX @AnotherGuy @NewGuy".equals(body.get("title")));
-		assertEquals(true, "post content test @CameronX @TestUser @NewGuy".equals(body.get("textContent")));
+
+		Hive testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		User testUser = new User("Cameron", "displayName", "birthday", "biography", "location");
+		when(hr.findOne(3)).thenReturn(testHive);
+		when(ur.findOne(1)).thenReturn(testUser);
+		
+		when(mr.findOne((MemberIdentity)any(MemberIdentity.class))).thenAnswer(new Answer<Member>() {
+		    public Member answer(InvocationOnMock invocation) throws Throwable {
+				ArrayList<String> realMembers = new ArrayList<String>();
+				realMembers.add("Cameron");
+				realMembers.add("NewGuy");
+		    	Object[] args = invocation.getArguments();
+		    	MemberIdentity mi = (MemberIdentity) args[0];
+		    	if(realMembers.contains(mi.getUser().getUserName())) {
+		    		return new Member(mi, false);
+		    	} else {
+		    		return null;
+		    	}
+		    }
+		});
+		
+		when(pr.save((Post)any(Post.class))).thenAnswer(new Answer<Post>() {
+		    public Post answer(InvocationOnMock invocation) throws Throwable {
+		    	Object[] args = invocation.getArguments();
+		    	return (Post) args[0];
+		    }
+		});
+		
+		when(ur.findByUserName((String)any(String.class))).thenAnswer(new Answer<User>() {
+		    public User answer(InvocationOnMock invocation) throws Throwable {
+				ArrayList<String> realUsers = new ArrayList<String>();
+				realUsers.add("Cameron");
+				realUsers.add("NotApartOfHive");
+				realUsers.add("NewGuy");
+		    	Object[] args = invocation.getArguments();
+		    	String userName = (String) args[0];
+		    	if(realUsers.contains(userName)) {
+		    		return new User(userName, "displayName", "birthday", "biography", "location");
+		    	} else {
+		    		return null;
+		    	}
+		    }
+		});
+		
+		when(nr.save((Notification)any(Notification.class))).thenAnswer(new Answer<Notification>() {
+		    public Notification answer(InvocationOnMock invocation) throws Throwable {
+		    	Object[] args = invocation.getArguments();
+		    	Notification noti = (Notification) args[0];
+		    	return noti;
+		    }
+		});	
+
+		Map<String, String> body = new HashMap<String, String>();
+		body.put("hiveId", "3");
+		body.put("userId", "1");
+		body.put("title", "post title test @Cameron @NotApartOfHive @NewGuy");
+		body.put("textContent", "post content test @Cameron @NewGuy @NotARealUser");
+		
+		ps.create(body);
+		//check 1 post was created;
+		verify(pr, times(1)).save((Post)any(Post.class));	
+		//check 1 notification was created;
+		verify(nr, times(1)).save((Notification)any(Notification.class));	
+		//check that only 3 users where checked for (since Cameron is the owner of the post);
+		verify(ur, times(3)).findByUserName((String)any(String.class));	
+		//check the 3 users where checked for their existance
+		verify(ur).findByUserName("NotApartOfHive");
+		verify(ur).findByUserName("NewGuy");
+		verify(ur).findByUserName("NotARealUser");
 	}
 	
 	@Test
 	public void testRegex() {
+		Map<String, String> body = new HashMap<String, String>();
+		body.put("hiveId", "3");
+		body.put("userId", "1");
+		body.put("title", "post title test @Cameron @NotApartOfHive @NewGuy");
+		body.put("textContent", "post content test @Cameron @NewGuy @NotARealUser");
+		
 		@SuppressWarnings("serial")
 		List<String> usersCorrect = new ArrayList<String>() {{
-				add("CameronX");
-				add("AnotherGuy");
+				add("Cameron");
+				add("NotApartOfHive");
 				add("NewGuy");
+				add("NotARealUser");
 			}
 		};
 		List<String> usersTest = Regex.getUserNamesMentionedInText(body.get("title"));
