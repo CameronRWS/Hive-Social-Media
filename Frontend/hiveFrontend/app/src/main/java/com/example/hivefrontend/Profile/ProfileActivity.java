@@ -55,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
         setContentView(R.layout.activity_profile);
         userId = getIntent().getIntExtra("userId", -1);
 
-
         //final ProfileLogic logic = new ProfileLogic(this);
         hiveIds = new ArrayList<>();
         hiveOptions = new ArrayList<>();
