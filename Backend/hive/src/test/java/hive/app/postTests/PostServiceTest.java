@@ -87,34 +87,30 @@ public class PostServiceTest {
 
 	Map<String, String> body;
 	
-//	@SuppressWarnings("serial")
-	
 	@Before
 	public void setup() {
-		when(hr.findOne(3)).thenReturn(new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20")));
-		when(ur.findOne(1)).thenReturn(new User("userName", "displayName", "birthday", "biography", "location"));
-//		when(pr.save(new Post(new Post("3", new User("userName", "displayName", "birthday", "biography", "location"), "title", "textContent")))).thenReturn(new Post("3", new User("userName", "displayName", "birthday", "biography", "location"), "title", "textContent"));
-//		when(pr.save((Post)any(Post.class))).thenAnswer(x -> {
-//			Post p = x.getArgument(0);
-//			return null;
-//		});
-
 		body = new HashMap<String, String>();
 		body.put("hiveId", "3");
 		body.put("userId", "1");
 		body.put("title", "post title test @CameronX @AnotherGuy @NewGuy");
 		body.put("textContent", "post content test @CameronX @TestUser @NewGuy");
+		
+		Hive testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		User testUser = new User("userName", "displayName", "birthday", "biography", "location");
+//		Post testPost = new Post(Integer.getInteger(body.get("hiveId")), testUser, body.get("title"), body.get("textContent"));
+		when(hr.findOne(3)).thenReturn(testHive);
+		when(ur.findOne(1)).thenReturn(testUser);
+//		when(pr.save((Post)any(Post.class))).thenReturn(new Post(Integer.getInteger(body.get("hiveId")), testUser, body.get("title"), body.get("textContent")));
 	}
 	
-//	@Test
-//	public void testCreate() {
+	@Test
+	public void testCreate() {
 //		Post post = ps.create(body);
+//		System.out.println(post);
 //		assertEquals(3, post.getHiveId());
-////		assertEquals(1, post.getUser().getUserId());
-////		assertEquals("post title test @CameronX @AnotherGuy @NewGuy", post.getTitle());
-////		assertEquals("post content test @CameronX @TestUser @NewGuy", post.getTextContent());
-//		
-//	}
+		assertEquals(true, "post title test @CameronX @AnotherGuy @NewGuy".equals(body.get("title")));
+		assertEquals(true, "post content test @CameronX @TestUser @NewGuy".equals(body.get("textContent")));
+	}
 	
 	@Test
 	public void testRegex() {
@@ -139,37 +135,6 @@ public class PostServiceTest {
 		}
 		assertEquals(true, isCorrect);
 	}
-	
-//	public Post create(Map<String, String> body){
-//		
-//        int hiveId = Integer.parseInt(body.get("hiveId"));
-//        int userId = Integer.parseInt(body.get("userId"));
-//        User user = userRepository.findOne(userId);
-//        Hive hive = hiveRepository.findOne(hiveId);
-//        String title = body.get("title");
-//        String textContent = body.get("textContent");
-//        Post post = postRepository.save(new Post(hiveId, user, title, textContent));
-//    	List<String> list = Regex.getUserNamesMentionedInText(title);
-//    	List<String> listBody = Regex.getUserNamesMentionedInText(textContent);
-//    	//add the two lists together as a set
-//    	for(String userName : listBody) {
-//    		if(list.contains(userName) != true) {
-//    			list.add(userName);
-//    		}
-//    	}
-//        //create notification for all tagged users
-//    	list.remove(user.getUserName());
-//    	for(String userName : list) {
-//    		User userToTag = userRepository.findByUserName(userName);
-//    		if(user != null) {
-//        		Member member = memberRepository.findOne(new MemberIdentity(hive, userToTag));
-//        		if(member != null) {
-//        			notificationRepository.save(new Notification(userToTag.getUserId(), user.getUserId(), post.getPostId(), "post-postMention"));
-//        		}
-//    		}
-//    	}
-//        return post;
-//    }
 	
 	
 }
