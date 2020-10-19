@@ -14,21 +14,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
-<<<<<<< HEAD
 import com.example.hivefrontend.PostDetails.PostDetailsActivity;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
-=======
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.hivefrontend.MainActivity;
-import com.example.hivefrontend.PostDetailsActivity;
-import com.example.hivefrontend.R;
-import com.example.hivefrontend.ui.buzz.BuzzFragment;
-import com.example.hivefrontend.ui.profile.MyAdapter;
-import com.example.hivefrontend.ui.profile.ProfileFragment;
->>>>>>> edit-profile-screen
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -116,7 +104,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
                 @Override
                 public void onClick(final View view) {
-                    Intent intent = new Intent(view.getContext(), ProfileFragment.class);
+                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                     int position = (Integer) view.getTag();
                     try {
                         int userId = posts.get(position).getJSONObject("user").getInt("userId");
@@ -134,7 +122,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
                 @Override
                 public void onClick(final View view) {
-                    Intent intent = new Intent(view.getContext(), ProfileFragment.class);
+                    Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                     int position = (Integer) view.getTag();
                     try {
                         int userId = posts.get(position).getJSONObject("user").getInt("userId");

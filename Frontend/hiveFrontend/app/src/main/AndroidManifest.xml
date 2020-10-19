@@ -12,12 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-<<<<<<< HEAD
         <activity android:name=".Profile.ProfileActivity"></activity>
-=======
-        <activity android:name=".EditProfileActivity"></activity>
-        <activity android:name=".ProfileActivity" />
->>>>>>> edit-profile-screen
         <activity android:name=".LoginActivity" />
         <activity android:name=".PostDetails.PostDetailsActivity" />
         <activity android:name=".RegisterActivity" />
