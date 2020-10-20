@@ -50,9 +50,22 @@ public class HomePageTest {
         when(view.getHiveIdsDiscover()).thenReturn(testIds);
 
         logic.addToDiscoverIds(3);
-
-
         verify(view,times(1)).addToHiveIdsDiscover(3);
 
+    }
+
+    @Test
+    public void TestClearAdapterData(){
+        ArrayList<Integer> testIds = new ArrayList<>();
+        testIds.add(1);
+        testIds.add(2);
+        HomeLogic logic;
+
+        HomeFragment view = mock(HomeFragment.class);
+        ServerRequest server = mock(ServerRequest.class);
+        logic = new HomeLogic(view,server);
+
+        logic.clearAdapterData();
+        verify(view,times(1)).clearData();
     }
 }
