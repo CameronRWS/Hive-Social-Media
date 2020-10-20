@@ -1,9 +1,7 @@
-package hive.app.postTests;
+package hive.app.commentTests;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
@@ -18,16 +16,16 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import hive.app.comment.Comment;
+import hive.app.comment.CommentRepository;
+import hive.app.comment.CommentService;
 import hive.app.hive.Hive;
 import hive.app.hive.HiveRepository;
 import hive.app.member.Member;
@@ -37,20 +35,23 @@ import hive.app.notification.Notification;
 import hive.app.notification.NotificationRepository;
 import hive.app.post.Post;
 import hive.app.post.PostRepository;
-import hive.app.post.PostService;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
-import hive.app.utils.DateTime;
 import hive.app.utils.Regex;
 
 @RunWith(SpringRunner.class)
-public class PostServiceTest {
+public class CommentServiceTest {
 	
 	@TestConfiguration
 	static class test {
 		@Bean
-		public PostService pService() {
-			return new PostService();
+		public CommentService cService() {
+			return new CommentService();
+		}
+		
+		@Bean
+		public CommentRepository getCommentRepo() {
+			return mock(CommentRepository.class);
 		}
 		
 		@Bean
@@ -80,7 +81,10 @@ public class PostServiceTest {
 	}
 	
 	@Autowired
-	private PostService ps;
+	private CommentService cs;
+	
+	@Autowired
+	private CommentRepository cr;
 	
 	@Autowired
 	private PostRepository pr;
@@ -121,10 +125,10 @@ public class PostServiceTest {
 		    }
 		});
 		
-		when(pr.save((Post)any(Post.class))).thenAnswer(new Answer<Post>() {
-		    public Post answer(InvocationOnMock invocation) throws Throwable {
+		when(cr.save((Comment)any(Comment.class))).thenAnswer(new Answer<Comment>() {
+		    public Comment answer(InvocationOnMock invocation) throws Throwable {
 		    	Object[] args = invocation.getArguments();
-		    	return (Post) args[0];
+		    	return (Comment) args[0];
 		    }
 		});
 		
@@ -156,12 +160,14 @@ public class PostServiceTest {
 	public void testCreate_hasSelfTag() {
 		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
 		testUser = new User("Cameron", "displayName", "birthday", "biography", "location");
+		testPost = new Post(3, this.testUser, "oldTitle", "oldContent");
 		when(hr.findOne((Integer)any(Integer.class))).thenReturn(this.testHive);
 		when(ur.findOne((Integer)any(Integer.class))).thenReturn(this.testUser);
+		when(pr.findOne((Integer)any(Integer.class))).thenReturn(this.testPost);
 		body = new HashMap<String, String>();
 		body.put("hiveId", "3");
 		body.put("userId", "1");
-		body.put("title", "post title test @Cameron @NotApartOfHive @NewGuy");
+		body.put("postId", "2");
 		body.put("textContent", "post content test @Cameron @NewGuy @NotARealUser");
 		realUsers = new ArrayList<String>();
 		realUsers.add("Cameron");
@@ -171,15 +177,14 @@ public class PostServiceTest {
 		realMembers.add("Cameron");
 		realMembers.add("NewGuy");
 		
-		ps.create(body);
-		//check 1 post was created;
-		verify(pr, times(1)).save((Post)any(Post.class));	
+		cs.create(body);
+		//check 1 comment was created;
+		verify(cr, times(1)).save((Comment)any(Comment.class));	
 		//check 1 notification was created;
 		verify(nr, times(1)).save((Notification)any(Notification.class));	
-		//check that only 3 users where checked for (since Cameron is the owner of the post);
-		verify(ur, times(3)).findByUserName((String)any(String.class));	
-		//check the 3 users where checked for their existence
-		verify(ur).findByUserName("NotApartOfHive");
+		//check that only 2 users where checked for (since Cameron is the owner of the post);
+		verify(ur, times(2)).findByUserName((String)any(String.class));	
+		//check the 2 users where checked for their existence
 		verify(ur).findByUserName("NewGuy");
 		verify(ur).findByUserName("NotARealUser");
 		resetMocked();
@@ -187,96 +192,44 @@ public class PostServiceTest {
 	
 	@Test
 	public void testCreate_noSelfTag() {
-		//In this test, a user is attempting to create a post that tags 4 unique people.
-		//1 user doesn't exist so it shouldn't receive a notification
-		//1 user isn't apart of the hive so it shouldn't receive a notification
-		//Should result in 2 notifications
 		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
-		testUser = new User("ThisGuy", "displayName", "birthday", "biography", "location");
+		testUser = new User("AnotherGuy", "displayName", "birthday", "biography", "location");
+		testPost = new Post(3, this.testUser, "oldTitle", "oldContent");
 		when(hr.findOne((Integer)any(Integer.class))).thenReturn(this.testHive);
 		when(ur.findOne((Integer)any(Integer.class))).thenReturn(this.testUser);
+		when(pr.findOne((Integer)any(Integer.class))).thenReturn(this.testPost);
 		body = new HashMap<String, String>();
 		body.put("hiveId", "3");
 		body.put("userId", "1");
-		body.put("title", "post title test @Cameron @NotApartOfHive @NewGuy");
+		body.put("postId", "2");
 		body.put("textContent", "post content test @Cameron @NewGuy @NotARealUser");
 		realUsers = new ArrayList<String>();
 		realUsers.add("Cameron");
 		realUsers.add("NotApartOfHive");
 		realUsers.add("NewGuy");
-		realUsers.add("ThisGuy");
+		realUsers.add("AnotherGuy");
 		realMembers = new ArrayList<String>();
 		realMembers.add("Cameron");
 		realMembers.add("NewGuy");
-		//method we are testing
-		ps.create(body);
-		//check 1 post was created;
-		verify(pr, times(1)).save((Post)any(Post.class));	
-		//check 2 notifications was created;
+		realMembers.add("AnotherGuy");
+		
+		cs.create(body);
+		//check 1 comment was created;
+		verify(cr, times(1)).save((Comment)any(Comment.class));	
+		//check 2 notifications were created;
 		verify(nr, times(2)).save((Notification)any(Notification.class));	
-		//check that only 3 users where checked for (since Cameron is the owner of the post);
-		verify(ur, times(4)).findByUserName((String)any(String.class));	
-		//check the 4 users were checked for their existence
-		verify(ur).findByUserName("NotApartOfHive");
+		//check that only 2 users where checked for (since Cameron is the owner of the post);
+		verify(ur, times(3)).findByUserName((String)any(String.class));	
+		//check the 2 users where checked for their existence
 		verify(ur).findByUserName("NewGuy");
 		verify(ur).findByUserName("NotARealUser");
 		verify(ur).findByUserName("Cameron");
-		//reset
-		resetMocked();
-	}
-	
-	@Test
-	public void testUpdate() {
-		//prepare test
-		testPost = new Post(3, this.testUser, "oldTitle", "oldContent");
-		when(pr.findOne((Integer)any(Integer.class))).thenReturn(this.testPost);
-		Map<String, String> body = new HashMap<String, String>();
-		body.put("postId", "0");
-		body.put("title", "newTitle");
-		body.put("textContent", "newContent");
-		//method we are testing
-		Post updatedPost = ps.update(body);
-		//tests
-		assertEquals(true, updatedPost.getTitle().equals(body.get("title")));
-		assertEquals(true, updatedPost.getTextContent().equals(body.get("textContent")));
-		//reset
 		resetMocked();
 	}
 
-	@Test
-	public void testRegex() {
-		Map<String, String> body = new HashMap<String, String>();
-		body.put("hiveId", "3");
-		body.put("userId", "1");
-		body.put("title", "post title test @Cameron @NotApartOfHive @NewGuy");
-		body.put("textContent", "post content test @Cameron @NewGuy @NotARealUser");
-		
-		@SuppressWarnings("serial")
-		List<String> usersCorrect = new ArrayList<String>() {{
-				add("Cameron");
-				add("NotApartOfHive");
-				add("NewGuy");
-				add("NotARealUser");
-			}
-		};
-		List<String> usersTest = Regex.getUserNamesMentionedInText(body.get("title"));
-		boolean isCorrect = true;
-		for(int i = 0; i < usersTest.size(); i++) {
-			try {
-				if(!usersCorrect.get(i).equals(usersTest.get(i))) {
-					isCorrect = false;
-					break;
-				}
-			} catch (Exception x) {
-				isCorrect = false;
-			}
-		}
-		assertEquals(true, isCorrect);
-	}
-	
 	//resets interaction counts
 	public void resetMocked() {
-		reset(pr);
+		reset(cr);
 		reset(nr);
 		reset(ur);
 	}

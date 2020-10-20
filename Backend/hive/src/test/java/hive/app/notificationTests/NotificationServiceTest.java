@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import hive.app.notification.Notification;
 import hive.app.notification.NotificationRepository;
 import hive.app.notification.NotificationService;
+import hive.app.postTests.PostServiceTest;
 
 @RunWith(SpringRunner.class)
 public class NotificationServiceTest {
@@ -35,7 +36,7 @@ public class NotificationServiceTest {
 	
 	@Autowired
 	private NotificationService ns;
-	
+
 	
 	//Cameron first test, doesn't mock... mainly done to learn.
 	@Test

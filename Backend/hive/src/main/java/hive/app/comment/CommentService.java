@@ -66,7 +66,7 @@ public class CommentService {
     	list.remove(user.getUserName());
     	for(String userName : list) {
     		User userToTag = userRepository.findByUserName(userName);
-    		if(user != null) {
+    		if(userToTag != null) {
         		Member member = memberRepository.findOne(new MemberIdentity(hive, user));
         		if(member != null) {
         			notificationRepository.save(new Notification(userToTag.getUserId(), user.getUserId(), postId, "post-commentMention"));
