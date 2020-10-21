@@ -52,13 +52,13 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
 
     EditText buzzTitle;
     EditText buzzContent;
-    private BuzzViewModel mViewModel;
-    private ArrayList<Integer> hiveIds;
-    private ArrayList<String> hiveOptions;
-    private RequestQueue queue;
-    private Spinner mySpinner;
-    private int selectedItemPos;
-    private JSONObject member;
+    public BuzzViewModel mViewModel;
+    public ArrayList<Integer> hiveIds;
+    public ArrayList<String> hiveOptions;
+    public RequestQueue queue;
+    public Spinner mySpinner;
+    public int selectedItemPos;
+    public JSONObject member;
     public static final int RESULT_GALLERY = 0;
 
     public static BuzzFragment newInstance() {
@@ -126,11 +126,10 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
                     @Override
                     public void onResponse(JSONArray response) {
                         try{
-
                             hiveIds.add(-1);
                             hiveOptions.add("Choose a hive.");
                             for(int i = 0; i < response.length(); i++){
-                                member = response.getJSONObject(i); //should return user,hive pair
+                                JSONObject member = response.getJSONObject(i); //should return user,hive pair
                                 Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
                                 hiveIds.add(hiveId);
                                 String hiveName =  member.getJSONObject("hive").getString("name");
@@ -161,7 +160,11 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
         queue.add(jsonArrayRequest);
     }
 
-    private void onOptionsSet(){
+    public Context getBuzzContext() {
+        return this.getContext();
+    }
+
+    public void onOptionsSet(){
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,hiveOptions);
         mySpinner.setAdapter(adapter);
     }
@@ -176,12 +179,12 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
     @Override
     public void onClick(View view) {
 
-
         if (selectedItemPos == 0)
         {
             Toast.makeText(this.getContext(), "Please choose a hive to share this post to.", Toast.LENGTH_LONG).show();
             return;
         }
+
         String url ="http://10.24.227.37:8080/posts";
         // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
 
