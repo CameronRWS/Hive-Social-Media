@@ -58,10 +58,6 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-//        GlideApp.with(this)
-//                .load(storageReference)
-//                .into(profilePic);
-
         //final ProfileLogic logic = new ProfileLogic(this);
         hiveIds = new ArrayList<>();
         hiveOptions = new ArrayList<>();
@@ -87,9 +83,18 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
         com.example.hivefrontend.ui.profile.Logic.ProfileLogic logic = new com.example.hivefrontend.ui.profile.Logic.ProfileLogic(this, serverRequest);
         logic.displayProfile();
 
+        StorageReference test1 = storageReference.child("profilePictures/" + userId + ".jpg");
+        StorageReference test2 = storageReference.child("profileBackgrounds/" + userId + ".jpg");
+
+        GlideApp.with(this)
+                .load(test1)
+                .into(profilePic);
+
+        GlideApp.with(this)
+                .load(test2)
+                .into(header);
     }
-
-
+    
     @Override
     public Context getProfileContext() {
         return this.getApplicationContext();
