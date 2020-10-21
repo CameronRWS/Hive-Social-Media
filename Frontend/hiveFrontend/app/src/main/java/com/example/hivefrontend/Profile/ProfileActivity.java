@@ -5,29 +5,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.profile.IProfileView;
 import com.example.hivefrontend.ui.profile.MyAdapter;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 import com.example.hivefrontend.ui.profile.ProfileViewModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.example.hivefrontend.GlideApp;
 
 import java.util.ArrayList;
 
@@ -49,11 +40,23 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
     public RecyclerView recyclerView;
     public MyAdapter myAdapter;
 
+    private ImageView profilePic;
+    private ImageView header;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         userId = getIntent().getIntExtra("userId", -1);
+
+        profilePic = findViewById(R.id.profilePicture);
+        header = findViewById(R.id.header);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         //final ProfileLogic logic = new ProfileLogic(this);
         hiveIds = new ArrayList<>();
@@ -80,9 +83,18 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
         com.example.hivefrontend.ui.profile.Logic.ProfileLogic logic = new com.example.hivefrontend.ui.profile.Logic.ProfileLogic(this, serverRequest);
         logic.displayProfile();
 
+        StorageReference test1 = storageReference.child("profilePictures/" + userId + ".jpg");
+        StorageReference test2 = storageReference.child("profileBackgrounds/" + userId + ".jpg");
+
+        GlideApp.with(this)
+                .load(test1)
+                .into(profilePic);
+
+        GlideApp.with(this)
+                .load(test2)
+                .into(header);
     }
-
-
+    
     @Override
     public Context getProfileContext() {
         return this.getApplicationContext();
