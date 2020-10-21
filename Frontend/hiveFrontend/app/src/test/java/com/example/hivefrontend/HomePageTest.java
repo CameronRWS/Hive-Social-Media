@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -50,13 +51,14 @@ public class HomePageTest {
         when(view.getHiveIdsDiscover()).thenReturn(testIds);
 
         logic.addToDiscoverIds(3);
-        verify(view,times(1)).addToHiveIdsDiscover(3);
 
+        verify(view,times(1)).addToHiveIdsDiscover(3);
+        assertEquals(testIds,view.getHiveIdsDiscover());
     }
 
     @Test
     public void TestClearAdapterData(){
-        ArrayList<Integer> testIds = new ArrayList<>();
+        final ArrayList<Integer> testIds = new ArrayList<>();
         testIds.add(1);
         testIds.add(2);
         HomeLogic logic;
@@ -65,7 +67,25 @@ public class HomePageTest {
         ServerRequest server = mock(ServerRequest.class);
         logic = new HomeLogic(view,server);
 
+        when(view.getHiveIdsDiscover()).thenReturn(testIds);
+
+        doAnswer( new Answer(){
+
+                      @Override
+                      public Object answer(InvocationOnMock invocation) throws Throwable {
+                          testIds.clear();
+                          return null;
+                      }
+                  }
+
+        ).when(view).clearData();
+
         logic.clearAdapterData();
         verify(view,times(1)).clearData();
+
+        ArrayList<Integer> empty = new ArrayList<>();
+        view.clearData();
+        assertEquals(empty,view.getHiveIdsDiscover());
+        empty.add(3);
     }
 }
