@@ -101,6 +101,7 @@ public class ProfileFragment extends Fragment implements IProfileView{
 
 
 
+
     @Override
     public Context getProfileContext() {
         return this.getContext();

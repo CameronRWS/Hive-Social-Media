@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.hivefrontend.VolleySingleton;
 import com.example.hivefrontend.ui.buzz.Logic.IBuzzVolleyListener;
 import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
@@ -25,8 +26,6 @@ public class ServerRequest implements IBuzzServerRequest {
     public void addVolleyListener(IBuzzVolleyListener l) {
         buzzVolleyListener = l;
     }
-
-
 
     @Override
     public void getHives(int userId) {
@@ -50,14 +49,22 @@ public class ServerRequest implements IBuzzServerRequest {
         VolleySingleton.getInstance(buzzVolleyListener.getBuzzContext()).addToRequestQueue(jsonArrayRequest);
     }
 
-
-
-    private void getUserHives() {
-
-    }
-
     @Override
-    public void makePost() {
+    public void makeBuzz() {
+        String url ="http://10.24.227.37:8080/posts";
+        JSONObject buzz = buzzVolleyListener.createBuzzPost();
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                buzz, new Response.Listener<JSONObject>(){
+            public void onResponse(JSONObject response) {
+                Log.i("request","success!");
+            }
 
+        }, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError error){
+                Log.i("request","fail!");
+            }
+        });
+        VolleySingleton.getInstance(buzzVolleyListener.getBuzzContext()).addToRequestQueue(jsonObjectRequest);
     }
+
 }

@@ -6,5 +6,5 @@ public interface IBuzzServerRequest {
 
     public void addVolleyListener(IBuzzVolleyListener l);
     public void getHives(int userId);
-    public void makePost();
+    public void makeBuzz();
 }

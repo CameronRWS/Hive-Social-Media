@@ -37,6 +37,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
+import com.example.hivefrontend.ui.buzz.Logic.BuzzLogic;
+import com.example.hivefrontend.ui.buzz.Network.ServerRequest;
 import com.example.hivefrontend.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -48,7 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BuzzFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnItemSelectedListener {
 
     EditText buzzTitle;
     EditText buzzContent;
@@ -57,8 +60,8 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
     public ArrayList<String> hiveOptions;
     public RequestQueue queue;
     public Spinner mySpinner;
-    public int selectedItemPos;
-    public JSONObject member;
+    public int selectedItemPos = 0;
+    public int userId = 1;
     public static final int RESULT_GALLERY = 0;
 
     public static BuzzFragment newInstance() {
@@ -82,18 +85,9 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
         ImageButton accessGallery = (ImageButton) rootView.findViewById(R.id.accessGallery);
         ImageButton accessCamera = (ImageButton) rootView.findViewById(R.id.accessCamera);
 
-        b.setOnClickListener(this);
-        selectedItemPos = 0;
-
-        //get the hives the user is part of HARDCODED USER
-        getHives(1);
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                openHome();
-            }
-        });
+            public void onClick(View v) { openHome(); }});
 
         accessGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,51 +107,26 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
             }
         });
 
+        final ServerRequest serverRequest = new ServerRequest();
+        BuzzLogic logic = new BuzzLogic(this, serverRequest);
+        logic.displayBuzzScreen();
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { serverRequest.makeBuzz(); } });
         return rootView;
     }
 
-    private void getHives(int userId){
-        String url ="http://10.24.227.37:8080/members/byUserId/" + userId;
-        // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+    public int getUserId() {
+        return userId;
+    }
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try{
-                            hiveIds.add(-1);
-                            hiveOptions.add("Choose a hive.");
-                            for(int i = 0; i < response.length(); i++){
-                                JSONObject member = response.getJSONObject(i); //should return user,hive pair
-                                Integer hiveId = (Integer) member.getJSONObject("hive").getInt("hiveId");
-                                hiveIds.add(hiveId);
-                                String hiveName =  member.getJSONObject("hive").getString("name");
-                                hiveOptions.add(hiveName);
-                            }
+    public void addHiveIdValue(int i) {
+        hiveIds.add(i);
+    }
 
-                            //here the hive options and corresponding ids have been set appropriately
-                            //can add the options to the spinner
-                            onOptionsSet();
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Log.i("jsonAppError",e.toString());
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        Log.i("volleyAppError","Error: " + error.getMessage());
-                        Log.i("volleyAppError","VolleyError: "+ error);
-                    }
-                });
-
-// Add the request to the RequestQueue.
-        queue.add(jsonArrayRequest);
+    public void addHiveOptionsValue(String s) {
+        hiveOptions.add(s);
     }
 
     public Context getBuzzContext() {
@@ -176,53 +145,30 @@ public class BuzzFragment extends Fragment implements View.OnClickListener, Adap
         // TODO: Use the ViewModel
     }
 
-    @Override
-    public void onClick(View view) {
-
-        if (selectedItemPos == 0)
-        {
-            Toast.makeText(this.getContext(), "Please choose a hive to share this post to.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        String url ="http://10.24.227.37:8080/posts";
-        // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
-
-        final JSONObject postObject = new JSONObject();
-        try{
-            postObject.put("hiveId",hiveIds.get(selectedItemPos));
-            postObject.put("userId",1);
-            postObject.put("title", buzzTitle.getText().toString());
-            postObject.put("textContent", buzzContent.getText().toString());
-
-            Toast.makeText(this.getContext(), "You just made buzz in " + hiveOptions.get(selectedItemPos) + "!", Toast.LENGTH_LONG).show();
-            openHome();
-        } catch (JSONException e){
-            e.printStackTrace();
-            Toast.makeText(this.getContext(), "Error sharing this post. Try again.", Toast.LENGTH_LONG).show();
-        }
-
-
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
-                postObject, new Response.Listener<JSONObject>(){
-
-            public void onResponse(JSONObject response) {
-                Log.i("request","success!");
-            }
-
-        }, new Response.ErrorListener() {
-            public void onErrorResponse(VolleyError error){
-                Log.i("request","fail!");
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(jsonObjectRequest);
-
-    }
-
+    public int getSelectedItemPos() { return selectedItemPos; }
     public void openHome() {
         Intent intent = new Intent(BuzzFragment.this.getActivity(), MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public int getHiveId(int pos) {
+        return hiveIds.get(pos);
+    }
+
+    @Override
+    public String getBuzzTitle() {
+        return buzzTitle.getText().toString();
+    }
+
+    @Override
+    public String getBuzzContent() {
+        return buzzContent.getText().toString();
+    }
+
+    @Override
+    public String getHiveOption(int pos) {
+        return hiveOptions.get(pos);
     }
 
     @Override
