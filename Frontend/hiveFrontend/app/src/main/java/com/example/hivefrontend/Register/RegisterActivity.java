@@ -1,7 +1,8 @@
-package com.example.hivefrontend;
+package com.example.hivefrontend.Register;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,22 +12,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.example.hivefrontend.EditProfileActivity;
+import com.example.hivefrontend.LoginActivity;
+import com.example.hivefrontend.MainActivity;
+import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
+import com.example.hivefrontend.User;
+import com.example.hivefrontend.VolleySingleton;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements IRegisterView {
 
     EditText usernameField, passwordField, emailAddressField;
 
@@ -109,8 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 User user = new User(username, password);
                 SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-                startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
-                Toast.makeText(getApplicationContext(), "Welcome to Hive!", Toast.LENGTH_SHORT).show();
+                successfullyRegistered();
             }
         },
                 new Response.ErrorListener() {
@@ -122,4 +122,65 @@ public class RegisterActivity extends AppCompatActivity {
 
                         VolleySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
     }
+
+    @Override
+    public Context getRegisterContext() {return this.getApplicationContext();}
+
+    @Override
+    public void successfullyRegistered() {
+        startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
+    }
+
+    @Override
+    public String getUsername() {
+        return usernameField.getText().toString().trim();
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordField.getText().toString().trim();
+    }
+
+    @Override
+    public String getEmailAddress() {
+        return emailAddressField.getText().toString().trim();
+    }
+
+    @Override
+    public void usernameCheck() {
+        if (TextUtils.isEmpty(getUsername())) {
+            usernameField.setError("Oops! Please enter something for a username.");
+            usernameField.requestFocus();
+            return;
+        }
+    }
+
+    @Override
+    public void passwordCheck() {
+        if (TextUtils.isEmpty(getPassword())) {
+            passwordField.setError("Oops! Please enter something for a password.");
+            passwordField.requestFocus();
+            return;
+        }
+    }
+
+    @Override
+    public void emailAddressCheck() {
+        if (TextUtils.isEmpty(getEmailAddress())) {
+            emailAddressField.setError("Oops! Please enter something for an email address.");
+            emailAddressField.requestFocus();
+            return;
+        }
+    }
+
+    @Override
+    public void validateEmailAddress() {
+        if (!Patterns.EMAIL_ADDRESS.matcher(getEmailAddress()).matches()) {
+            emailAddressField.setError("Darn. That email address isn't valid!");
+            emailAddressField.requestFocus();
+            return;
+        }
+    }
+
+
 }

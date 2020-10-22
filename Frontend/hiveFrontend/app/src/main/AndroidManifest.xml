@@ -16,7 +16,7 @@
         <activity android:name=".Profile.ProfileActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".PostDetails.PostDetailsActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".Register.RegisterActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
