@@ -86,13 +86,27 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
         StorageReference test1 = storageReference.child("profilePictures/" + userId + ".jpg");
         StorageReference test2 = storageReference.child("profileBackgrounds/" + userId + ".jpg");
 
-        GlideApp.with(this)
+        try {
+            GlideApp.with(this)
                 .load(test1)
                 .into(profilePic);
 
-        GlideApp.with(this)
-                .load(test2)
-                .into(header);
+            GlideApp.with(this)
+                    .load(test2)
+                    .into(header);
+
+        } catch (Exception e) {
+            test1 = storageReference.child("profilePictures/defaultProfile.jpg");
+            test2 = storageReference.child("profileBackgrounds/defaultBackground.jpg");
+            GlideApp.with(this)
+                    .load(test1)
+                    .into(profilePic);
+
+            GlideApp.with(this)
+                    .load(test2)
+                    .into(header);
+        }
+
     }
     
     @Override
