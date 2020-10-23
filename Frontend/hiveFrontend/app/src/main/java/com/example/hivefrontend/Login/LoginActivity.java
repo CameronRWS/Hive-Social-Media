@@ -15,8 +15,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.hivefrontend.Login.Logic.LoginLogic;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.Register.Network.ServerRequest;
 import com.example.hivefrontend.Register.RegisterActivity;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.User;
@@ -44,10 +46,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
+        ServerRequest serverRequest = new ServerRequest();
+        final LoginLogic logic = new LoginLogic(this, serverRequest);
         findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userLogin();
+                logic.loginUser();
             }
         });
 
@@ -59,66 +63,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
             }
         });
     }
-
-    private void userLogin() {
-        final String username = editTextUsername.getText().toString();
-        final String password = editTextPassword.getText().toString();
-
-        if (TextUtils.isEmpty(username)) {
-            editTextUsername.setError("Oops! Please enter your username.");
-            editTextUsername.requestFocus();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            editTextPassword.setError("Oops! Please enter your password.");
-            editTextPassword.requestFocus();
-            return;
-        }
-
-        String url ="http://10.24.227.37:8080/userRegistrations";
-        JsonArrayRequest arrayRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            for(int i = 0; i < response.length(); i++){
-                                JSONObject member = response.getJSONObject(i);
-                                if ((username.compareTo(member.getString("email")) == 0) && (password.compareTo(member.getString("password")) == 0)) {
-                                      userExists = true;
-                                    User user = new User(username, password);
-
-                                    SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                }
-                            }
-                            if (!userExists) {
-                                editTextPassword.setError("Oops! The username or password is incorrect.");
-                                editTextPassword.requestFocus();
-                                return;
-                            }
-
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Log.i("jsonAppError",e.toString());
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        Log.i("volleyAppError","Error: " + error.getMessage());
-                        Log.i("volleyAppError","VolleyError: "+ error);
-
-                    }
-                });
-                VolleySingleton.getInstance(this).addToRequestQueue(arrayRequest);
-    }
-
 
     @Override
     public Context getLoginContext() { return this.getApplicationContext(); }

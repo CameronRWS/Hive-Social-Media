@@ -20,7 +20,13 @@ public class LoginLogic implements ILoginVolleyListener {
     ILoginServerRequest server;
     ILoginView loginView;
 
+    public LoginLogic (ILoginView lv, ILoginServerRequest lsr) {
+        this.server = lsr;
+        this.loginView = lv;
+    }
+
     public Context getLoginContext() {return loginView.getLoginContext();}
+    public void loginUser() {server.loginUser();}
 
     public void login(JSONArray response) throws JSONException {
         String username = loginView.getUsername();

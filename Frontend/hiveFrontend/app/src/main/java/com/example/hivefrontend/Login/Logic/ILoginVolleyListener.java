@@ -8,4 +8,5 @@ import org.json.JSONException;
 public interface ILoginVolleyListener {
     public Context getLoginContext();
     public void login(JSONArray response) throws JSONException;
+    public void loginUser();
 }
