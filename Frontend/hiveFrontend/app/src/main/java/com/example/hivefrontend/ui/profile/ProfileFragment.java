@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,9 +23,12 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.example.hivefrontend.EditProfileActivity;
+import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 
@@ -53,6 +57,12 @@ public class ProfileFragment extends Fragment implements IProfileView{
     public RecyclerView recyclerView;
     public MyAdapter myAdapter;
 
+    private ImageView profilePic;
+    private ImageView header;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
@@ -62,7 +72,10 @@ public class ProfileFragment extends Fragment implements IProfileView{
                              @Nullable Bundle savedInstanceState) {
         //new AppController();
         final View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
-        hiveIds= new ArrayList<>();
+        profilePic = (ImageView) rootView.findViewById(R.id.profilePicture);
+        header = (ImageView) rootView.findViewById(R.id.header);hiveIds= new ArrayList<>();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
         hiveOptions = new ArrayList<>();
         displayName = (TextView) rootView.findViewById(R.id.displayName);
         locationPin = (ImageView) rootView.findViewById(R.id.locationPin);
@@ -88,6 +101,19 @@ public class ProfileFragment extends Fragment implements IProfileView{
         ProfileLogic logic = new ProfileLogic(this, serverRequest);
         logic.displayProfile();
 
+        StorageReference test1 = storageReference.child("profilePictures/" + userId + ".jpg");
+        StorageReference test2 = storageReference.child("profileBackgrounds/" + userId + ".jpg");
+
+        GlideApp.with(this)
+                .load(test1)
+                .error(R.drawable.defaulth)
+                .into(profilePic);
+
+        GlideApp.with(this)
+                .load(test2)
+                .error(R.drawable.defaultb)
+                .into(header);
+        
         return rootView;
     }
 
@@ -98,9 +124,6 @@ public class ProfileFragment extends Fragment implements IProfileView{
         // TODO: Use the ViewModel
 
     }
-
-
-
 
     @Override
     public Context getProfileContext() {
