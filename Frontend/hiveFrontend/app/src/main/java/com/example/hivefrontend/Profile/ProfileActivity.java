@@ -85,27 +85,39 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
 
         StorageReference test1 = storageReference.child("profilePictures/" + userId + ".jpg");
         StorageReference test2 = storageReference.child("profileBackgrounds/" + userId + ".jpg");
+        StorageReference defaultP = storageReference.child("profilePictures/" + userId + ".jpg");
+        StorageReference defaultB = storageReference.child("profileBackgrounds/" + userId + ".jpg");
 
-        try {
-            GlideApp.with(this)
+        GlideApp.with(this)
                 .load(test1)
+                .error(R.drawable.defaulth)
                 .into(profilePic);
 
-            GlideApp.with(this)
-                    .load(test2)
-                    .into(header);
+        GlideApp.with(this)
+                .load(test2)
+                .error(R.drawable.defaultb)
+                .into(header);
 
-        } catch (Exception e) {
-            test1 = storageReference.child("profilePictures/defaultProfile.jpg");
-            test2 = storageReference.child("profileBackgrounds/defaultBackground.jpg");
-            GlideApp.with(this)
-                    .load(test1)
-                    .into(profilePic);
-
-            GlideApp.with(this)
-                    .load(test2)
-                    .into(header);
-        }
+//        try {
+//            GlideApp.with(this)
+//                .load(test1)
+//                .into(profilePic);
+//
+//            GlideApp.with(this)
+//                    .load(test2)
+//                    .into(header);
+//
+//        } catch (Exception e) {
+//            test1 = storageReference.child("profilePictures/defaultProfile.jpg");
+//            test2 = storageReference.child("profileBackgrounds/defaultBackground.jpg");
+//            GlideApp.with(this)
+//                    .load(test1)
+//                    .into(profilePic);
+//
+//            GlideApp.with(this)
+//                    .load(test2)
+//                    .into(header);
+//        }
 
     }
     
