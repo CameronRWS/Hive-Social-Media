@@ -13,6 +13,7 @@ import com.example.hivefrontend.Register.Logic.IRegisterVolleyListener;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.User;
 import com.example.hivefrontend.VolleySingleton;
+import com.example.hivefrontend.ui.buzz.Logic.IBuzzVolleyListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,17 +25,19 @@ public class ServerRequest implements ILoginServerRequest {
     private ILoginVolleyListener loginVolleyListener;
 
     @Override
+    public void addVolleyListener(ILoginVolleyListener l) {
+        loginVolleyListener = l;
+    }
+
+    @Override
     public void loginUser() {
         String url ="http://10.24.227.37:8080/userRegistrations";
         JsonArrayRequest arrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        try {
-                            loginVolleyListener.login(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
+                            loginVolleyListener.onLoginSuccess(response);
                     }
                 }, new Response.ErrorListener() {
 

@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.hivefrontend.Login.Logic.LoginLogic;
+import com.example.hivefrontend.Login.Network.ILoginServerRequest;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.Register.Network.ServerRequest;
@@ -46,12 +47,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
-        ServerRequest serverRequest = new ServerRequest();
-        final LoginLogic logic = new LoginLogic(this, serverRequest);
+
         findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logic.loginUser();
+               loginUser();
             }
         });
 
@@ -64,6 +64,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         });
     }
 
+    public void loginUser() {
+        final ServerRequest serverRequest = new ServerRequest();
+        final LoginLogic logic = new LoginLogic(this, serverRequest);
+
+    }
     @Override
     public Context getLoginContext() { return this.getApplicationContext(); }
 

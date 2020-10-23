@@ -23,10 +23,16 @@ public class LoginLogic implements ILoginVolleyListener {
     public LoginLogic (ILoginView lv, ILoginServerRequest lsr) {
         this.server = lsr;
         this.loginView = lv;
+        server.addVolleyListener(this);
     }
 
     public Context getLoginContext() {return loginView.getLoginContext();}
     public void loginUser() {server.loginUser();}
+
+    @Override
+    public void onLoginSuccess(JSONArray response) {
+
+    }
 
     public void login(JSONArray response) throws JSONException {
         String username = loginView.getUsername();
