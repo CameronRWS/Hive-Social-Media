@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.Register.Logic.IRegisterVolleyListener;
+import com.example.hivefrontend.Register.RegisterActivity;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.User;
 import com.example.hivefrontend.VolleySingleton;
@@ -29,6 +30,7 @@ public class ServerRequest implements IRegisterServerRequest {
 
     @Override
     public void registerUser() {
+        Toast.makeText(registerVolleyListener.getRegisterContext(), "you pressed me...", Toast.LENGTH_SHORT).show();
         String url = "http://10.24.227.37:8080/userRegistrations";
         JSONObject obj = registerVolleyListener.createUser();
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest

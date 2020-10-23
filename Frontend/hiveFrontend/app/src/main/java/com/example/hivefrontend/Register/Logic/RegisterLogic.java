@@ -1,6 +1,7 @@
 package com.example.hivefrontend.Register.Logic;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.hivefrontend.Register.IRegisterView;
 import com.example.hivefrontend.Register.Network.IRegisterServerRequest;
@@ -40,6 +41,7 @@ public class RegisterLogic implements IRegisterVolleyListener {
     public void onRegisterUserSuccess(JSONObject response) {
         User user = new User(registerView.getUsername(), registerView.getPassword());
         SharedPrefManager.getInstance(getRegisterContext()).userLogin(user);
+        registerView.successfullyRegistered();
     }
 
     public Context getRegisterContext() {return registerView.getRegisterContext();}
