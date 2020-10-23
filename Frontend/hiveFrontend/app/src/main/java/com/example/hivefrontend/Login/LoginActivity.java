@@ -1,7 +1,8 @@
-package com.example.hivefrontend;
+package com.example.hivefrontend.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,13 +15,18 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.hivefrontend.MainActivity;
+import com.example.hivefrontend.R;
 import com.example.hivefrontend.Register.RegisterActivity;
+import com.example.hivefrontend.SharedPrefManager;
+import com.example.hivefrontend.User;
+import com.example.hivefrontend.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements ILoginView {
 
     EditText editTextUsername;
     EditText editTextPassword;
@@ -111,5 +117,48 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
                 VolleySingleton.getInstance(this).addToRequestQueue(arrayRequest);
+    }
+
+
+    @Override
+    public Context getLoginContext() { return this.getApplicationContext(); }
+
+    @Override
+    public String getUsername() {
+        return editTextUsername.getText().toString();
+    }
+
+    @Override
+    public String getPassword() {
+        return editTextPassword.getText().toString();
+    }
+
+    @Override
+    public void checkUsername() {
+        if (TextUtils.isEmpty(getUsername())) {
+            editTextUsername.setError("Oops! Please enter your username.");
+            editTextUsername.requestFocus();
+            return;
+        }
+    }
+
+    @Override
+    public void checkPassword() {
+        if (TextUtils.isEmpty(getPassword())) {
+            editTextPassword.setError("Oops! Please enter your password.");
+            editTextPassword.requestFocus();
+            return;
+        }
+    }
+
+    @Override
+    public void startActivity() {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+    }
+
+    @Override
+    public void userDNE() {
+        editTextPassword.setError("Oops! The username or password is incorrect.");
+        editTextPassword.requestFocus();
     }
 }

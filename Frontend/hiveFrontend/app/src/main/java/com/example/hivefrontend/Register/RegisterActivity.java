@@ -17,7 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.hivefrontend.EditProfileActivity;
-import com.example.hivefrontend.LoginActivity;
+import com.example.hivefrontend.Login.LoginActivity;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
