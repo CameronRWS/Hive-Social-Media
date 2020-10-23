@@ -20,6 +20,8 @@ import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.LoginActivity;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.Register.Logic.RegisterLogic;
+import com.example.hivefrontend.Register.Network.ServerRequest;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.User;
 import com.example.hivefrontend.VolleySingleton;
@@ -48,10 +50,13 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         emailAddressField = (EditText) findViewById(R.id.emailAddressField);
         final Button cancelButton = (Button) findViewById(R.id.cancelButton);
 
+        final ServerRequest serverRequest = new ServerRequest();
+        final RegisterLogic logic = new RegisterLogic();
+
         findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerUser();
+                serverRequest.registerUser();
             }
         });
 
@@ -62,65 +67,6 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
                 startActivity(intent);
             }
         });
-    }
-
-    private void registerUser() {
-        final String username = usernameField.getText().toString().trim();
-        final String emailAddress = emailAddressField.getText().toString().trim();
-        final String password = passwordField.getText().toString().trim();
-
-        if (TextUtils.isEmpty(username)) {
-            usernameField.setError("Oops! Please enter something for a username.");
-            usernameField.requestFocus();
-            return;
-        }
-
-        if (TextUtils.isEmpty(emailAddress)) {
-            emailAddressField.setError("Oops! Please enter something for an email address.");
-            emailAddressField.requestFocus();
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches()) {
-            emailAddressField.setError("Darn. That email address isn't valid!");
-            emailAddressField.requestFocus();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            passwordField.setError("Oops! Please enter something for a password.");
-            passwordField.requestFocus();
-            return;
-        }
-        JSONObject object = new JSONObject();
-        try {
-            object.put("email", emailAddress);
-            object.put("userRegistrationIdentity", null);
-            object.put("password", password);
-            object.put("birthday", "test birthday");
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String url = "http://10.24.227.37:8080/userRegistrations";
-        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest
-                (Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                User user = new User(username, password);
-                SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-                successfullyRegistered();
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                        VolleySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
     }
 
     @Override
