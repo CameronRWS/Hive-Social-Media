@@ -42,6 +42,7 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
         postId = getIntent().getIntExtra("postId",0);
         comments = new ArrayList<>();
         ServerRequest server = new ServerRequest();
+        setLogic(new PostDetailsLogic(this,server));
         logic = new PostDetailsLogic(this,server);
         final RecyclerView recyclerView = findViewById(R.id.postViewRecycler);
 
@@ -68,9 +69,15 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
             }
         });
 
+        getPostInfo(postId);
 
+    }
+    public void getPostInfo(int postId){
         logic.getPostInfoJson(postId);
+    }
 
+    public void setLogic(PostDetailsLogic logic){
+        if(this.logic==null) this.logic = logic;
     }
 
     public void onUserClick(int userId, View view){

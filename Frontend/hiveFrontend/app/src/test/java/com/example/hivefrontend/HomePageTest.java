@@ -56,6 +56,64 @@ public class HomePageTest {
         assertEquals(testIds,view.getHiveIdsDiscover());
     }
 
+
+    @Test
+    public void TestUpdateLogic(){
+        HomeFragment view = mock(HomeFragment.class);
+        final ServerRequest server = mock(ServerRequest.class);
+        final HomeLogic logic = new HomeLogic(view,server);
+
+        logic.updatePostLogic();
+
+        doAnswer( new Answer(){
+
+                      @Override
+                      public Object answer(InvocationOnMock invocation) throws Throwable {
+                          server.getDiscoverPosts();
+                          return null;
+                      }
+                  }
+
+        ).when(server).updatePostRequest();
+
+        doAnswer( new Answer(){
+
+                      @Override
+                      public Object answer(InvocationOnMock invocation) throws Throwable {
+                          server.getDiscoverHives();
+                          server.getHomePosts();
+                          return null;
+                      }
+                  }
+
+        ).when(server).getDiscoverPosts();
+
+        //doNothing().when(server).sortPosts();
+        //doNothing().when(server).getDiscoverHives();
+//
+//        doAnswer( new Answer(){
+//
+//                      @Override
+//                      public Object answer(InvocationOnMock invocation) throws Throwable {
+//                          server.sortPosts();
+//                          return null;
+//                      }
+//                  }
+//
+//        ).when(server).getHomePosts();
+
+
+
+
+        verify(server,times(1)).updatePostRequest();
+        //verify(server,times(1)).getDiscoverPosts();
+        //verify(server,times(1)).getDiscoverHives();
+        //verify(server,times(1)).getHomePosts();
+        //verify(server,times(1)).sortPosts();
+
+    }
+
+
     @Test
     public void TestClearAdapterData(){
         final ArrayList<Integer> testIds = new ArrayList<>();
