@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".EditProfileActivity"></activity>
         <activity android:name=".Profile.ProfileActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".Login.LoginActivity" />
         <activity android:name=".PostDetails.PostDetailsActivity" />
         <activity android:name=".Register.RegisterActivity" />
 

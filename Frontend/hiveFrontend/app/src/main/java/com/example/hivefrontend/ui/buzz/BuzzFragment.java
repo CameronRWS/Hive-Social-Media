@@ -110,6 +110,8 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         final ServerRequest serverRequest = new ServerRequest();
         BuzzLogic logic = new BuzzLogic(this, serverRequest);
         logic.displayBuzzScreen();
+
+
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { serverRequest.makeBuzz(); } });

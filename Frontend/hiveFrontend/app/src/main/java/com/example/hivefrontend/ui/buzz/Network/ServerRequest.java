@@ -36,7 +36,6 @@ public class ServerRequest implements IBuzzServerRequest {
                     public void onResponse(JSONArray response) {
                         buzzVolleyListener.onGetHivesSuccess(response);
                     }
-
                 }, new Response.ErrorListener() {
 
                     @Override
@@ -58,7 +57,6 @@ public class ServerRequest implements IBuzzServerRequest {
             public void onResponse(JSONObject response) {
                 Log.i("request","success!");
             }
-
         }, new Response.ErrorListener() {
             public void onErrorResponse(VolleyError error){
                 Log.i("request","fail!");
