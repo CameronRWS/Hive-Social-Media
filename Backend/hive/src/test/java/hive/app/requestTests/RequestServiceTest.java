@@ -35,6 +35,7 @@ import hive.app.notification.NotificationService;
 import hive.app.post.Post;
 import hive.app.postTests.PostServiceTest;
 import hive.app.request.Request;
+import hive.app.request.RequestIdentity;
 import hive.app.request.RequestRepository;
 import hive.app.request.RequestService;
 import hive.app.user.User;
@@ -99,6 +100,7 @@ public class RequestServiceTest {
 	public Map<String, String> body;
 	public Hive testHive;
 	public User testUser;
+	public RequestIdentity testRequestIdentity;
 	
 	@Before 
 	public void beforeTests() {
@@ -164,7 +166,7 @@ public class RequestServiceTest {
 	@Test
 	public void testCreate() {
 		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
-		testUser = new User("Killua", "displayName", "birthday", "biography", "location");
+		testUser = new User("Casper", "displayName", "birthday", "biography", "location");
 		
 		when(hr.findOne((Integer) any(Integer.class))).thenReturn(this.testHive);
 		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
@@ -175,10 +177,50 @@ public class RequestServiceTest {
 		body.put("requestMessage", "Can I join the hive??");
 		
 		users = new ArrayList<String>();
-		users.add("Killua");
+		users.add("Casper");
+		
+		members = new ArrayList<String>();
 		
 		rs.create(body);
+		//check for created request
 		verify(rr, times(1)).save((Request) any(Request.class));
+		//check user requesting membership is not apart of the hive
+		
+		resetMocked();
+	}
+	
+	@Test
+	public void testCreate_ExistingMember() {
+		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		testUser = new User("Casper", "displayName", "birthday", "biography", "location");
+		
+		when(hr.findOne((Integer) any(Integer.class))).thenReturn(this.testHive);
+		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
+		
+		body = new HashMap<String, String>();
+		body.put("hiveId", "3");
+		body.put("userId", "1");
+		body.put("requestMessage", "Can I join the hive??");
+		
+		users = new ArrayList<String>();
+		users.add("Casper");
+		
+		members = new ArrayList<String>();
+		members.add("Casper");
+		
+		rs.create(body);
+		//check the user requesting membership is already member
+		boolean isMember = true;
+		for (int i = 0; i < members.size(); i ++) {
+			if (!members.get(i).equals(testUser.getUserName())) {
+				isMember = false;
+				break;
+			}
+		}
+		assertEquals(true, isMember);
+		//check request was not created
+		verify(rr, times(0)).save((Request) any(Request.class));
+		
 		resetMocked();
 	}
 	
