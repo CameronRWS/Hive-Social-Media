@@ -7,9 +7,7 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,27 +16,11 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-import hive.app.hive.Hive;
-import hive.app.hive.HiveRepository;
 import hive.app.interest.Interest;
 import hive.app.interest.InterestRepository;
 import hive.app.interest.InterestService;
-import hive.app.member.Member;
-import hive.app.member.MemberIdentity;
-import hive.app.member.MemberRepository;
-import hive.app.notification.Notification;
-import hive.app.notification.NotificationRepository;
-import hive.app.notification.NotificationService;
-import hive.app.post.Post;
-import hive.app.postTests.PostServiceTest;
-import hive.app.request.Request;
-import hive.app.request.RequestRepository;
-import hive.app.request.RequestService;
-import hive.app.user.User;
-import hive.app.user.UserRepository;
 
 @RunWith(SpringRunner.class)
 public class InterestServiceTest {
@@ -73,7 +55,6 @@ public class InterestServiceTest {
 		    	return interest;
 		    }
 		});	
-		
 	}
 	
 	@Test
