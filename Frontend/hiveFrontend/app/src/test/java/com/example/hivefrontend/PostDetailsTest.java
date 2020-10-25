@@ -41,6 +41,5 @@ public class PostDetailsTest {
 
         verify(server,times(1)).requestPostJson(3);
         verify(post,times(1)).handleCommentSuccess();
-
     }
 }

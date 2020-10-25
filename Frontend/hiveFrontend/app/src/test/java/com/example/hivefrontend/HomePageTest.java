@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doAnswer;
@@ -34,11 +35,9 @@ public class HomePageTest {
     private Context context;
 
 
-
-
     @Test
     public void TestAddToDiscoverHiveIds(){
-        ArrayList<Integer> testIds = new ArrayList<>();
+        final ArrayList<Integer> testIds = new ArrayList<>();
         testIds.add(1);
         testIds.add(2);
         HomeLogic logic;
@@ -47,23 +46,38 @@ public class HomePageTest {
         ServerRequest server = mock(ServerRequest.class);
         logic = new HomeLogic(view,server);
 
-
         when(view.getHiveIdsDiscover()).thenReturn(testIds);
+        doAnswer( new Answer(){
+
+                      @Override
+                      public Object answer(InvocationOnMock invocation) throws Throwable {
+                          int hiveId = invocation.getArgument(0);
+                          testIds.add(hiveId);
+                          return null;
+                      }
+                  }
+
+        ).when(view).addToHiveIdsDiscover(anyInt());
 
         logic.addToDiscoverIds(3);
 
-        verify(view,times(1)).addToHiveIdsDiscover(3);
-        assertEquals(testIds,view.getHiveIdsDiscover());
-    }
+        ArrayList<Integer> verify = new ArrayList<>();
+        verify.add(1);
+        verify.add(2);
+        verify.add(3);
 
+        verify(view,times(1)).addToHiveIdsDiscover(3);
+        assertEquals(testIds,logic.getHiveIdsDiscover());
+        assertEquals(testIds,verify);
+        verify(view,times(1)).getHiveIdsDiscover();
+
+    }
 
     @Test
     public void TestUpdateLogic(){
         HomeFragment view = mock(HomeFragment.class);
         final ServerRequest server = mock(ServerRequest.class);
         final HomeLogic logic = new HomeLogic(view,server);
-
-        logic.updatePostLogic();
 
         doAnswer( new Answer(){
 
@@ -76,40 +90,11 @@ public class HomePageTest {
 
         ).when(server).updatePostRequest();
 
-        doAnswer( new Answer(){
 
-                      @Override
-                      public Object answer(InvocationOnMock invocation) throws Throwable {
-                          server.getDiscoverHives();
-                          server.getHomePosts();
-                          return null;
-                      }
-                  }
-
-        ).when(server).getDiscoverPosts();
-
-        //doNothing().when(server).sortPosts();
-        //doNothing().when(server).getDiscoverHives();
-//
-//        doAnswer( new Answer(){
-//
-//                      @Override
-//                      public Object answer(InvocationOnMock invocation) throws Throwable {
-//                          server.sortPosts();
-//                          return null;
-//                      }
-//                  }
-//
-//        ).when(server).getHomePosts();
-
-
-
+        logic.updatePostLogic();
 
         verify(server,times(1)).updatePostRequest();
-        //verify(server,times(1)).getDiscoverPosts();
-        //verify(server,times(1)).getDiscoverHives();
-        //verify(server,times(1)).getHomePosts();
-        //verify(server,times(1)).sortPosts();
+        verify(server,times(1)).getDiscoverPosts();
 
     }
 
@@ -144,6 +129,6 @@ public class HomePageTest {
         ArrayList<Integer> empty = new ArrayList<>();
         view.clearData();
         assertEquals(empty,view.getHiveIdsDiscover());
-        empty.add(3);
+        assertEquals(testIds,empty);
     }
 }
