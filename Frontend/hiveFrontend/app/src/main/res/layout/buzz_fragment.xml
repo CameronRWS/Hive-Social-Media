@@ -137,4 +137,15 @@
         app:layout_constraintStart_toEndOf="@+id/accessCamera"
         app:layout_constraintTop_toBottomOf="@+id/buzzContentInput" />
 
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="242dp"
+        android:layout_height="233dp"
+        android:src="@drawable/emptypng"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accessGallery" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

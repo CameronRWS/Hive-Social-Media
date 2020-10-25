@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +65,8 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public int selectedItemPos = 0;
     public int userId = 1;
     public static final int RESULT_GALLERY = 0;
+    public ImageView imagePreview;
+    private static final int GALLERY_REQUEST_CODE = 123;
 
     public static BuzzFragment newInstance() {
         return new BuzzFragment();
@@ -84,26 +88,38 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         Button b = (Button) rootView.findViewById(R.id.submitBuzz);
         ImageButton accessGallery = (ImageButton) rootView.findViewById(R.id.accessGallery);
         ImageButton accessCamera = (ImageButton) rootView.findViewById(R.id.accessCamera);
+        imagePreview = (ImageView) rootView.findViewById(R.id.imagePreview);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { openHome(); }});
-
+//
+//        accessGallery.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent galleryIntent = new Intent();
+//                galleryIntent.setType("image/*");
+//                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+//            }
+//        });
+//
         accessGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent galleryIntent = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent , RESULT_GALLERY );
+                startActivityForResult(galleryIntent , GALLERY_REQUEST_CODE);
             }
         });
 
         accessCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                startActivity(intent);
+                Intent intent = new Intent(
+                        android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, GALLERY_REQUEST_CODE);
             }
         });
 
@@ -115,7 +131,6 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
             public void onClick(View view) { serverRequest.makeBuzz(); } });
         return rootView;
     }
-
 
     public int getUserId() {
         return userId;
@@ -136,6 +151,14 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public void onOptionsSet(){
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,hiveOptions);
         mySpinner.setAdapter(adapter);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == GALLERY_REQUEST_CODE && data != null) {
+            Uri imageData = data.getData();
+            imagePreview.setImageURI(imageData);
+        }
     }
 
     @Override
