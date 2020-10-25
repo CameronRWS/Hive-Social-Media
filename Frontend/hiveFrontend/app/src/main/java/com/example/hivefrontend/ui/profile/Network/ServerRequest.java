@@ -37,7 +37,6 @@ public class ServerRequest implements IProfileServerRequest {
         //first request: user information
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
                     @Override
                     public void onResponse(JSONArray response) {
                         profileVolleyListener.onUserInfoSuccess(response);
@@ -52,6 +51,7 @@ public class ServerRequest implements IProfileServerRequest {
                 });
         VolleySingleton.getInstance(profileVolleyListener.getProfileContext()).addToRequestQueue(jsonArrayRequest);
     }
+
 
     public void hiveListRequest(){
         //second request: hive information

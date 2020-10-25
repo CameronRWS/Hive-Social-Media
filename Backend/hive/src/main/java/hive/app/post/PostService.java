@@ -70,10 +70,13 @@ public class PostService {
         //create notification for all tagged users
     	list.remove(user.getUserName());
     	for(String userName : list) {
+    		//find each user given a username
     		User userToTag = userRepository.findByUserName(userName);
-    		if(user != null) {
+    		if(userToTag != null) {
+    			//if the user exists, check if it is apart of the hive
         		Member member = memberRepository.findOne(new MemberIdentity(hive, userToTag));
         		if(member != null) {
+        			//create notification for the user
         			notificationRepository.save(new Notification(userToTag.getUserId(), user.getUserId(), post.getPostId(), "post-postMention"));
         		}
     		}
