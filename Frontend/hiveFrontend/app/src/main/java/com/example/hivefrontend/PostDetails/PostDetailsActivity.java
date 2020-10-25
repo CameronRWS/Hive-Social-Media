@@ -27,7 +27,6 @@ import java.util.ArrayList;
 public class PostDetailsActivity extends AppCompatActivity implements IPostView{
 
 
-    private RequestQueue queue;
     public String hiveName;
     public ArrayList<JSONObject> comments;
     public ArrayList<JSONObject> likes;
@@ -41,9 +40,9 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
         setContentView(R.layout.activity_post_details);
         //intent should have grabbed post id
         postId = getIntent().getIntExtra("postId",0);
-        queue = Volley.newRequestQueue(this);
         comments = new ArrayList<>();
         ServerRequest server = new ServerRequest();
+        setLogic(new PostDetailsLogic(this,server));
         logic = new PostDetailsLogic(this,server);
         final RecyclerView recyclerView = findViewById(R.id.postViewRecycler);
 
@@ -70,9 +69,15 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
             }
         });
 
+        getPostInfo(postId);
 
+    }
+    public void getPostInfo(int postId){
         logic.getPostInfoJson(postId);
+    }
 
+    public void setLogic(PostDetailsLogic logic){
+        if(this.logic==null) this.logic = logic;
     }
 
     public void onUserClick(int userId, View view){

@@ -47,7 +47,7 @@ public class ServerRequest implements IPostServerRequest{
         VolleySingleton.getInstance(logic.getPostContext()).addToRequestQueue(postDetailsRequest);
     }
 
-    private void getHiveName(final JSONObject post) throws JSONException {
+    public void getHiveName(final JSONObject post) throws JSONException {
         int hiveId = post.getInt("hiveId");
 
         String url ="http://10.24.227.37:8080/hives/byHiveId/" + hiveId;
