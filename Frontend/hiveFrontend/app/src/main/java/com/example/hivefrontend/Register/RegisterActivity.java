@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         final Button cancelButton = (Button) findViewById(R.id.cancelButton);
 
         final ServerRequest serverRequest = new ServerRequest();
-        final RegisterLogic logic = new RegisterLogic();
+        RegisterLogic logic = new RegisterLogic(this, serverRequest);
 
         findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
             @Override

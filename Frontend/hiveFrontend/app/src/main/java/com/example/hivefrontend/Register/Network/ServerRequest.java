@@ -23,14 +23,15 @@ public class ServerRequest implements IRegisterServerRequest {
     private String tag_json_obj = "json_obj_req";
     private IRegisterVolleyListener registerVolleyListener;
 
+
+
     @Override
     public void addVolleyListener(IRegisterVolleyListener r) {
-        registerVolleyListener = r;
+        this.registerVolleyListener = r;
     }
 
     @Override
     public void registerUser() {
-        Toast.makeText(registerVolleyListener.getRegisterContext(), "you pressed me...", Toast.LENGTH_SHORT).show();
         String url = "http://10.24.227.37:8080/userRegistrations";
         JSONObject obj = registerVolleyListener.createUser();
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest

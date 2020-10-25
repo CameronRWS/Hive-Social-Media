@@ -17,6 +17,11 @@ public class RegisterLogic implements IRegisterVolleyListener {
     IRegisterServerRequest server;
     IRegisterView registerView;
 
+    public RegisterLogic(IRegisterView rv, IRegisterServerRequest rsr) {
+        this.registerView = rv;
+        this.server = rsr;
+        server.addVolleyListener(this);
+    }
     @Override
     public JSONObject createUser() {
         JSONObject object = new JSONObject();
