@@ -53,8 +53,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, "Hey", Toast.LENGTH_SHORT).show();
-
+               serverRequest.loginUser();
             }
         });
 
@@ -126,12 +125,36 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
                 VolleySingleton.getInstance(this).addToRequestQueue(arrayRequest);
     }
 
+    public void fieldChecks() {
+        if (TextUtils.isEmpty(getUsername())) {
+            editTextUsername.setError("Oops! Please enter your username.");
+            editTextUsername.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(getPassword())) {
+            editTextPassword.setError("Oops! Please enter your password.");
+            editTextPassword.requestFocus();
+            return;
+        }
+    }
     public void openHome() {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
     public String getUsername() { return editTextUsername.getText().toString(); }
-
+    @Override
+    public void userDNE() {
+        editTextPassword.setError("Oops! The username or password is incorrect.");
+        editTextPassword.requestFocus();
+        return;
+    }
     public String getPassword() { return editTextPassword.getText().toString(); }
+    public void setExistsTrue() {
+        userExists = true;
+    }
+    public boolean getUserExists() {
+        return userExists;
+    }
 
     public Context getLoginContext() {
         return this.getApplicationContext();
