@@ -35,12 +35,9 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28)
-public class PostDetailsRoboelectricTest {
+public class LoginRoboelectricTest {
 
 
-
-    @Mock
-    Context context;
     @Mock
     private LoginActivity activity;
 
