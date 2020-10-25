@@ -7,12 +7,10 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +18,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import hive.app.hive.Hive;
 import hive.app.hive.HiveRepository;
 import hive.app.member.Member;
@@ -31,9 +27,6 @@ import hive.app.member.MemberIdentity;
 import hive.app.member.MemberRepository;
 import hive.app.notification.Notification;
 import hive.app.notification.NotificationRepository;
-import hive.app.notification.NotificationService;
-import hive.app.post.Post;
-import hive.app.postTests.PostServiceTest;
 import hive.app.request.Request;
 import hive.app.request.RequestIdentity;
 import hive.app.request.RequestRepository;
@@ -100,7 +93,8 @@ public class RequestServiceTest {
 	public Map<String, String> body;
 	public Hive testHive;
 	public User testUser;
-	public RequestIdentity testRequestIdentity;
+	public Request testRequest;
+	public List<Member> testMembers;
 	
 	@Before 
 	public void beforeTests() {
@@ -148,7 +142,8 @@ public class RequestServiceTest {
 		    }
 		});	
 	}
-	// first test, no mocking yet.
+	
+// first test, no mocking yet.
 	@Test
 	public void testFindByUserId() {
 		int testUserId = 1;
@@ -182,9 +177,9 @@ public class RequestServiceTest {
 		members = new ArrayList<String>();
 		
 		rs.create(body);
-		//check for created request
+	//check for created request
 		verify(rr, times(1)).save((Request) any(Request.class));
-		//check user requesting membership is not apart of the hive
+	//check user requesting membership is not apart of the hive
 		
 		resetMocked();
 	}
@@ -209,7 +204,7 @@ public class RequestServiceTest {
 		members.add("Casper");
 		
 		rs.create(body);
-		//check the user requesting membership is already member
+	//check the user requesting membership is already member
 		boolean isMember = true;
 		for (int i = 0; i < members.size(); i ++) {
 			if (!members.get(i).equals(testUser.getUserName())) {
@@ -218,8 +213,75 @@ public class RequestServiceTest {
 			}
 		}
 		assertEquals(true, isMember);
-		//check request was not created
+		
+	//check request was not created
 		verify(rr, times(0)).save((Request) any(Request.class));
+		
+		resetMocked();
+	}
+	
+	@Test
+	public void testCreate_ModNotified() {
+		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		testUser = new User("Casper", "displayName", "birthday", "biography", "location");
+		
+		when(hr.findOne((Integer) any(Integer.class))).thenReturn(this.testHive);
+		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
+		
+		body = new HashMap<String, String>();
+		body.put("hiveId", "3");
+		body.put("userId", "1");
+		body.put("requestMessage", "Can I join the hive??");
+		
+		users = new ArrayList<String>();
+		users.add("Casper");
+		users.add("Greg");
+		users.add("Julie");
+		users.add("Laura");
+		users.add("Boss");
+		
+		User moderator = new User("Boss", "displayName", "birthday", "biography", "location");
+		MemberIdentity moderatorId = new MemberIdentity(testHive, moderator);
+		testMembers = new ArrayList<Member>();
+		testMembers.add(new Member(moderatorId, true));
+		when(mr.findByHiveIdAndIsMod((Integer) any(Integer.class))).thenReturn(this.testMembers);
+		
+		members = new ArrayList<String>();
+		members.add("Greg");
+		members.add("Julie");
+		members.add("Laura");
+		members.add("Boss");
+		
+		rs.create(body);
+		
+	//check request was created
+		verify(rr, times(1)).save((Request) any(Request.class));
+		
+	//check notification was created for moderator
+		verify(nr, times(1)).save((Notification) any(Notification.class));
+		
+		resetMocked();
+	}
+	
+	@Test
+	public void testUpdate() {
+		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		testUser = new User("Lauren", "displayName", "birthday", "biography", "location");
+		RequestIdentity requestId = new RequestIdentity(testHive.getHiveId(), testUser);
+		testRequest = new Request(requestId, "");
+		
+		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
+		when(rr.findOne((RequestIdentity) any(RequestIdentity.class))).thenReturn(testRequest);
+		
+		Map<String, String> body = new HashMap<String, String>();
+		body.put("hiveId", "0");
+		body.put("userId", "0");
+		body.put("requestMessage", "new message");
+		
+		Request updatedRequest = rs.update(body);
+		
+	//check requestMessage was updated
+		assertEquals(true, updatedRequest.getRequestMessage().equals(body.get("requestMessage")));
 		
 		resetMocked();
 	}
