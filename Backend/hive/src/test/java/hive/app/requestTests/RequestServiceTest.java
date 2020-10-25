@@ -3,9 +3,13 @@ package hive.app.requestTests;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,8 +99,6 @@ public class RequestServiceTest {
 	public Map<String, String> body;
 	public Hive testHive;
 	public User testUser;
-	// not sure if i need this vvv
-	public Request testRequest;
 	
 	@Before 
 	public void beforeTests() {
@@ -158,4 +160,32 @@ public class RequestServiceTest {
 		}
 		assertEquals(true, correctUserId);
 	}
+	
+	@Test
+	public void testCreate() {
+		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		testUser = new User("Killua", "displayName", "birthday", "biography", "location");
+		
+		when(hr.findOne((Integer) any(Integer.class))).thenReturn(this.testHive);
+		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
+		
+		body = new HashMap<String, String>();
+		body.put("hiveId", "3");
+		body.put("userId", "1");
+		body.put("requestMessage", "Can I join the hive??");
+		
+		users = new ArrayList<String>();
+		users.add("Killua");
+		
+		rs.create(body);
+		verify(rr, times(1)).save((Request) any(Request.class));
+		resetMocked();
+	}
+	
+	public void resetMocked() {
+		reset(rr);
+		reset(nr);
+		reset(ur);
+	}
+	
 }
