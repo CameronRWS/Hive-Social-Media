@@ -4,19 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.PostDetails.Logic.PostDetailsLogic;
 import com.example.hivefrontend.PostDetails.Network.ServerRequest;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,16 +43,30 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
     public int postId;
     public PostDetailsLogic logic;
 
+    private ImageView postImage;
+    private ImageView header;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
+    private ServerRequest server;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
+
+        postImage = findViewById(R.id.postImage);
+        header = findViewById(R.id.header);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
         //intent should have grabbed post id
         postId = getIntent().getIntExtra("postId",0);
         comments = new ArrayList<>();
-        ServerRequest server = new ServerRequest();
+        server = new ServerRequest();
         setLogic(new PostDetailsLogic(this,server));
-        logic = new PostDetailsLogic(this,server);
+        server.addVolleyListener(logic);
         final RecyclerView recyclerView = findViewById(R.id.postViewRecycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -65,13 +88,60 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
             @Override
             public void onClick(View view) {
                 //prompts a dialog box, will post the comment
-                logic.promptDialog();
+                promptDialog();
             }
         });
 
         getPostInfo(postId);
-
+        
+        StorageReference test1 = storageReference.child("posts/" + postId + ".jpg");
+        GlideApp.with(this)
+                .load(test1)
+                .into(postImage);
     }
+
+    public void promptDialog() {
+        LayoutInflater li = LayoutInflater.from(PostDetailsActivity.this);
+        View promptsView = li.inflate(R.layout.prompts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                PostDetailsActivity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                if(userInput.getText().toString().length()==0){
+                                    Toast.makeText(PostDetailsActivity.this,"Cannot submit an empty comment!", Toast.LENGTH_LONG);
+                                }
+                                else {
+                                    server.postComment(userInput.getText().toString());
+                                }
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
     public void getPostInfo(int postId){
         logic.getPostInfoJson(postId);
     }
@@ -92,7 +162,7 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
 
     @Override
     public Context getPostContext() {
-        return this.getApplicationContext();
+        return PostDetailsActivity.this;
     }
 
     public int getPostId() {

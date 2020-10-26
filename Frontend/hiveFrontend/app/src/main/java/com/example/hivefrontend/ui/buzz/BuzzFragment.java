@@ -3,14 +3,18 @@ package com.example.hivefrontend.ui.buzz;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -23,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,19 +40,29 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
+import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.HiveCreation.HiveCreation;
+
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.buzz.Logic.BuzzLogic;
 import com.example.hivefrontend.ui.buzz.Network.ServerRequest;
 import com.example.hivefrontend.ui.home.HomeFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,8 +77,15 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public RequestQueue queue;
     public Spinner mySpinner;
     public int selectedItemPos = 0;
+
     public int userId = 2;
-    public static final int RESULT_GALLERY = 0;
+    public ImageView imagePreview;
+    private static final int GALLERY_REQUEST_CODE = 123;
+    private static final int CAMERA_REQUEST = 1888;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
 
     public static BuzzFragment newInstance() {
         return new BuzzFragment();
@@ -85,6 +107,9 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         Button b = (Button) rootView.findViewById(R.id.submitBuzz);
         ImageButton accessGallery = (ImageButton) rootView.findViewById(R.id.accessGallery);
         ImageButton accessCamera = (ImageButton) rootView.findViewById(R.id.accessCamera);
+        imagePreview = (ImageView) rootView.findViewById(R.id.imagePreview);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,18 +118,16 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         accessGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent galleryIntent = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent , RESULT_GALLERY );
+                chooseImage();
             }
         });
 
         accessCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                startActivity(intent);
+                Intent intent = new Intent(
+                        android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, GALLERY_REQUEST_CODE);
             }
         });
 
@@ -113,21 +136,30 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         logic.displayBuzzScreen();
         b.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { serverRequest.makeBuzz(); } });
-
+            public void onClick(View view) {
+                serverRequest.makeBuzz();
+                uploadImage();
+            }
+            
         Button createHive = rootView.findViewById(R.id.addHiveButton);
         createHive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createHive();
-            }
         });
         return rootView;
     }
 
+
     public void createHive(){
         Intent intent = new Intent(BuzzFragment.this.getActivity(), HiveCreation.class);
         startActivity(intent);
+    }
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST_CODE);
     }
 
     public int getUserId() {
@@ -149,6 +181,49 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public void onOptionsSet(){
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),android.R.layout.simple_spinner_item,hiveOptions);
         mySpinner.setAdapter(adapter);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == GALLERY_REQUEST_CODE && data != null && data.getData() != null )
+        {
+            imageUri = data.getData();
+            imagePreview.setImageURI(imageUri);
+        }
+    }
+
+    private void uploadImage() {
+        if (imageUri != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference updatedPhoto = storageReference.child("images/" + userId + ".jpg");
+            updatedPhoto.putFile(imageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
     }
 
     @Override
@@ -194,6 +269,4 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
-
 }

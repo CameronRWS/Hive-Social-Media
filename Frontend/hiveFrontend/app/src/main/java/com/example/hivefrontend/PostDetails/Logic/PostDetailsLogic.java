@@ -43,48 +43,7 @@ public class PostDetailsLogic implements IPostVolleyListener{
     }
 
 
-    public void promptDialog() {
-        LayoutInflater li = LayoutInflater.from(p.getPostContext());
-        View promptsView = li.inflate(R.layout.prompts, null);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                p.getPostContext());
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        final EditText userInput = (EditText) promptsView
-                .findViewById(R.id.editTextDialogUserInput);
-
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                // get user input and set it to result
-                                if(userInput.getText().toString().length()==0){
-                                    Toast.makeText(p.getPostContext(),"Cannot submit an empty comment!", Toast.LENGTH_LONG);
-                                }
-                                else {
-                                    ServerRequest server = new ServerRequest();
-                                    server.postComment(userInput.getText().toString());
-                                }
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-    }
 
     public void checkLikesAndPost(){
         server.checkLikesAndPost();
