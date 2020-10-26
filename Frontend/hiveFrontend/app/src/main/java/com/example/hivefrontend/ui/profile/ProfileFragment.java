@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.R;
@@ -106,11 +107,15 @@ public class ProfileFragment extends Fragment implements IProfileView{
 
         GlideApp.with(this)
                 .load(test1)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .skipMemoryCache(true)
                 .error(R.drawable.defaulth)
                 .into(profilePic);
 
         GlideApp.with(this)
                 .load(test2)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .skipMemoryCache(true)
                 .error(R.drawable.defaultb)
                 .into(header);
         
