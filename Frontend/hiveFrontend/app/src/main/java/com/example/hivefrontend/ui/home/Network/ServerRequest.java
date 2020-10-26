@@ -105,12 +105,12 @@ public class ServerRequest implements IServerRequest{
     }
 
     //sorts the discover and home page posts chronologically, notifies the adapters of the changes
-    private static void sortPosts(){
+    public static void sortPosts(){
         logic.sortData();
         logic.notifyDataSetChanged();
     }
 
-    private static void getDiscoverHives(){
+    public static void getDiscoverHives(){
         //get each hive
         for(int i = 0; i<logic.getHiveIdsDiscover().size(); i++){
             int hiveId = logic.getHiveIdsDiscover().get(i);
@@ -142,7 +142,7 @@ public class ServerRequest implements IServerRequest{
         }
     }
 
-    private static void getHomePosts(){
+    public static void getHomePosts(){
         //get each hive id
         for(int i = 0; i<logic.getHiveIdsHome().size(); i++){
             int hiveId = logic.getHiveIdsHome().get(i);
