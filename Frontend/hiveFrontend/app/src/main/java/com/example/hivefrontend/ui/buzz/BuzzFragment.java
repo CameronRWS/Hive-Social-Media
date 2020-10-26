@@ -3,6 +3,7 @@ package com.example.hivefrontend.ui.buzz;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -43,7 +44,11 @@ import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.buzz.Logic.BuzzLogic;
 import com.example.hivefrontend.ui.buzz.Network.ServerRequest;
 import com.example.hivefrontend.ui.home.HomeFragment;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +72,10 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public static final int RESULT_GALLERY = 0;
     public ImageView imagePreview;
     private static final int GALLERY_REQUEST_CODE = 123;
+    private static final int CAMERA_REQUEST = 1888;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     public static BuzzFragment newInstance() {
         return new BuzzFragment();
@@ -119,7 +128,7 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
             public void onClick(View view) {
                 Intent intent = new Intent(
                         android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, GALLERY_REQUEST_CODE);
+                startActivityForResult(intent, CAMERA_REQUEST);
             }
         });
 
@@ -128,7 +137,11 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         logic.displayBuzzScreen();
         b.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { serverRequest.makeBuzz(); } });
+            public void onClick(View view) {
+                serverRequest.makeBuzz();
+                uploadPicture();
+            }
+        });
         return rootView;
     }
 
@@ -156,8 +169,8 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == GALLERY_REQUEST_CODE && data != null) {
-            Uri imageData = data.getData();
-            imagePreview.setImageURI(imageData);
+            imageUri = data.getData();
+            imagePreview.setImageURI(imageUri);
         }
     }
 
@@ -205,5 +218,15 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
 
     }
 
-
+    private void uploadPicture() {
+        StorageReference postPicRef = storageReference.child("posts/" + userId);
+        postPicRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+                    }
+                });
+    }
 }

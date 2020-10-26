@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,10 +14,13 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.PostDetails.Logic.PostDetailsLogic;
 import com.example.hivefrontend.PostDetails.Network.ServerRequest;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,10 +39,22 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
     public int postId;
     public PostDetailsLogic logic;
 
+    private ImageView postImage;
+    private ImageView header;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
+
+        postImage = findViewById(R.id.postImage);
+        header = findViewById(R.id.header);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
         //intent should have grabbed post id
         postId = getIntent().getIntExtra("postId",0);
         queue = Volley.newRequestQueue(this);
@@ -73,6 +89,10 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
 
         logic.getPostInfoJson(postId);
 
+        StorageReference test1 = storageReference.child("posts/" + postId + ".jpg");
+        GlideApp.with(this)
+                .load(test1)
+                .into(postImage);
     }
 
     public void onUserClick(int userId, View view){
