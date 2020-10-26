@@ -1,5 +1,6 @@
 package com.example.hivefrontend.ui.notifications;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.ui.notifications.Logic.NotificationsLogic;
+import com.example.hivefrontend.ui.notifications.Network.ServerRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +30,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class NotificationsFragment extends Fragment {
+public class NotificationsFragment extends Fragment implements INotificationsView {
 
     private RequestQueue queue;
     private ArrayList<JSONObject> notifications;
@@ -52,46 +55,32 @@ public class NotificationsFragment extends Fragment {
         //String url ="http://localhost:8080/notifications";
         Log.i("rightBefore","rightBefore: ");
 
-        setNotifications();
+        final ServerRequest serverRequest = new ServerRequest();
+        NotificationsLogic logic = new NotificationsLogic(this, serverRequest);
+
+        serverRequest.setNotifications();
         return root;
     }
 
-    public void setNotifications() {
-        Log.i("setNotifications","setNotifications: ");
-        String url ="http://10.24.227.37:8080/notifications"; // add /byUserId/{userId} once we have user ID stored globally
-        JsonArrayRequest notiRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            //have array populate backwards cuz we want to scroll down for old stuff.
-                            for(int i = response.length()-1; i >= 0; i--){
-                                addEntity(response.getJSONObject(i));
-                            }
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        Log.i("volleyAppError","Error: " + error.getMessage());
-                        Log.i("volleyAppError","VolleyError: "+ error);
-                    }
-                });
-        queue.add(notiRequest);
+
+    @Override
+    public Context getNotificationsContext() {
+        return this.getContext();
     }
 
-    public void addEntity(final JSONObject notification) {
-        Log.i("addEntity","addEntity: ");
+    @Override
+    public void updateNotifcations(JSONObject noti) {
+        notifications.add(noti);
+        notiAdapter.notifyDataSetChanged();
+    }
+    @Override
+    public String urlDeterminate(final JSONObject notification) {
         String url = "";
         try {
             int entityId = notification.getInt("entityId");
             String notiType = notification.getString("notiType");
             String entityType = notiType.split("-")[0];
-            if(entityType.equals("post")) {
+            if (entityType.equals("post")) {
                 url = "http://10.24.227.37:8080/posts/byPostId/" + entityId;
             } else if (entityType.equals("hive")) {
                 url = "http://10.24.227.37:8080/hives/byHiveId/" + entityId;
@@ -99,34 +88,13 @@ public class NotificationsFragment extends Fragment {
         } catch (Exception e) {
             Log.i("addRelatedEntities","Error: " + e.getMessage());
         }
-
-        JsonObjectRequest entityRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject noti = new JSONObject(notification.toString());
-                            noti.put("entity", response);
-                            addCreator(noti);
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        Log.i("volleyAppError","Error: " + error.getMessage());
-                        Log.i("volleyAppError","VolleyError: "+ error);
-                    }
-                });
-        queue.add(entityRequest);
+        return url;
     }
 
-    public void addCreator(final JSONObject notification) {
-        Log.i("addCreator","addCreator: ");
+    @Override
+    public String urlDeterminateCreator(final JSONObject notification) {
         String url = "";
+
         try {
             int creatorUserId = notification.getInt("creatorUserId");
             if(creatorUserId != -1) {
@@ -134,33 +102,12 @@ public class NotificationsFragment extends Fragment {
             } else {
                 notifications.add(notification);
                 notiAdapter.notifyDataSetChanged();
-                return;
+                return "";
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e){
             Log.i("addRelatedEntities","Error: " + e.getMessage());
         }
-        JsonObjectRequest userRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject noti = new JSONObject(notification.toString());
-                            noti.put("creator", response);
-                            notifications.add(noti);
-                            notiAdapter.notifyDataSetChanged();
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        Log.i("volleyAppError","Error: " + error.getMessage());
-                        Log.i("volleyAppError","VolleyError: "+ error);
-                    }
-                });
-        queue.add(userRequest);
+        return url;
     }
 }

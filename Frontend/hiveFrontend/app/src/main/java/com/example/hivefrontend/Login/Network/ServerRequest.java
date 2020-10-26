@@ -22,7 +22,6 @@ public class ServerRequest implements ILoginServerRequest {
         this.loginVolleyListener = l;
     }
 
-
     @Override
     public void loginUser() {
         String url ="http://10.24.227.37:8080/userRegistrations";
