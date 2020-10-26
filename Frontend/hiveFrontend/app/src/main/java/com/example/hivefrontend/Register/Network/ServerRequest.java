@@ -23,8 +23,6 @@ public class ServerRequest implements IRegisterServerRequest {
     private String tag_json_obj = "json_obj_req";
     private IRegisterVolleyListener registerVolleyListener;
 
-
-
     @Override
     public void addVolleyListener(IRegisterVolleyListener r) {
         this.registerVolleyListener = r;

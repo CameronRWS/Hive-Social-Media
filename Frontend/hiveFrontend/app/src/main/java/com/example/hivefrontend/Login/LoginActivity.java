@@ -66,65 +66,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         });
     }
 
-    private void userLogin() {
-        final String username = editTextUsername.getText().toString();
-        final String password = editTextPassword.getText().toString();
-
-        if (TextUtils.isEmpty(username)) {
-            editTextUsername.setError("Oops! Please enter your username.");
-            editTextUsername.requestFocus();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            editTextPassword.setError("Oops! Please enter your password.");
-            editTextPassword.requestFocus();
-            return;
-        }
-
-        String url ="http://10.24.227.37:8080/userRegistrations";
-        JsonArrayRequest arrayRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            for(int i = 0; i < response.length(); i++){
-                                JSONObject member = response.getJSONObject(i);
-                                if ((username.compareTo(member.getString("email")) == 0) && (password.compareTo(member.getString("password")) == 0)) {
-                                      userExists = true;
-                                    User user = new User(username, password);
-
-                                    SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
-                                    openHome();
-                                }
-                            }
-                            if (!userExists) {
-                                editTextPassword.setError("Oops! The username or password is incorrect.");
-                                editTextPassword.requestFocus();
-                                return;
-                            }
-
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                            Log.i("jsonAppError",e.toString());
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        Log.i("volleyAppError","Error: " + error.getMessage());
-                        Log.i("volleyAppError","VolleyError: "+ error);
-
-                    }
-                });
-                VolleySingleton.getInstance(this).addToRequestQueue(arrayRequest);
-    }
-
     public void fieldChecks() {
         if (TextUtils.isEmpty(getUsername())) {
             editTextUsername.setError("Oops! Please enter your username.");
