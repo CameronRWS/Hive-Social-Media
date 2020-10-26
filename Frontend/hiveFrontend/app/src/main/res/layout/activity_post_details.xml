@@ -70,6 +70,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/likeNumber"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postTitle"></TextView>
 
@@ -124,4 +125,14 @@
         app:layout_constraintTop_toBottomOf="@id/likeNumber"
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="0dp"></androidx.recyclerview.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/postImage"
+        android:layout_width="249dp"
+        android:layout_height="345dp"
+        app:layout_constraintBottom_toBottomOf="@+id/postViewRecycler"
+        app:layout_constraintEnd_toEndOf="@+id/postViewRecycler"
+        app:layout_constraintStart_toStartOf="@+id/postViewRecycler"
+        app:layout_constraintTop_toBottomOf="@+id/postContent"
+        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>
