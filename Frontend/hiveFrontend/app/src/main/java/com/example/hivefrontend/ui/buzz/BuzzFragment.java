@@ -113,7 +113,8 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { openHome(); }});
+            public void onClick(View v) { openHome(); }
+        });
 
         accessGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,13 +140,15 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
             public void onClick(View view) {
                 serverRequest.makeBuzz();
                 uploadImage();
-            }
+                }
+        });
             
         Button createHive = rootView.findViewById(R.id.addHiveButton);
         createHive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createHive();
+            }
         });
         return rootView;
     }
