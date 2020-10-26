@@ -35,6 +35,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hivefrontend.HiveCreation.HiveCreation;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
@@ -113,9 +114,21 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { serverRequest.makeBuzz(); } });
+
+        Button createHive = rootView.findViewById(R.id.addHiveButton);
+        createHive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createHive();
+            }
+        });
         return rootView;
     }
 
+    public void createHive(){
+        Intent intent = new Intent(BuzzFragment.this.getActivity(), HiveCreation.class);
+        startActivity(intent);
+    }
 
     public int getUserId() {
         return userId;

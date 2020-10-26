@@ -110,6 +110,21 @@
         app:layout_constraintStart_toEndOf="@+id/beehive"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <Button
+        android:id="@+id/addHiveButton"
+        android:layout_width="100dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/rect_border_filled_bg"
+        android:text="New Hive"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.812"
+        app:layout_constraintStart_toEndOf="@+id/hiveIdSpinner"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageButton
         android:id="@+id/accessCamera"
         android:layout_width="87dp"
