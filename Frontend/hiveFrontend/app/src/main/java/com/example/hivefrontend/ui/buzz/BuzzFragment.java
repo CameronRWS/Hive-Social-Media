@@ -62,7 +62,7 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public RequestQueue queue;
     public Spinner mySpinner;
     public int selectedItemPos = 0;
-    public int userId = 1;
+    public int userId = 2;
     public static final int RESULT_GALLERY = 0;
 
     public static BuzzFragment newInstance() {

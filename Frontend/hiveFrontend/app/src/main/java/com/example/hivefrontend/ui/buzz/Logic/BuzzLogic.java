@@ -56,7 +56,7 @@ public class BuzzLogic implements IBuzzVolleyListener{
 
         try{
             postObject.put("hiveId", buzzView.getHiveId(buzzView.getSelectedItemPos()));
-            postObject.put("userId",1);
+            postObject.put("userId",2);
             postObject.put("title", buzzView.getBuzzTitle());
             postObject.put("textContent", buzzView.getBuzzContent());
 

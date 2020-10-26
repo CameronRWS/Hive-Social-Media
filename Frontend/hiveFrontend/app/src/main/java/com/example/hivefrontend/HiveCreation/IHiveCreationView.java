@@ -9,7 +9,9 @@ public interface IHiveCreationView {
 
     Context getViewContext();
 
-    void handleClick();
+    void handleClick() throws JSONException;
 
     boolean validInput();
+
+    void goHome();
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public interface IHiveCreationVolleyListener {
@@ -12,7 +13,9 @@ public interface IHiveCreationVolleyListener {
 
     Context getPostContext();
 
-    void onHiveCreationSuccess(JSONObject response, JSONObject hive);
+    void onHiveCreationSuccess(JSONObject response) throws JSONException;
 
-    public void createHive();
+    public void createHive(JSONObject hive);
+
+    void onMemberCreationSuccess(JSONObject response);
 }
