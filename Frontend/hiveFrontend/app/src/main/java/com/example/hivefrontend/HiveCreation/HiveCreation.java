@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.hivefrontend.HiveCreation.Logic.HiveCreationLogic;
@@ -56,15 +57,17 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
 
         if(validInput()){
             JSONObject hive = new JSONObject();
-            hive.put("name","ISU Computer Science");
-            hive.put("description","Hive for all computer science students at Iowa State!");
+            EditText title= findViewById(R.id.hiveTitleInput);
+            EditText bio= findViewById(R.id.hiveBioInput);
+            hive.put("name",title.getText().toString());
+            hive.put("description",bio.getText().toString());
             hive.put("type","public");
             hive.put("latitude",10);
             hive.put("longitude",10);
             logic.createHive(hive);
         }
         else{
-            Toast.makeText(this.getApplicationContext(), "Please choose a hive to share this post to.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getApplicationContext(), "Invalid name or description.", Toast.LENGTH_LONG).show();
         }
 
     }
