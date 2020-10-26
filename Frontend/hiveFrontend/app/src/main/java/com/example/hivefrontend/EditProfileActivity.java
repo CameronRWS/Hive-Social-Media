@@ -1,8 +1,10 @@
 package com.example.hivefrontend;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,9 +13,14 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,10 +28,9 @@ import java.io.IOException;
 public class EditProfileActivity extends AppCompatActivity {
 
     public int userId = 2;
+    private String imageFolder;
     private ImageButton editProfilePicture;
     private ImageButton editHeader;
-    private ImageButton profilePictureActual;
-    private ImageButton headerActual;
     private Uri imageUri;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -40,28 +46,13 @@ public class EditProfileActivity extends AppCompatActivity {
         editHeader = findViewById(R.id.editHeader);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        profilePictureActual = findViewById(R.id.profilePictureActual);
-        headerActual = findViewById(R.id.headerActual);
-
-//        StorageReference currentP = storageReference.child("profilePictures/" + userId + ".jpg");
-//        StorageReference currentB = storageReference.child("profileBackgrounds/" + userId + ".jpg");
-
-//        GlideApp.with(this)
-//                .load(currentP)
-//                .error(R.drawable.defaulth)
-//                .into(profilePic);
-
-//        GlideApp.with(this)
-//                .load(currentB)
-//                .error(R.drawable.defaultb)
-//                .into(header);
 
         editProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toSet = editProfilePicture;
+                imageFolder = "profilePictures/";
                 chooseImage();
-                //uploadImage();
             }
         });
 
@@ -69,20 +60,43 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 toSet = editHeader;
+                imageFolder = "profileBackgrounds/";
                 chooseImage();
             }
         });
-
-//        headerActual.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                chooseImage();
-//                //uploadImage();
-//            }
-//        });
     }
 
     private void uploadImage() {
+        if (imageUri != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference updatedPhoto = storageReference.child(imageFolder + userId + ".jpg");
+            updatedPhoto.putFile(imageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(EditProfileActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(EditProfileActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
     }
 
     private void chooseImage() {
@@ -107,5 +121,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        uploadImage();
     }
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.profile.IProfileView;
 import com.example.hivefrontend.ui.profile.MyAdapter;
@@ -85,16 +86,18 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
 
         StorageReference test1 = storageReference.child("profilePictures/" + userId + ".jpg");
         StorageReference test2 = storageReference.child("profileBackgrounds/" + userId + ".jpg");
-        StorageReference defaultP = storageReference.child("profilePictures/" + userId + ".jpg");
-        StorageReference defaultB = storageReference.child("profileBackgrounds/" + userId + ".jpg");
 
         GlideApp.with(this)
                 .load(test1)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .skipMemoryCache(true)
                 .error(R.drawable.defaulth)
                 .into(profilePic);
 
         GlideApp.with(this)
                 .load(test2)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .skipMemoryCache(true)
                 .error(R.drawable.defaultb)
                 .into(header);
     }
