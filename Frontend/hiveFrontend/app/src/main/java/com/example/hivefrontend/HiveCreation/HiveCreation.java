@@ -53,7 +53,11 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
         mySpinner.setOnItemSelectedListener(this);
 
 
-
+        Button back = findViewById(R.id.cancelButton);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { goHome(); }
+        });
 
         Button createHive = findViewById(R.id.createHive);
         createHive.setOnClickListener(new View.OnClickListener() {
