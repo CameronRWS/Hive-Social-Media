@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.android.volley.toolbox.StringRequest;
+import com.example.hivefrontend.Login.LoginActivity;
 
 public class SharedPrefManager {
 

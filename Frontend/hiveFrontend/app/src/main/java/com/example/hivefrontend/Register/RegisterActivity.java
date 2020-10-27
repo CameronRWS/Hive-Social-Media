@@ -10,24 +10,14 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.hivefrontend.EditProfileActivity;
-import com.example.hivefrontend.LoginActivity;
+import com.example.hivefrontend.Login.LoginActivity;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.Register.Logic.RegisterLogic;
 import com.example.hivefrontend.Register.Network.ServerRequest;
 import com.example.hivefrontend.SharedPrefManager;
-import com.example.hivefrontend.User;
-import com.example.hivefrontend.VolleySingleton;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity implements IRegisterView {
 
@@ -51,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         final Button cancelButton = (Button) findViewById(R.id.cancelButton);
 
         final ServerRequest serverRequest = new ServerRequest();
-        final RegisterLogic logic = new RegisterLogic();
+        RegisterLogic logic = new RegisterLogic(this, serverRequest);
 
         findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
             @Override
