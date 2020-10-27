@@ -2,13 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.buzz.BuzzFragment">
+    tools:context=".HiveCreation.HiveCreation">
 
     <EditText
-        android:id="@+id/buzzTitleInput"
+        android:id="@+id/hiveTitleInput"
         style="@style/Base.Widget.MaterialComponents.TextInputEditText"
         android:layout_width="335dp"
         android:layout_height="56dp"
@@ -16,7 +15,7 @@
         android:ems="10"
         android:fontFamily="@font/helveticaneuemedium"
         android:gravity="top|left"
-        android:hint="A captivating title..."
+        android:hint="Hive Name"
         android:inputType="textPersonName"
         android:textColor="#000000"
         android:textColorHighlight="#9A9A9a"
@@ -38,10 +37,10 @@
         android:maxHeight="100dp"
         android:scaleType="fitXY"
         android:src="@drawable/textbox"
-        app:layout_constraintBottom_toBottomOf="@+id/buzzContentInput"
-        app:layout_constraintEnd_toEndOf="@+id/buzzContentInput"
-        app:layout_constraintStart_toStartOf="@+id/buzzContentInput"
-        app:layout_constraintTop_toTopOf="@+id/buzzContentInput" />
+        app:layout_constraintBottom_toBottomOf="@+id/hiveBioInput"
+        app:layout_constraintEnd_toEndOf="@+id/hiveBioInput"
+        app:layout_constraintStart_toStartOf="@+id/hiveBioInput"
+        app:layout_constraintTop_toTopOf="@+id/hiveBioInput" />
 
     <Button
         android:id="@+id/cancelButton"
@@ -58,20 +57,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/submitBuzz"
+        android:id="@+id/createHive"
         android:layout_width="80dp"
         android:layout_height="35dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:background="@drawable/rect_border_filled_bg"
-        android:text="Buzz"
+        android:text="Create"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/buzzContentInput"
+        android:id="@+id/hiveBioInput"
         style="@style/Base.Widget.MaterialComponents.TextInputEditText"
         android:layout_width="330dp"
         android:layout_height="168dp"
@@ -80,14 +79,14 @@
         android:ems="10"
         android:fontFamily="@font/helveticaneuelight"
         android:gravity="top|left"
-        android:hint="Your words go here... (optional)"
+        android:hint="Hive description"
         android:inputType="textPersonName|textMultiLine"
         android:textColor="#000000"
         android:textColorHint="#000000"
         android:textSize="16sp"
         app:boxBackgroundMode="none"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buzzTitleInput" />
+        app:layout_constraintTop_toBottomOf="@+id/hiveTitleInput" />
 
     <ImageView
         android:id="@+id/beehive"
@@ -100,7 +99,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/hiveIdSpinner"
+        android:id="@+id/hiveTypeSpinner"
         android:layout_width="203dp"
         android:layout_height="39dp"
         android:layout_marginTop="76dp"
@@ -108,21 +107,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.095"
         app:layout_constraintStart_toEndOf="@+id/beehive"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <Button
-        android:id="@+id/addHiveButton"
-        android:layout_width="100dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="76dp"
-        android:background="@drawable/rect_border_filled_bg"
-        android:text="New Hive"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.812"
-        app:layout_constraintStart_toEndOf="@+id/hiveIdSpinner"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
@@ -137,7 +121,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/accesscamera"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buzzContentInput" />
+        app:layout_constraintTop_toBottomOf="@+id/hiveBioInput" />
 
     <ImageButton
         android:id="@+id/accessGallery"
@@ -150,17 +134,6 @@
         android:scaleType="fitXY"
         android:src="@drawable/accessgallery"
         app:layout_constraintStart_toEndOf="@+id/accessCamera"
-        app:layout_constraintTop_toBottomOf="@+id/buzzContentInput" />
-
-    <ImageView
-        android:id="@+id/imagePreview"
-        android:layout_width="242dp"
-        android:layout_height="233dp"
-        android:src="@drawable/emptypng"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accessGallery" />
-
+        app:layout_constraintTop_toBottomOf="@+id/hiveBioInput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

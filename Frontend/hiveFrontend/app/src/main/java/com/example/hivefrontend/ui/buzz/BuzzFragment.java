@@ -40,7 +40,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.example.hivefrontend.EditProfileActivity;
+import com.example.hivefrontend.HiveCreation.HiveCreation;
+
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
@@ -74,13 +77,15 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public RequestQueue queue;
     public Spinner mySpinner;
     public int selectedItemPos = 0;
-    public int userId = 1;
+
+    public int userId = 2;
     public ImageView imagePreview;
     private static final int GALLERY_REQUEST_CODE = 123;
     private static final int CAMERA_REQUEST = 1888;
     private Uri imageUri;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+
 
     public static BuzzFragment newInstance() {
         return new BuzzFragment();
@@ -108,7 +113,8 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { openHome(); }});
+            public void onClick(View v) { openHome(); }
+        });
 
         accessGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,11 +142,24 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
             public void onClick(View view) {
                 serverRequest.makeBuzz();
                 uploadImage();
+                }
+        });
+            
+        Button createHive = rootView.findViewById(R.id.addHiveButton);
+        createHive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createHive();
             }
         });
         return rootView;
     }
 
+
+    public void createHive(){
+        Intent intent = new Intent(BuzzFragment.this.getActivity(), HiveCreation.class);
+        startActivity(intent);
+    }
     private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
