@@ -3,7 +3,9 @@
     package="com.example.hivefrontend">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.camera"></uses-feature>
+
+    <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -14,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".Hive.HiveActivity"></activity>
+        <activity android:name=".EditProfileActivity" />
         <activity android:name=".Profile.ProfileActivity" />
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".PostDetails.PostDetailsActivity" />
