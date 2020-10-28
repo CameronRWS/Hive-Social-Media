@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="8dp"
+        android:textAlignment="viewStart"
+        app:cardCornerRadius="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/postViewLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/backgroundButton"
+                android:layout_width="403dp"
+                android:layout_height="272dp"
+                android:background="#00FFFFFF"
+                android:src="@drawable/whitebg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/whitebg" />
+
+            <ImageButton
+                android:id="@+id/hiveCardHeader"
+                android:layout_width="407dp"
+                android:layout_height="154dp"
+                android:layout_marginTop="120dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toTopOf="@+id/backgroundButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.555"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/defaultb" />
+
+            <ImageButton
+                android:id="@+id/hiveCardPictureBorder"
+                android:layout_width="148dp"
+                android:layout_height="126dp"
+                android:layout_marginTop="75dp"
+                android:background="@null"
+                android:backgroundTint="@null"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/hiveCardHeader"
+                app:srcCompat="@drawable/profpicborder" />
+
+            <ImageButton
+                android:id="@+id/hiveCardPicture"
+                android:layout_width="132dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="83dp"
+                android:background="@null"
+                android:backgroundTint="@null"
+                android:scaleType="fitXY"
+                android:tint="@android:color/background_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/hiveCardHeader"
+                app:srcCompat="@drawable/profpicborder" />
+
+            <ImageButton
+                android:id="@+id/requestedHiveCardButton"
+                android:layout_width="101dp"
+                android:layout_height="42dp"
+                android:background="@null"
+                android:scaleType='fitXY'
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/hiveCardPictureBorder"
+                app:layout_constraintTop_toBottomOf="@+id/hiveCardHeader"
+                app:srcCompat="@drawable/requestedhive" />
+
+            <ImageButton
+                android:id="@+id/joinHiveCardButton"
+                android:layout_width="101dp"
+                android:layout_height="42dp"
+                android:background="@null"
+                android:scaleType='fitXY'
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/hiveCardPictureBorder"
+                app:layout_constraintTop_toBottomOf="@+id/hiveCardHeader"
+                app:srcCompat="@drawable/joinhivebutton" />
+
+            <ImageButton
+                android:id="@+id/joinedHiveCardButton"
+                android:layout_width="101dp"
+                android:layout_height="42dp"
+                android:background="@null"
+                android:scaleType='fitXY'
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/hiveCardPictureBorder"
+                app:layout_constraintTop_toBottomOf="@+id/hiveCardHeader"
+                app:srcCompat="@drawable/joinedhivebutton" />
+
+            <ImageView
+                android:id="@+id/beehive"
+                android:layout_width="30dp"
+                android:layout_height="29dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/hiveName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hiveCardHeader"
+                app:srcCompat="@drawable/beehive" />
+
+            <TextView
+                android:id="@+id/hiveCardName"
+                android:layout_width="97dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="48dp"
+                android:fontFamily="@font/helveticaneuebold"
+                android:lineSpacingExtra="2.5sp"
+                android:text="Iowa State University"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/hivePictureBorder"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/beehive" />
+
+            <TextView
+                android:id="@+id/hiveCardMemberCount"
+                android:layout_width="138dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="275dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/helveticaneuebold"
+                android:lineSpacingExtra="2.5sp"
+                android:text="bees and counting"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/hivePictureBorder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/requestedHiveCardButton" />
+
+            <TextView
+                android:id="@+id/hiveCardDescription"
+                android:layout_width="345dp"
+                android:layout_height="47dp"
+                android:layout_marginStart="25dp"
+                android:fontFamily="@font/helveticaneuebold"
+                android:lineSpacingExtra="2.5sp"
+                android:textAlignment="textStart"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/hivePictureBorder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hiveCardName" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
