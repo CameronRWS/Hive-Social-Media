@@ -36,22 +36,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"></TextView>
 
-            <TextView
-                android:id="@+id/req_isActive"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Is New"
-                android:textAlignment="viewStart"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/hiveReq_text"
-                app:layout_constraintEnd_toEndOf="@+id/hiveReq_text"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/userName"
-                app:layout_constraintTop_toTopOf="parent"></TextView>
 
             <TextView
                 android:id="@+id/hiveReq_text"
-                android:layout_width="0dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:text="Notification Text"
@@ -62,6 +50,42 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userName"></TextView>
+
+            <Button
+                android:id="@+id/acceptRequest"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/rect_border"
+                android:text="Accept"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#F0B540"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/hiveReq_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintVertical_bias="0.19" />
+
+            <Button
+                android:id="@+id/denyRequest"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rect_border"
+                android:text="Deny"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#F0B540"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/acceptRequest"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/acceptRequest"
+                app:layout_constraintTop_toBottomOf="@+id/acceptRequest" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -53,7 +53,7 @@ public class HiveRequestAdapter extends RecyclerView.Adapter<HiveRequestAdapter.
 
         try {
             holder.userName.setText("@" + hiveRequests.get(position).getJSONObject("user").getString("userName"));
-            if(!hiveRequests.get(position).getString("requestMessage").equals(null)){
+            if(!hiveRequests.get(position).getString("requestMessage").equals("null")){
                 holder.requestContent.setText(hiveRequests.get(position).getString("requestMessage"));
             }
             else{
