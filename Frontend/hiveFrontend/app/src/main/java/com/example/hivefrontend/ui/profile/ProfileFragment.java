@@ -25,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.GlideApp;
+import com.example.hivefrontend.HiveRequests.HiveRequestsActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
@@ -63,6 +64,7 @@ public class ProfileFragment extends Fragment implements IProfileView{
     private Uri imageUri;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private Button createHive;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -85,6 +87,14 @@ public class ProfileFragment extends Fragment implements IProfileView{
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity().getApplicationContext(), EditProfileActivity.class));
+            }
+        });
+
+        createHive = rootView.findViewById(R.id.createHive);
+        createHive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity().getApplicationContext(), HiveRequestsActivity.class));
             }
         });
         userName = (TextView) rootView.findViewById(R.id.userName);

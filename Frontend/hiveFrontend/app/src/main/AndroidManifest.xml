@@ -16,8 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".HiveCreation.HiveCreation"></activity>
-        <activity android:name=".Hive.HiveActivity"></activity>
+        <activity android:name=".HiveRequests.HiveRequestsActivity"></activity>
+        <activity android:name=".HiveCreation.HiveCreation" />
+        <activity android:name=".Hive.HiveActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".Profile.ProfileActivity" />
         <activity android:name=".Login.LoginActivity" />

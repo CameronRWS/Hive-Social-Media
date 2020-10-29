@@ -168,6 +168,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/displayName" />
 
+    <Button
+        android:id="@+id/createHive"
+        android:layout_width="119dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/rect_border"
+        android:text="Create Hive"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#F0B540"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/hiveListHeading"
+        app:layout_constraintBottom_toTopOf="@+id/hiveListRecyler" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hiveListRecyler"
         android:layout_width="match_parent"
