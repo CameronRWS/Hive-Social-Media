@@ -16,6 +16,7 @@ import com.example.hivefrontend.User;
 import com.example.hivefrontend.VolleySingleton;
 import com.example.hivefrontend.ui.buzz.Logic.IBuzzVolleyListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ServerRequest implements IRegisterServerRequest {
@@ -36,7 +37,11 @@ public class ServerRequest implements IRegisterServerRequest {
                 (Request.Method.POST, url, obj, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                       registerVolleyListener.onRegisterUserSuccess(response);
+                        try {
+                            registerVolleyListener.onRegisterUserSuccess(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                         new Response.ErrorListener() {

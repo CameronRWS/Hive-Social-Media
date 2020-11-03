@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -27,6 +29,7 @@ import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.HiveRequests.HiveRequestsActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 import com.google.firebase.storage.FirebaseStorage;
@@ -44,7 +47,7 @@ public class ProfileFragment extends Fragment implements IProfileView{
     private ProfileViewModel mViewModel;
     public ArrayList<Integer> hiveIds;
     public ArrayList<String> hiveOptions;
-    public int userId = 2;
+    public int userId;
     private RequestQueue queue;
     private String pollen;
     public TextView displayName;
@@ -74,12 +77,15 @@ public class ProfileFragment extends Fragment implements IProfileView{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         //new AppController();
+        userId = SharedPrefManager.getInstance(this.getContext()).getUser().getId();
         final View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
         profilePic = (ImageView) rootView.findViewById(R.id.profilePicture);
+
         header = (ImageView) rootView.findViewById(R.id.header);hiveIds= new ArrayList<>();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         hiveOptions = new ArrayList<>();
+        // Log.i("userId", "userId is" + userId);
         displayName = (TextView) rootView.findViewById(R.id.displayName);
         locationPin = (ImageView) rootView.findViewById(R.id.locationPin);
         editProfile = (Button) rootView.findViewById(R.id.editprofile);

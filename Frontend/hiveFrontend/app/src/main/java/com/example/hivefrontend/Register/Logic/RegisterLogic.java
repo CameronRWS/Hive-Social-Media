@@ -43,8 +43,8 @@ public class RegisterLogic implements IRegisterVolleyListener {
     }
 
     @Override
-    public void onRegisterUserSuccess(JSONObject response) {
-        User user = new User(registerView.getUsername(), registerView.getPassword());
+    public void onRegisterUserSuccess(JSONObject response) throws JSONException {
+        User user = new User(registerView.getUsername(), registerView.getPassword(), response.getJSONObject("userRegistrationIdentity").getJSONObject("user").getInt("userId"));
         SharedPrefManager.getInstance(getRegisterContext()).userLogin(user);
         registerView.successfullyRegistered();
     }

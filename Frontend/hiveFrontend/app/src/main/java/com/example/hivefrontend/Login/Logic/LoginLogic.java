@@ -30,7 +30,7 @@ public class LoginLogic implements ILoginVolleyListener {
                 JSONObject member = response.getJSONObject(i);
                 if ((loginView.getUsername().compareTo(member.getString("email")) == 0) && (loginView.getPassword().compareTo(member.getString("password")) == 0)) {
                     loginView.setExistsTrue();
-                    User user = new User(loginView.getUsername(), loginView.getPassword());
+                    User user = new User(loginView.getUsername(), loginView.getPassword(), member.getJSONObject("userRegistrationIdentity").getJSONObject("user").getInt("userId"));
 
                     SharedPrefManager.getInstance(loginView.getLoginContext()).userLogin(user);
                     loginView.openHome();
