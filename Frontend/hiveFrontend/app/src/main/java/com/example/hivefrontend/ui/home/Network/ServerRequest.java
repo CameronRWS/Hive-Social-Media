@@ -28,9 +28,9 @@ public class ServerRequest implements IServerRequest{
         logic = l;
     }
 
-    public void setUserHiveRequest(){
+    public void setUserHiveRequest(int userId){
         //Request: hive information of this user
-        String url ="http://10.24.227.37:8080/members/byUserId/2"; //for now, getting this user's hive information until we have login functionality
+        String url ="http://10.24.227.37:8080/members/byUserId/" + userId; //for now, getting this user's hive information until we have login functionality
 
         JsonArrayRequest hiveRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -61,6 +61,7 @@ public class ServerRequest implements IServerRequest{
 
     public void updatePostRequest() {
         logic.clearAdapterData();
+        logic.notifyDataSetChanged();
         getDiscoverPosts();
     }
 
@@ -115,7 +116,7 @@ public class ServerRequest implements IServerRequest{
         for(int i = 0; i<logic.getHiveIdsDiscover().size(); i++){
             int hiveId = logic.getHiveIdsDiscover().get(i);
             //request posts from each hive:
-            String url ="http://10.24.227.37:8080/hives/byHiveId/" + hiveId; //for now, getting this user's hive information until we have login functionality
+            String url ="http://10.24.227.37:8080/hives/byHiveId/" + hiveId;
             JsonObjectRequest hiveNameRequest = new JsonObjectRequest
                     (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                         @Override
@@ -190,7 +191,7 @@ public class ServerRequest implements IServerRequest{
                             boolean liked = false;
                             for(int i= 0; i<response.length();i++){
                                 JSONObject likeObject = response.getJSONObject(0);
-                                if(likeObject.getJSONObject("user").getInt("userId")==2){
+                                if(likeObject.getJSONObject("user").getInt("userId")==logic.getUserId()){
                                     liked = true;
                                 }
                             }
@@ -224,7 +225,7 @@ public class ServerRequest implements IServerRequest{
         final JSONObject postObject = new JSONObject();
         try{
             postObject.put("postId",postId);
-            postObject.put("userId",2);
+            postObject.put("userId",logic.getUserId());
             //Toast.makeText(getApplicationContext(), "Buzz liked successfully!", Toast.LENGTH_LONG).show();
 
         } catch (JSONException e){

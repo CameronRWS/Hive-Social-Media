@@ -24,6 +24,7 @@ import com.example.hivefrontend.PostDetails.Logic.PostDetailsLogic;
 import com.example.hivefrontend.PostDetails.Network.ServerRequest;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -42,6 +43,8 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
     public PostCommentAdapter commentAdapter;
     public int postId;
     public PostDetailsLogic logic;
+    private int currentUserId;
+
 
     private ImageView postImage;
     private ImageView header;
@@ -56,6 +59,7 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
 
+        currentUserId = SharedPrefManager.getInstance(this.getApplicationContext()).getUser().getId();
         postImage = findViewById(R.id.postImage);
         header = findViewById(R.id.header);
 
@@ -98,6 +102,10 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
         GlideApp.with(this)
                 .load(test1)
                 .into(postImage);
+    }
+
+    public int getUserId(){
+        return currentUserId;
     }
 
     public void promptDialog() {

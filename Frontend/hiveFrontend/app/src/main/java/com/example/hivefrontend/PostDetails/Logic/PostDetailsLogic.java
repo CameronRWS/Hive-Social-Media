@@ -30,6 +30,10 @@ public class PostDetailsLogic implements IPostVolleyListener{
         server.addVolleyListener(this);
     }
 
+    public int getUserId(){
+        return p.getUserId();
+    }
+
     public Context getPostContext(){
         return p.getPostContext();
     }
@@ -41,9 +45,6 @@ public class PostDetailsLogic implements IPostVolleyListener{
     public void getPostInfoJson(int postId){
         server.requestPostJson(postId);
     }
-
-
-
 
     public void checkLikesAndPost(){
         server.checkLikesAndPost();

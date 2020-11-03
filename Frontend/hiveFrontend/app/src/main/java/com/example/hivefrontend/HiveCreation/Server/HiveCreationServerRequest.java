@@ -52,7 +52,7 @@ public class HiveCreationServerRequest implements IHiveCreationServerRequest{
 
         JSONObject member = new JSONObject();
         member.put("hiveId",String.valueOf(hiveId));
-        member.put("userId","2");
+        member.put("userId",logic.getUserId());
         member.put("isModerator",true);
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,

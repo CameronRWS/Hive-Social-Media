@@ -80,7 +80,7 @@ public class ServerRequest implements IPostServerRequest{
         final JSONObject postObject = new JSONObject();
         try{
             postObject.put("postId",logic.getPostId());
-            postObject.put("userId",2);
+            postObject.put("userId",logic.getUserId());
             postObject.put("textContent", comment);
 
         } catch (JSONException e){
@@ -116,7 +116,7 @@ public class ServerRequest implements IPostServerRequest{
                             boolean liked = false;
                             for(int i= 0; i<response.length();i++){
                                 JSONObject likeObject = response.getJSONObject(0);
-                                if(likeObject.getJSONObject("user").getInt("userId")==2){
+                                if(likeObject.getJSONObject("user").getInt("userId")==logic.getUserId()){
                                     liked = true;
                                 }
                             }
@@ -150,7 +150,7 @@ public class ServerRequest implements IPostServerRequest{
         final JSONObject postObject = new JSONObject();
         try{
             postObject.put("postId",logic.getPostId());
-            postObject.put("userId",2);
+            postObject.put("userId",logic.getUserId());
             Toast.makeText(logic.getPostContext(), "Buzz liked successfully!", Toast.LENGTH_LONG).show();
 
         } catch (JSONException e){

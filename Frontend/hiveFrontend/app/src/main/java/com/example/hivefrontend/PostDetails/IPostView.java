@@ -16,4 +16,6 @@ public interface IPostView {
     void setPost(JSONObject post) throws JSONException;
 
     void handleCommentSuccess();
+
+    int getUserId();
 }

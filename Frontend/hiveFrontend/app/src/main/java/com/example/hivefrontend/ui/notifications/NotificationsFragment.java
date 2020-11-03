@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.notifications.Logic.NotificationsLogic;
 import com.example.hivefrontend.ui.notifications.Network.ServerRequest;
 
@@ -35,6 +36,7 @@ public class NotificationsFragment extends Fragment implements INotificationsVie
     private RequestQueue queue;
     private ArrayList<JSONObject> notifications;
     private NotificationsAdapter notiAdapter;
+    private int userId;
 
     private NotificationsViewModel notificationsViewModel;
 
@@ -43,6 +45,8 @@ public class NotificationsFragment extends Fragment implements INotificationsVie
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+
+        userId = SharedPrefManager.getInstance(this.getContext()).getUser().getId();
 
         notifications = new ArrayList<>();
 
@@ -62,6 +66,9 @@ public class NotificationsFragment extends Fragment implements INotificationsVie
         return root;
     }
 
+    public int getUserId(){
+        return userId;
+    }
 
     @Override
     public Context getNotificationsContext() {

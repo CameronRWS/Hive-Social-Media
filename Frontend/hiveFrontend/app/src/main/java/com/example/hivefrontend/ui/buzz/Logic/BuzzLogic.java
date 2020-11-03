@@ -25,6 +25,10 @@ public class BuzzLogic implements IBuzzVolleyListener{
         server.addVolleyListener(this);
     }
 
+    public int getUserId(){
+        return buzzView.getUserId();
+    }
+
     public void onGetHivesSuccess(JSONArray response) {
         try {
             buzzView.addHiveIdValue(-1);
@@ -56,7 +60,7 @@ public class BuzzLogic implements IBuzzVolleyListener{
 
         try{
             postObject.put("hiveId", buzzView.getHiveId(buzzView.getSelectedItemPos()));
-            postObject.put("userId",2);
+            postObject.put("userId",getUserId());
             postObject.put("title", buzzView.getBuzzTitle());
             postObject.put("textContent", buzzView.getBuzzContent());
 

@@ -51,4 +51,6 @@ public interface IHomeVolleyListener {
     public void addToDiscoverOptions(String name);
 
     public void addToHomePosts(JSONObject post);
+
+    int getUserId();
 }

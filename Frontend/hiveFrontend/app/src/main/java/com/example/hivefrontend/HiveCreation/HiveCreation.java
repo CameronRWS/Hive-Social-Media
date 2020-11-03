@@ -20,6 +20,7 @@ import com.example.hivefrontend.HiveCreation.Server.HiveCreationServerRequest;
 import com.example.hivefrontend.HiveCreation.Server.IHiveCreationServerRequest;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
 
     private HiveCreationLogic logic;
     private HiveCreationServerRequest server;
+    private int userId;
     private int selectedItemPos;
     private Spinner mySpinner;
     ArrayList<String> hiveTypes;
@@ -38,6 +40,7 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hive_creation);
+        userId = SharedPrefManager.getInstance(this.getApplicationContext()).getUser().getId();
         server = new HiveCreationServerRequest();
         logic = new HiveCreationLogic(this, server);
         server.addVolleyListener(logic);
@@ -70,6 +73,10 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
                 }
             }
         });
+    }
+
+    public int getUserId(){
+        return userId;
     }
 
     @Override
