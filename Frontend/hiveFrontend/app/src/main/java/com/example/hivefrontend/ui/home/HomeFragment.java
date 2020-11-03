@@ -165,6 +165,8 @@ public class HomeFragment extends Fragment implements IHomeView{
         homePostObjects.clear();
         hiveIdsDiscover.clear();
         hiveOptionsDiscover.clear();
+        hiveIdsHome.clear();
+        hiveOptionsHome.clear();
     }
 
     @Override
