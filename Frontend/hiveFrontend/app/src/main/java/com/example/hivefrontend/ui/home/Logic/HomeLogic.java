@@ -28,7 +28,6 @@ public class HomeLogic implements IHomeVolleyListener{
     }
 
     public void setUserHives() {
-
         server.setUserHiveRequest(home.getUserId());
     }
 

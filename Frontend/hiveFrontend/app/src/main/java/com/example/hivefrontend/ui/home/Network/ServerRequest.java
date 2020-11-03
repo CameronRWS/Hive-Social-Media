@@ -60,6 +60,7 @@ public class ServerRequest implements IServerRequest{
     }
 
     public void updatePostRequest() {
+        setUserHiveRequest(logic.getUserId());
         logic.clearAdapterData();
         logic.notifyDataSetChanged();
         getDiscoverPosts();
