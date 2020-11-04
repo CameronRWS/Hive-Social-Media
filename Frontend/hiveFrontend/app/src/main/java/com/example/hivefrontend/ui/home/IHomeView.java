@@ -19,6 +19,8 @@ public interface IHomeView {
 
     public Context getHomeContext();
 
+    int getUserId();
+
     void clearData();
 
     void sortPosts();

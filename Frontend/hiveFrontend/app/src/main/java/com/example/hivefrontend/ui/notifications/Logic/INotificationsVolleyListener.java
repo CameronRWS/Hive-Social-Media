@@ -13,4 +13,5 @@ public interface INotificationsVolleyListener {
     public void onAddEntitySuccess(final JSONObject notification, JSONObject response);
     public String callUrlDeterminateCreator(final JSONObject notification);
     public void onAddCreatorSuccess(final JSONObject notification, JSONObject response);
+    int getUserId();
 }

@@ -21,6 +21,10 @@ public class NotificationsLogic implements INotificationsVolleyListener {
         server.addVolleyListener(this);
     }
 
+    public int getUserId(){
+        return notificationsView.getUserId();
+    }
+
     @Override
     public Context getNotificationsContext() {
         return notificationsView.getNotificationsContext();

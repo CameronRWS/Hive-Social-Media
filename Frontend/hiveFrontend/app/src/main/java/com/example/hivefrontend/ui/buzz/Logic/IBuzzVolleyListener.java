@@ -10,5 +10,6 @@ public interface IBuzzVolleyListener {
     public void onGetHivesSuccess(JSONArray response);
     Context getBuzzContext();
     public JSONObject createBuzzPost();
+    int getUserId();
 
 }

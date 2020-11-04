@@ -78,7 +78,7 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public Spinner mySpinner;
     public int selectedItemPos = 0;
 
-    public int userId = 2;
+    public int userId;
     public ImageView imagePreview;
     private static final int GALLERY_REQUEST_CODE = 123;
     private static final int CAMERA_REQUEST = 1888;
@@ -96,6 +96,8 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.buzz_fragment, container, false);
+        userId =  SharedPrefManager.getInstance(this.getContext()).getUser().getId();
+
         queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         hiveIds= new ArrayList<>();
         hiveOptions = new ArrayList<>();

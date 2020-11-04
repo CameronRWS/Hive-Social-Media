@@ -21,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.tabs.TabLayout;
 
 
 public class SearchFragment extends Fragment {
@@ -29,20 +30,14 @@ public class SearchFragment extends Fragment {
     private GoogleMap googleMap;
 
     private SearchViewModel searchViewModel;
+    private int selectedTab;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         searchViewModel =
                 ViewModelProviders.of(this).get(SearchViewModel.class);
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        final TextView textView = rootView.findViewById(R.id.text_search);
-        searchViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
+        
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
@@ -60,15 +55,48 @@ public class SearchFragment extends Fragment {
                 googleMap = mMap;
 
                 // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+                LatLng ames = new LatLng(42.031, -93.612);
+                googleMap.addMarker(new MarkerOptions().position(ames).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(ames).zoom(12).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
 
+
+        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabLayout);
+        //set on tab selected listener--on tab reselect or select, set the recyclerView's adapter to home/discover adapter as needed
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                selectedTab = tab.getPosition();
+                if(selectedTab == 0){
+                    mMapView.setVisibility(View.VISIBLE);
+                }
+                else{
+                    mMapView.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                selectedTab = tab.getPosition();
+
+                if(selectedTab == 0){
+                    mMapView.setVisibility(View.VISIBLE);
+                }
+                else{
+                    mMapView.setVisibility(View.GONE);
+                }
+            }
+        });
         return rootView;
     }
 

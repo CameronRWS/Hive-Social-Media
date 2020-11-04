@@ -17,4 +17,6 @@ public interface IPostVolleyListener {
     int getPostId();
 
     void onCommentPostSuccess();
+
+    int getUserId();
 }

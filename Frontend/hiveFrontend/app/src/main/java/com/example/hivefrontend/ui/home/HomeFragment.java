@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.home.Logic.HomeLogic;
 import com.example.hivefrontend.ui.home.Network.ServerRequest;
 import com.google.android.material.tabs.TabLayout;
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment implements IHomeView{
     public static HomeAdapter homeAdapter;
     public static HomeAdapter discoverAdapter;
     public int selectedTab;
+    public int userId;
 
 
     public static HomeLogic logic;
@@ -48,6 +50,7 @@ public class HomeFragment extends Fragment implements IHomeView{
                              ViewGroup container, Bundle savedInstanceState) {
 
 
+        userId = SharedPrefManager.getInstance(this.getContext()).getUser().getId();
         hiveIdsHome = new ArrayList<>();
         hiveOptionsHome = new ArrayList<>();
         hiveIdsDiscover = new ArrayList<>();
@@ -130,6 +133,10 @@ public class HomeFragment extends Fragment implements IHomeView{
         logic.onPageResume();
     }
 
+    public int getUserId(){
+        return userId;
+    }
+
     public void addToHiveIdsHome(int hiveId){
         hiveIdsHome.add(hiveId);
     }
@@ -158,6 +165,8 @@ public class HomeFragment extends Fragment implements IHomeView{
         homePostObjects.clear();
         hiveIdsDiscover.clear();
         hiveOptionsDiscover.clear();
+        hiveIdsHome.clear();
+        hiveOptionsHome.clear();
     }
 
     @Override

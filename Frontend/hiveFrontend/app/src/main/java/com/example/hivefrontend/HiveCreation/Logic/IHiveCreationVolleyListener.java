@@ -18,4 +18,6 @@ public interface IHiveCreationVolleyListener {
     public void createHive(JSONObject hive);
 
     void onMemberCreationSuccess(JSONObject response);
+
+    int getUserId();
 }

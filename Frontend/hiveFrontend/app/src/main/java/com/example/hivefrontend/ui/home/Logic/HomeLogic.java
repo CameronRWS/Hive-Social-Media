@@ -28,8 +28,7 @@ public class HomeLogic implements IHomeVolleyListener{
     }
 
     public void setUserHives() {
-
-        server.setUserHiveRequest();
+        server.setUserHiveRequest(home.getUserId());
     }
 
     public void onPageResume() {
@@ -115,5 +114,10 @@ public class HomeLogic implements IHomeVolleyListener{
 
     public void addToHomePosts(JSONObject post) {
         home.addToHomePosts(post);
+    }
+
+    @Override
+    public int getUserId() {
+        return home.getUserId();
     }
 }

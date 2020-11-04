@@ -26,6 +26,10 @@ public class HiveCreationLogic implements IHiveCreationVolleyListener {
         server.addVolleyListener(this);
     }
 
+    public int getUserId(){
+        return view.getUserId();
+    }
+
     @Override
     public void onError(VolleyError error) {
 

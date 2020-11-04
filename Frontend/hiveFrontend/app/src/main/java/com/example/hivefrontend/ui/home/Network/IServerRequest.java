@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public interface IServerRequest {
     public void addVolleyListener(IHomeVolleyListener l);
 
-    public void setUserHiveRequest();
+    public void setUserHiveRequest(int userId);
 
     public void pageResumeRequests();
 

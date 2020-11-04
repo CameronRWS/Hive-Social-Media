@@ -14,4 +14,6 @@ public interface IHiveCreationView {
     boolean validInput();
 
     void goHome();
+
+    int getUserId();
 }
