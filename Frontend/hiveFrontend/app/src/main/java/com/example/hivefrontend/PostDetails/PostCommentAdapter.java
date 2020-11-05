@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hivefrontend.Hive.HiveActivity;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
 
@@ -78,7 +79,9 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
             userDisplayName = itemView.findViewById(R.id.userDisplayNameComment);
             userName = itemView.findViewById(R.id.userNameComment);
 
+
             cv = itemView.findViewById(R.id.cardViewComment);
+
             userName.setOnClickListener(this);
             userDisplayName.setOnClickListener(this);
         }
@@ -101,7 +104,6 @@ public class PostCommentAdapter extends RecyclerView.Adapter<PostCommentAdapter.
                 e.printStackTrace();
             }
         }
-
     }
 
     // convenience method for getting data at click position

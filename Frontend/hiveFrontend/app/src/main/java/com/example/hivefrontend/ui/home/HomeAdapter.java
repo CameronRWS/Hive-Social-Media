@@ -14,9 +14,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
+import com.example.hivefrontend.Hive.HiveActivity;
+import com.example.hivefrontend.Login.LoginActivity;
+import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.PostDetails.PostDetailsActivity;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.ui.buzz.BuzzFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -138,6 +142,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             commentNumber = itemView.findViewById(R.id.commentNumber);
             likeNumber = itemView.findViewById(R.id.likeNumber);
             hiveName = itemView.findViewById(R.id.hiveName);
+            hiveName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), HiveActivity.class);
+                    view.getContext().startActivity(intent);
+                }
+            });
             icon = itemView.findViewById(R.id.likeCountIcon);
             icon.setOnClickListener(new View.OnClickListener(){
 
