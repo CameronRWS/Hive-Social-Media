@@ -13,6 +13,7 @@ import com.example.hivefrontend.HiveRequests.Server.HiveRequestServerRequest;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.notifications.NotificationsAdapter;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -20,10 +21,12 @@ import java.util.ArrayList;
 public class HiveRequestsActivity extends AppCompatActivity implements IHiveRequestView{
 
     private HiveRequestServerRequest server;
-    private HiveRequestLogic logic;
+    private static HiveRequestLogic logic;
 
-    private ArrayList<JSONObject> hiveRequests;
+    private static ArrayList<JSONObject> hiveRequests;
     private HiveRequestAdapter hiveRequestAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,12 @@ public class HiveRequestsActivity extends AppCompatActivity implements IHiveRequ
 
         logic.getHiveRequests();
     }
+    public static void denyRequest(int position) {
+
+    }
+    public static void acceptRequest(int position, String status) throws JSONException {
+        logic.acceptRequestLogic(hiveRequests.get(position), status);
+    }
 
     @Override
     public void setRequests(ArrayList<JSONObject> requests) {
@@ -57,19 +66,25 @@ public class HiveRequestsActivity extends AppCompatActivity implements IHiveRequ
         hiveRequestAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void acceptRequest(int position) {
-
-    }
-
-    @Override
-    public void denyRequest(int position) {
-
-    }
+//    @Override
+//    public void acceptRequest(int position) {
+//
+//    }
+//
+//    @Override
+//    public void denyRequest(int position) {
+//
+//    }
 
 
     @Override
     public Context getRequestsContext() {
         return this.getApplicationContext();
+    }
+
+    @Override
+    public void clearData(){
+        hiveRequests.clear();
+        hiveRequestAdapter.notifyDataSetChanged();
     }
 }

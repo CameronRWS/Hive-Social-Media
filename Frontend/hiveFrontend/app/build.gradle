@@ -5,6 +5,8 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         applicationId "com.example.hivefrontend"
         minSdkVersion 21
@@ -66,5 +68,6 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.7.22'
     testImplementation 'org.robolectric:robolectric:4.3.1'
     testImplementation 'androidx.test:core:1.2.0'
+
 
 }

@@ -45,11 +45,24 @@ public class HiveRequestLogic implements IHiveRequestVolleyListener {
 
     @Override
     public void onError() {
-
+        view.clearData();
+        getHiveRequests();
     }
 
     @Override
     public Context getRequestsContext() {
         return view.getRequestsContext();
+    }
+
+    @Override
+    public void acceptRequestLogic(JSONObject request, String status) throws JSONException {
+        server.acceptRequest(request, status);
+    }
+
+    @Override
+    public void onAcceptDenySuccess() {
+        Log.i("requests success ", " woohoo ");
+        view.clearData();
+        getHiveRequests();
     }
 }

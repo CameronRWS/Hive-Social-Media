@@ -11,8 +11,10 @@ public interface IHiveRequestView {
     void setRequests(ArrayList<JSONObject> requests);
     void addToRequests(JSONObject request);
 
-    void acceptRequest(int position);
-    void denyRequest(int position);
+    //void acceptRequest(int position);
+    //void denyRequest(int position);
 
     Context getRequestsContext();
+
+    void clearData();
 }
