@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,6 +51,8 @@ public class HiveRequestAdapter extends RecyclerView.Adapter<HiveRequestAdapter.
     public void onBindViewHolder(@NonNull HiveRequestAdapter.ViewHolder holder, int position) {
         holder.cv.setTag(position);
         holder.userName.setTag(position);
+        holder.acceptButton.setTag(position);
+        holder.denyButton.setTag(position);
 
         try {
             holder.userName.setText("@" + hiveRequests.get(position).getJSONObject("user").getString("userName"));
@@ -79,6 +82,8 @@ public class HiveRequestAdapter extends RecyclerView.Adapter<HiveRequestAdapter.
         public TextView userName;
         public CardView cv;
         //public ImageView icon;
+        public Button acceptButton;
+        public Button denyButton;
 
         ConstraintLayout constraintLayout;
 
@@ -107,42 +112,40 @@ public class HiveRequestAdapter extends RecyclerView.Adapter<HiveRequestAdapter.
                     }
                 }});
 
-            //icon = itemView.findViewById(R.id.likeCountIcon);
-//            icon.setOnClickListener(new View.OnClickListener(){
-//
-//                @Override
-//                public void onClick(final View view) {
-//
-//                    Log.i(" icon clicked ", " icon clicked ! ");
-//                    int position = (Integer) view.getTag();
-//                    try {
-//                        int postId = posts.get(position).getInt("postId");
-//                        Log.i("post id in adapter ", " " + postId);
-//                        HomeFragment.likePost(postId);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-            //cv = itemView.findViewById(R.id.cardView);
-            //cv.setOnClickListener(this);
+            acceptButton = itemView.findViewById(R.id.acceptRequest);
+            acceptButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    int position = (int) view.getTag();
+
+                    try {
+                        HiveRequestsActivity.acceptRequest(position, "accepted");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+            denyButton = itemView.findViewById(R.id.denyRequest);
+            denyButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    int position = (int) view.getTag();
+
+                    try {
+                        HiveRequestsActivity.acceptRequest(position, "declined");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
 
-//        @Override
-//        public void onClick(View v) {
-//            //for find item that hold in list
-//            int position = (Integer) v.getTag();
-//            Intent intent = new Intent(v.getContext(), PostDetailsActivity.class);
-//            try {
-//                //start new activity and pass the post ID to it
-//                int postId = posts.get(position).getInt("postId");
-//                intent.putExtra("postId", postId);
-//                v.getContext().startActivity(intent);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
+
 
     }
 
