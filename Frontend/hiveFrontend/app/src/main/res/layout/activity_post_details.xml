@@ -12,12 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
         android:textAlignment="viewStart"
-        android:textSize="24sp"
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/hiveName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
@@ -25,29 +25,28 @@
 
     <TextView
         android:id="@+id/userName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="182dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="1dp"
+        android:fontFamily="@font/helveticaneuelight"
         android:textAlignment="viewStart"
-        android:textColor="#817F7F"
+        android:textColor="#C8C8C8"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/hiveName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/userDisplayName"
         app:layout_constraintTop_toTopOf="parent"></TextView>
 
     <TextView
         android:id="@+id/hiveName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="337dp"
+        android:layout_height="23dp"
         android:textAlignment="viewStart"
-        android:textSize="24sp"
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/postTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/beehive"
         app:layout_constraintTop_toBottomOf="@+id/userName"></TextView>
 
     <TextView
@@ -55,19 +54,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="viewStart"
+        android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/postContent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hiveName"></TextView>
 
+    <ImageView
+        android:id="@+id/beehive"
+        android:layout_width="16dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/postTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/beehive" />
+
     <TextView
         android:id="@+id/postContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="19dp"
+        android:fontFamily="@font/helveticaneuelight"
         android:textAlignment="viewStart"
-        android:textSize="24sp"
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/likeNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -114,25 +126,26 @@
         app:layout_constraintEnd_toStartOf="@+id/commentNumber"
         app:layout_constraintTop_toBottomOf="@+id/postContent" />
 
+    <ImageView
+        android:id="@+id/photoEnlarged"
+        android:layout_width="239dp"
+        android:layout_height="204dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/likeCountIcon" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/postViewRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorPrimary"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_width="407dp"
+        android:layout_height="397dp"
+        android:layout_marginEnd="4dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/likeNumber"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="0dp"></androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"></androidx.recyclerview.widget.RecyclerView>
 
-    <ImageView
-        android:id="@+id/postImage"
-        android:layout_width="249dp"
-        android:layout_height="345dp"
-        app:layout_constraintBottom_toBottomOf="@+id/postViewRecycler"
-        app:layout_constraintEnd_toEndOf="@+id/postViewRecycler"
-        app:layout_constraintStart_toStartOf="@+id/postViewRecycler"
-        app:layout_constraintTop_toBottomOf="@+id/postContent"
-        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

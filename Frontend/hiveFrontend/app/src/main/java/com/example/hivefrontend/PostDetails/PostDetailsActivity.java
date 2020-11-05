@@ -60,7 +60,7 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
         setContentView(R.layout.activity_post_details);
 
         currentUserId = SharedPrefManager.getInstance(this.getApplicationContext()).getUser().getId();
-        postImage = findViewById(R.id.postImage);
+        postImage = findViewById(R.id.photoEnlarged);
         header = findViewById(R.id.header);
 
         storage = FirebaseStorage.getInstance();
