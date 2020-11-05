@@ -25,6 +25,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/editheader"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -154,8 +155,8 @@
 
     <EditText
         android:id="@+id/bioField"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="296dp"
+        android:layout_height="152dp"
         android:layout_marginTop="275dp"
         android:background="@drawable/rect_border_filled_bg_edit_profile"
         android:ems="10"
@@ -263,5 +264,47 @@
         app:layout_constraintStart_toStartOf="@+id/profilePictureBorder"
         app:layout_constraintTop_toTopOf="@+id/profilePictureBorder"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:fontFamily="@font/helveticaneuemedium"
+        android:text="Cancel"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@null"
+        android:fontFamily="@font/helveticaneuemedium"
+        android:text="Save"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginBottom="16dp"
+        android:background="@null"
+        android:fontFamily="@font/helveticaneuemedium"
+        android:text="Logout"
+        android:textAllCaps="false"
+        android:textColor="#C8C8C8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

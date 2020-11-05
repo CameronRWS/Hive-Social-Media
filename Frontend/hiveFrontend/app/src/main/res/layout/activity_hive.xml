@@ -81,6 +81,17 @@
         app:layout_constraintTop_toBottomOf="@+id/hiveHeaderActual"
         app:srcCompat="@drawable/joinhivebutton" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/homePostRecyler"
+        android:layout_width="409dp"
+        android:layout_height="368dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#F9F9F9"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hivePageDivider"></androidx.recyclerview.widget.RecyclerView>
+
     <ImageButton
         android:id="@+id/joinedHiveButton"
         android:layout_width="101dp"
@@ -119,7 +130,7 @@
         android:lineSpacingExtra="2.5sp"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="18"
+        android:textSize="18dp"
         app:layout_constraintEnd_toStartOf="@+id/hivePictureBorder"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
