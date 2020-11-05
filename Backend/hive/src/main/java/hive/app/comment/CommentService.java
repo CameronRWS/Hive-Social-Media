@@ -16,7 +16,9 @@ import hive.app.post.PostRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
 import hive.app.utils.Regex;
+import hive.app.websocket.WebSocketServer;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +61,11 @@ public class CommentService {
         String textContent = body.get("textContent");
         if(post.getUser().getUserId() != user.getUserId()) {
         	notificationRepository.save(new Notification(post.getUser().getUserId(), user.getUserId(), postId, "post-commentReceived"));
+			try {
+				WebSocketServer.sendUpdatedNotiCount(post.getUser().getUserId());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         }
         Comment comment = commentRepository.save(new Comment(postId, user, textContent));
         //create notification for all usernames found in comment
@@ -70,6 +77,11 @@ public class CommentService {
         		Member member = memberRepository.findOne(new MemberIdentity(hive, user));
         		if(member != null) {
         			notificationRepository.save(new Notification(userToTag.getUserId(), user.getUserId(), postId, "post-commentMention"));
+        			try {
+        				WebSocketServer.sendUpdatedNotiCount(userToTag.getUserId());
+        			} catch (IOException e) {
+        				e.printStackTrace();
+        			}
         		}
     		}
     	}
