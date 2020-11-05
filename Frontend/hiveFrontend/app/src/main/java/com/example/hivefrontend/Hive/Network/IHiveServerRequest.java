@@ -6,6 +6,5 @@ import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
 public interface IHiveServerRequest {
 
     public void addVolleyListener(IHiveVolleyListener logic);
-    public String getUserId(final String email);
-    public void displayScreen(int userId);
+    public void displayScreen(String hiveName);
 }

@@ -6,6 +6,5 @@ import org.json.JSONArray;
 
 public interface IHiveVolleyListener {
     Context getHiveContext();
-    public String onGetUserIdSuccess(JSONArray response, String email);
-    public void onGetHiveSuccess(JSONArray response);
+    public void onGetHiveNameSuccess(JSONArray response, String hiveName);
 }

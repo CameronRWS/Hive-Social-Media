@@ -1,6 +1,8 @@
 package com.example.hivefrontend.Hive.Logic;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.hivefrontend.Hive.IHiveView;
 import com.example.hivefrontend.Hive.Network.IHiveServerRequest;
@@ -27,28 +29,16 @@ public class HiveLogic implements IHiveVolleyListener {
     }
 
     @Override
-    public String onGetUserIdSuccess(JSONArray response, String email) {
-        String userId = "";
+    public void onGetHiveNameSuccess(JSONArray response, String hiveName) {
         try {
             for(int i = 0; i < response.length(); i++) {
                 JSONObject member = response.getJSONObject(i);
-                if (email.compareTo(member.getString("email")) == 0) {
-                   return member.getString("userId");
+                if (member.getString("name").equals(hiveName)) {
+                    // bio
+                    // member count
+                    // join status
+                    Log.i("muchoguzto", "34");
                 }
-            }
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return userId;
-    }
-
-    @Override
-    public void onGetHiveSuccess(JSONArray response) {
-        try {
-            for(int i = 0; i < response.length(); i++) {
-                JSONObject member = response.getJSONObject(i);
-
             }
         }
         catch (JSONException e) {

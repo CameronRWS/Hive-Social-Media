@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
 import com.example.hivefrontend.Hive.HiveActivity;
+import com.example.hivefrontend.Hive.IHiveView;
 import com.example.hivefrontend.Login.LoginActivity;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.PostDetails.PostDetailsActivity;
@@ -34,6 +35,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<JSONObject> posts;
     private List<Integer> hiveIds;
     private List<String> hiveNames;
+    private IHiveView hiveView;
 
     HomeAdapter(Context context, List<JSONObject> posts, List<Integer> hiveIds, List<String> hiveNames) {
         this.context = context;
@@ -52,7 +54,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(HomeAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final HomeAdapter.ViewHolder holder, final int position) {
         try {
             holder.cv.setTag(position);
             holder.icon.setTag(position);
@@ -68,6 +70,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             int id = posts.get(position).getInt("hiveId");
             String hive = hiveNames.get(hiveIds.indexOf(id));
             holder.hiveName.setText(hive);
+            holder.hiveName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), HiveActivity.class);
+                    intent.putExtra("hiveName", holder.hiveName.getText().toString());
+                    view.getContext().startActivity(intent);
+                }
+            });
 
 
 
@@ -142,13 +152,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             commentNumber = itemView.findViewById(R.id.commentNumber);
             likeNumber = itemView.findViewById(R.id.likeNumber);
             hiveName = itemView.findViewById(R.id.hiveName);
-            hiveName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), HiveActivity.class);
-                    view.getContext().startActivity(intent);
-                }
-            });
             icon = itemView.findViewById(R.id.likeCountIcon);
             icon.setOnClickListener(new View.OnClickListener(){
 
