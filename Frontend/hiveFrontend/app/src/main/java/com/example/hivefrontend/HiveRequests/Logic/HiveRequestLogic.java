@@ -45,7 +45,8 @@ public class HiveRequestLogic implements IHiveRequestVolleyListener {
 
     @Override
     public void onError() {
-
+        view.clearData();
+        getHiveRequests();
     }
 
     @Override

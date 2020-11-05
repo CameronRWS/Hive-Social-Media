@@ -4,10 +4,14 @@ import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.HiveRequests.Logic.HiveRequestLogic;
 import com.example.hivefrontend.HiveRequests.Logic.IHiveRequestVolleyListener;
 import com.example.hivefrontend.VolleySingleton;
@@ -18,6 +22,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class HiveRequestServerRequest implements IHiveRequestServerRequest {
 
@@ -59,13 +65,17 @@ public class HiveRequestServerRequest implements IHiveRequestServerRequest {
 
 
         final JSONObject req = new JSONObject();
-        req.put("hiveId",hiveId);
-        req.put("userId",userId);
+        req.put("hiveId", (Integer) hiveId);
+        req.put("userId", (Integer) userId);
         req.put("status",status);
 
+        HttpStack customHurlStack = new CustomHurlStack();
+        RequestQueue queue = Volley.newRequestQueue(logic.getRequestsContext(), customHurlStack);
+
         String url = "http://10.24.227.37:8080/requests";
+
         final JsonObjectRequest hiveReqAccept = new JsonObjectRequest
-                (Request.Method.DELETE, url, null, new Response.Listener<JSONObject>() {
+                (Request.Method.DELETE, url, req, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         logic.onAcceptDenySuccess();
@@ -79,17 +89,20 @@ public class HiveRequestServerRequest implements IHiveRequestServerRequest {
                         logic.onError();
                     }
                 }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                headers.put("hiveId",String.valueOf(hiveId));
-                headers.put("userId",String.valueOf(userId));
-                headers.put("status",status);
-                return headers;
-            }
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("Content-Type", "application/json");
+//                headers.put("hiveId",String.valueOf(hiveId));
+//                headers.put("userId",String.valueOf(userId));
+//                headers.put("status",status);
+//                return headers;
+//            }
             };
-        VolleySingleton.getInstance(logic.getRequestsContext()).addToRequestQueue(hiveReqAccept);
+
+        queue.add(hiveReqAccept);
+
+        //VolleySingleton.getInstance(logic.getRequestsContext()).addToRequestQueue(hiveReqAccept);
 
     }
 
