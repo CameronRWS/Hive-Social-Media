@@ -10,7 +10,9 @@ import hive.app.post.Post;
 import hive.app.post.PostRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
+import hive.app.websocket.WebSocketServer;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +59,11 @@ public class LikeService {
         System.out.println(likeRepository.findOne(likeIdentity) == null);
         if(likeRepository.findOne(likeIdentity) == null && post.getUser().getUserId() != userId) {
             notificationRepository.save(new Notification(post.getUser().getUserId(), userId, postId, "post-likeReceived"));
+			try {
+				WebSocketServer.sendUpdatedNotiCount(post.getUser().getUserId());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         }
         return likeRepository.save(new Like(likeIdentity));
     }

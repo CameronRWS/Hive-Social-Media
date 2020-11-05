@@ -4,6 +4,9 @@ package hive.app.notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hive.app.websocket.WebSocketServer;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,16 +33,27 @@ public class NotificationService {
     
     public Map<String, Object> getNotiCount(String userId){
         int theUserId = Integer.parseInt(userId);
-        int notiCount = notificationRepository.findByUserId(theUserId).size();
+        int notiCount = notificationRepository.findNewByUserId(theUserId).size();
         Map<String, Object> map = new HashMap<>();
-        map.put("notiCount", notiCount);
+        map.put("newNotiCount", notiCount);
         return map;
+    }
+    
+    public Integer getNotiCountAsInt(String userId){
+        int theUserId = Integer.parseInt(userId);
+        return notificationRepository.findNewByUserId(theUserId).size();
     }
     
     public Notification read(String id){
         int notiId = Integer.parseInt(id);
         Notification noti = notificationRepository.findOne(notiId);
         noti.setIsNew(false);
-        return notificationRepository.save(noti);
+        notificationRepository.save(noti);
+        try {
+			WebSocketServer.sendUpdatedNotiCount(noti.getOwnerUserId());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return noti;
     }
 }

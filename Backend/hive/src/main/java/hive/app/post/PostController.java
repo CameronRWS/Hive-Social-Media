@@ -15,7 +15,7 @@ public class PostController {
 
     @GetMapping("/")
     public String thisIsForTesting(){
-        return "Communicating to THE REPO4...";
+        return "Communicating to THE REPO5...";
     }
     
     @GetMapping("/posts")
