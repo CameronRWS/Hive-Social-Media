@@ -36,5 +36,10 @@ import hive.app.user.UserRepository;
 
 @RunWith(SpringRunner.class)
 public class MemberServiceTest {
+	
+	@TestConfiguration
+	static class test {
+		
+	}
 
 }
