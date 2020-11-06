@@ -64,6 +64,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 FragmentManager fm = getSupportFragmentManager();
                 ProfileFragment profileFragment = new ProfileFragment();
+
                 fm.beginTransaction().add(R.id.cancelButton, profileFragment).commit();
             }
         });
