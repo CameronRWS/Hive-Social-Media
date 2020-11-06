@@ -40,4 +40,27 @@ public class ServerRequest implements IHiveServerRequest {
                 });
         VolleySingleton.getInstance(hiveVolleyListener.getHiveContext()).addToRequestQueue(jsonArrayRequest);
     }
+
+    @Override
+    public void fetchMemberCount(final String hiveName) {
+        String url = "http://10.24.227.37:8080/members";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        hiveVolleyListener.onFetchMemberCountSuccess(response, hiveName);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+                    }
+                });
+        VolleySingleton.getInstance(hiveVolleyListener.getHiveContext()).addToRequestQueue(jsonArrayRequest);
+    }
+
+
 }

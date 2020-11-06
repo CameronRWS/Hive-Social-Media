@@ -34,7 +34,6 @@ public class HomePageTest {
     @Mock
     private Context context;
 
-
     @Test
     public void TestAddToDiscoverHiveIds(){
         final ArrayList<Integer> testIds = new ArrayList<>();

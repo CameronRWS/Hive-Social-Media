@@ -34,12 +34,37 @@ public class HiveLogic implements IHiveVolleyListener {
             for(int i = 0; i < response.length(); i++) {
                 JSONObject member = response.getJSONObject(i);
                 if (member.getString("name").equals(hiveName)) {
-                    // bio
+                    hiveView.displayBio(member.getString("description"));
+                    server.fetchMemberCount(hiveName);
                     // member count
+                    //  // members, count how many times hiveName is mentioned, return that number, feed it to
+                        // hiveView method to display!
+
+
                     // join status
-                    Log.i("muchoguzto", "34");
                 }
             }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void clearAdapterData() {
+        hiveView.clearData();
+    }
+    @Override
+    public void onFetchMemberCountSuccess(JSONArray response, String hiveName) {
+        try {
+            int memberCount = 0;
+            Log.i("yjha", "here we are");
+            for(int i = 0; i < response.length(); i++) {
+                JSONObject member = response.getJSONObject(i);
+                if (member.getJSONObject("hive").getString("name").equals(hiveName)) {
+                    memberCount++;
+                    Log.i("yjha", "current num" + memberCount);
+                }
+            }
+            hiveView.displayMemberCount(memberCount);
         }
         catch (JSONException e) {
             e.printStackTrace();

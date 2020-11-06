@@ -7,4 +7,5 @@ public interface IHiveServerRequest {
 
     public void addVolleyListener(IHiveVolleyListener logic);
     public void displayScreen(String hiveName);
+    public void fetchMemberCount(String hiveName);
 }

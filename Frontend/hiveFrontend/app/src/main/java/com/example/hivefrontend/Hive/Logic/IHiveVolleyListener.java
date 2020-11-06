@@ -7,4 +7,6 @@ import org.json.JSONArray;
 public interface IHiveVolleyListener {
     Context getHiveContext();
     public void onGetHiveNameSuccess(JSONArray response, String hiveName);
+    public void onFetchMemberCountSuccess(JSONArray response, String hiveName);
+    public void clearAdapterData();
 }
