@@ -14,23 +14,48 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+/**
+ * HiveLogic handles the logic behind the Hive class and handles the server
+ *     responses.
+ */
+
 public class HiveLogic implements IHiveVolleyListener {
     IHiveView hiveView;
     IHiveServerRequest server;
 
+    /**
+     * The HiveLogic constructor takes interfaces IHiveView and IHiveServerRequest
+     * and assigns them to local variables. Then, it adds this volley listener to
+     * the server.
+     * @param hv interface IHiveView to be used by this HiveLogic
+     * @param hsr interface IHiveServerRequest to be used by this HiveLogic
+     */
     public HiveLogic(IHiveView hv, IHiveServerRequest hsr) {
         this.hiveView = hv;
         this.server = hsr;
         server.addVolleyListener(this);
     }
 
+    /**
+     * setUserHives() calls the IHiveServerRequest server to set the user's hives.
+     */
     public void setUserHives() { server.setUserHiveRequest(hiveView.getUserId());}
 
+    /**
+     * Gets the Hive Activity's context
+     * @return the hive activity's context
+     */
     @Override
     public Context getHiveContext() {
         return hiveView.getHiveContext();
     }
 
+    /**
+     *
+     * @param response
+     * @param hiveName
+     */
     @Override
     public void onGetHiveNameSuccess(JSONArray response, String hiveName) {
         try {

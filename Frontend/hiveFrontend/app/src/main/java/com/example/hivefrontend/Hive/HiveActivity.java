@@ -78,9 +78,7 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
         final TextView tvHiveName = (TextView) findViewById(R.id.hiveName);
         givenHiveName = getIntent().getStringExtra("hiveName");
         tvHiveName.setText(givenHiveName);
-<<<<<<< HEAD
-        
-=======
+
         userId = SharedPrefManager.getInstance(this.getApplicationContext()).getUser().getId();
         hiveIdsHome = new ArrayList<>();
         hiveOptionsHome = new ArrayList<>();
@@ -111,7 +109,6 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
         context = root.getContext();
         return root;
 
->>>>>>> hivepagecont
 
     }
 
