@@ -22,7 +22,7 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
     SharedPrefManager sharedPrefManager;
     int userId = 1;
     String givenHiveName;
-    TextView tvBio = (TextView) findViewById(R.id.hiveDescription);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,6 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
         final ImageButton join = (ImageButton) findViewById(R.id.joinHiveButton);
         final ImageButton requested = (ImageButton) findViewById(R.id.requestedHiveButton);
         final TextView tvHiveName = (TextView) findViewById(R.id.hiveName);
-        Log.i("muchoguzto", "34");
         givenHiveName = getIntent().getStringExtra("hiveName");
         tvHiveName.setText(givenHiveName);
 

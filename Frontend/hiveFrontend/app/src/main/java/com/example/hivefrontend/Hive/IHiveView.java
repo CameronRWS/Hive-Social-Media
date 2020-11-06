@@ -6,4 +6,5 @@ import com.example.hivefrontend.Hive.Network.ServerRequest;
 
 public interface IHiveView {
     public Context getHiveContext();
+
 }
