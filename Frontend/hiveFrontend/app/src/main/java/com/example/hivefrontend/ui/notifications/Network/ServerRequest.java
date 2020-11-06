@@ -80,7 +80,6 @@ public class ServerRequest implements INotificationsServerRequest {
                     }
                 });
         VolleySingleton.getInstance(notificationsVolleyListener.getNotificationsContext()).addToRequestQueue(userRequest);
-
     }
 
 }

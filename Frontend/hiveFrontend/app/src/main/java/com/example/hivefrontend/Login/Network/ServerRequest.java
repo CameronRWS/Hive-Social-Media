@@ -27,7 +27,6 @@ public class ServerRequest implements ILoginServerRequest {
         String url ="http://10.24.227.37:8080/userRegistrations";
         JsonArrayRequest arrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
                     @Override
                     public void onResponse(JSONArray response) {
                         loginVolleyListener.onLoginUserSuccess(response);
