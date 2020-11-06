@@ -69,5 +69,5 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.3.1'
     testImplementation 'androidx.test:core:1.2.0'
 
-
+    implementation 'org.java-websocket:Java-WebSocket:1.4.1'
 }

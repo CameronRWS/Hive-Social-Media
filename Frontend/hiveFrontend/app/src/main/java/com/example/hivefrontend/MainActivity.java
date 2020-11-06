@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.hivefrontend.Login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,7 +25,18 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class MainActivity extends AppCompatActivity {
+
+
+    private WebSocketClient cc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         final BottomNavigationView navView = findViewById(R.id.nav_view);
         final ImageView hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
-        final ImageButton gearIcon = (ImageButton) findViewById(R.id.gearIcon);
+        final TextView activeUsers = findViewById(R.id.activeUserCount);
+        activeUsers.setText("hello!!!");
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -51,10 +65,15 @@ public class MainActivity extends AppCompatActivity {
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if(destination.getId() == R.id.navigation_buzz) {
                     navView.setVisibility(View.GONE);
-                    gearIcon.setVisibility(View.GONE);
                 } else {
                     navView.setVisibility(View.VISIBLE);
-                    gearIcon.setVisibility(View.VISIBLE);
+                }
+
+                if(destination.getId() == R.id.navigation_home) {
+                    activeUsers.setVisibility(View.VISIBLE);
+                }
+                else {
+                    activeUsers.setVisibility(View.GONE);
                 }
 
                 if(destination.getId() == R.id.navigation_profile || destination.getId() == R.id.navigation_buzz) {
@@ -67,6 +86,49 @@ public class MainActivity extends AppCompatActivity {
         });
 
         NavigationUI.setupWithNavController(navView, navController);
+
+
+        int userId = SharedPrefManager.getInstance(this.getApplicationContext()).getUser().getId();
+        String w = "ws://10.24.227.37:8080/websocket/" + userId;
+        //String w = "ws://echo.websocket.org";
+        Draft[] drafts = {new Draft_6455()};
+        try {
+            Log.d("Socket:", "Trying socket");
+            cc = new WebSocketClient(new URI(w),(Draft) drafts[0]) {
+                @Override
+                public void onMessage(String message) {
+                    Log.d("", "run() returned: " + message);
+
+                    //message is of form "onlineUsers: #"
+                    String num = message.substring(13);
+                    int count = Integer.parseInt(num);
+
+                    activeUsers.setText("Total bees buzzing: " + count);
+
+                }
+
+                @Override
+                public void onOpen(ServerHandshake handshake) {
+                    Log.d("OPEN", "run() returned: " + "is connecting");
+                }
+
+                @Override
+                public void onClose(int code, String reason, boolean remote) {
+                    Log.d("CLOSE", "onClose() returned: " + reason);
+                }
+
+                @Override
+                public void onError(Exception e)
+                {
+                    Log.d("Exception:", e.toString());
+                }
+            };
+        }
+        catch (URISyntaxException e) {
+            Log.d("Exception:", e.getMessage().toString());
+            e.printStackTrace();
+        }
+        cc.connect();
 
     }
 
@@ -85,9 +147,5 @@ public class MainActivity extends AppCompatActivity {
         ((InputMethodManager) (context).getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
-    public void viewSettings(View view){
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
 
 }
