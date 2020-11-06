@@ -99,7 +99,10 @@ public class HomeLogic implements IHomeVolleyListener{
     public void addToDiscoverIds(int hiveId){
         home.addToHiveIdsDiscover(hiveId);
     }
-
+    public void addToHiveIdsHome(int hiveId)
+    {
+        home.addToHiveIdsHome(hiveId);
+    }
     public void addToDiscoverPosts(JSONObject post){
         home.addToDiscoverPosts(post);
     }

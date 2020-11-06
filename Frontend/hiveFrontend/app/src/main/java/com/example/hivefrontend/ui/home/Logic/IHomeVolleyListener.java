@@ -33,6 +33,8 @@ public interface IHomeVolleyListener {
 
     public void clearAdapterData();
 
+    public void addToHiveIdsHome(int hiveId);
+
     public ArrayList<Integer> getHiveIdsHome();
 
     public ArrayList<String> getHiveOptionsHome();

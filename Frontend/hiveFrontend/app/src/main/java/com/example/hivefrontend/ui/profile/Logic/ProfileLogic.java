@@ -2,13 +2,11 @@ package com.example.hivefrontend.ui.profile.Logic;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
 
 import com.android.volley.VolleyError;
 import com.example.hivefrontend.ui.profile.IProfileServerRequest;
 import com.example.hivefrontend.ui.profile.IProfileView;
-import com.example.hivefrontend.ui.profile.Network.ServerRequest;
-import com.example.hivefrontend.ui.profile.ProfileFragment;
+import com.example.hivefrontend.ui.profile.MyAdapter;
 import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
 
 import org.json.JSONArray;
@@ -20,6 +18,9 @@ public class ProfileLogic implements ProfileVolleyListener{
     public Context context;
     public int userId;
     IProfileServerRequest server;
+    MyAdapter adapter;
+    private int memberCount;
+    private String hiveDescrip;
 
     public ProfileLogic(IProfileView p, IProfileServerRequest serverRequest){
         this.profileView = p;
@@ -147,5 +148,44 @@ public class ProfileLogic implements ProfileVolleyListener{
         profileView.setDisplayName("Error.");
     }
 
+    @Override
+    public void onFetchMemberCountSuccess(JSONArray response, String hiveName) {
+        try {
+
+            for(int i = 0; i < response.length(); i++) {
+                JSONObject member = response.getJSONObject(i);
+                if (member.getJSONObject("hive").getString("name").equals(hiveName)) {
+                    memberCount++;
+                    hiveDescrip = member.getJSONObject("hive").getString("description");
+                }
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onFetchHiveDescriptionSuccess(JSONArray response, String hiveName) {
+        try {
+            for(int i = 0; i < response.length(); i++) {
+                JSONObject member = response.getJSONObject(i);
+                if (member.getString("name").equals(hiveName)) {
+                    Log.i("princess", "name: " + member.getString("name") + "description: " + member.getString("description"));
+                    hiveDescrip = member.getString("description");
+                    break;
+                }
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getMemberCount() {return memberCount;}
+
+
+    @Override
+    public String getHiveDescrip() {return hiveDescrip;}
 
 }

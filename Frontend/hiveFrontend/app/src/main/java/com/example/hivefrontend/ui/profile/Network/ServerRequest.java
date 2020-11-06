@@ -21,12 +21,62 @@ import org.json.JSONObject;
 
 public class ServerRequest implements IProfileServerRequest {
     private String tag_json_obj = "json_obj_req";
+    private int memberCount;
 
     private ProfileVolleyListener profileVolleyListener;
 
    public void addVolleyListener(ProfileVolleyListener logic){
        profileVolleyListener = logic;
    }
+    public int getMemberCount() {return memberCount;}
+
+    @Override
+    public void fetchMemberCount(final String hiveName) {
+            String url = "http://10.24.227.37:8080/members";
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+
+                           profileVolleyListener.onFetchMemberCountSuccess(response, hiveName);
+                            profileVolleyListener.onFetchHiveDescriptionSuccess(response, hiveName);
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            Log.i("volleyAppError","Error: " + error.getMessage());
+                            Log.i("volleyAppError","VolleyError: "+ error);
+                        }
+                    });
+            VolleySingleton.getInstance(profileVolleyListener.getProfileContext()).addToRequestQueue(jsonArrayRequest);
+
+    }
+
+    @Override
+    public void fetchHiveDescription(final String hiveName) {
+        String url = "http://10.24.227.37:8080/hives";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        profileVolleyListener.onFetchHiveDescriptionSuccess(response, hiveName);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+                    }
+                });
+        VolleySingleton.getInstance(profileVolleyListener.getProfileContext()).addToRequestQueue(jsonArrayRequest);
+
+    }
+
 
     public void userInfoRequest(){
 

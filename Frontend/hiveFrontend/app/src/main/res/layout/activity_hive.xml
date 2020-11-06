@@ -82,7 +82,7 @@
         app:srcCompat="@drawable/joinhivebutton" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homePostRecyler"
+        android:id="@+id/hivePostRecyler"
         android:layout_width="409dp"
         android:layout_height="368dp"
         android:background="#FFFFFF"
@@ -144,8 +144,7 @@
         android:layout_marginTop="85dp"
         android:fontFamily="@font/helveticaneuebold"
         android:lineSpacingExtra="2.5sp"
-        android:text="bees and counting"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="10sp"
         app:layout_constraintEnd_toStartOf="@+id/hivePictureBorder"

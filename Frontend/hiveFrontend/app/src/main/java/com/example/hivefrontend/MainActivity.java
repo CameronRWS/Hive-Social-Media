@@ -24,6 +24,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
+    public BottomNavigationView navView;
+    public ImageView hiveLogo;
+    public ImageButton gearIcon;
+    public NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,38 +39,41 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        final BottomNavigationView navView = findViewById(R.id.nav_view);
-        final ImageView hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
-        final ImageButton gearIcon = (ImageButton) findViewById(R.id.gearIcon);
+        navView = findViewById(R.id.nav_view);
+        hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
+        gearIcon = (ImageButton) findViewById(R.id.gearIcon);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications, R.id.navigation_buzz, R.id.navigation_profile)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if(destination.getId() == R.id.navigation_buzz) {
-                    navView.setVisibility(View.GONE);
-                    gearIcon.setVisibility(View.GONE);
-                } else {
-                    navView.setVisibility(View.VISIBLE);
-                    gearIcon.setVisibility(View.VISIBLE);
-                }
-
-                if(destination.getId() == R.id.navigation_profile || destination.getId() == R.id.navigation_buzz) {
-                    hiveLogo.setVisibility(View.GONE);
-                } else {
-                    hiveLogo.setVisibility(View.VISIBLE);
-                }
-
+                destinationChange(destination.getId());
             }
         });
-
         NavigationUI.setupWithNavController(navView, navController);
+    }
+
+
+    public void destinationChange(int id) {
+        if(id == R.id.navigation_buzz) {
+            navView.setVisibility(View.GONE);
+            gearIcon.setVisibility(View.GONE);
+        } else {
+            navView.setVisibility(View.VISIBLE);
+            gearIcon.setVisibility(View.VISIBLE);
+        }
+
+        if(id == R.id.navigation_profile || id == R.id.navigation_buzz) {
+            hiveLogo.setVisibility(View.GONE);
+        } else {
+            hiveLogo.setVisibility(View.VISIBLE);
+        }
 
     }
 
