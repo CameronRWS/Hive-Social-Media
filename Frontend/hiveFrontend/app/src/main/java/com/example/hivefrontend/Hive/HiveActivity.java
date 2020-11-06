@@ -34,7 +34,7 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
         final TextView tvHiveName = (TextView) findViewById(R.id.hiveName);
         givenHiveName = getIntent().getStringExtra("hiveName");
         tvHiveName.setText(givenHiveName);
-
+        
 
         final ServerRequest serverRequest = new ServerRequest();
         HiveLogic logic = new HiveLogic(this, serverRequest);
