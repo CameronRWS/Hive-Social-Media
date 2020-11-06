@@ -129,7 +129,7 @@ public class ServerRequest implements IHiveServerRequest {
             @Override
             public void onResponse(JSONArray response) {
 
-                logic.onHiveRequestSuccess(response);
+               logic.onHiveRequestSuccess(response);
             }
         }, new Response.ErrorListener() {
 

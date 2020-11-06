@@ -67,7 +67,7 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
 
         ServerRequest serverRequest = new ServerRequest();
         logic = new HiveLogic(this, serverRequest);
-        //logic.setUserHives();
+        logic.setUserHives();
 
 
         serverRequest.displayScreen(givenHiveName);
