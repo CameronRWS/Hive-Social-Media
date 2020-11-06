@@ -2,6 +2,8 @@ package com.example.hivefrontend;
 
 import android.content.Context;
 
+import com.example.hivefrontend.ui.buzz.BuzzFragment;
+import com.example.hivefrontend.ui.buzz.Logic.BuzzLogic;
 import com.example.hivefrontend.ui.home.HomeFragment;
 import com.example.hivefrontend.ui.home.IHomeView;
 import com.example.hivefrontend.ui.home.Logic.HomeLogic;
@@ -70,6 +72,19 @@ public class HomePageTestII {
         assertEquals(testIds,verify);
         verify(view,times(1)).getHiveIdsHome();
 
+    }
+
+    @Test
+    public void testHomeContextSuccess(){
+        HomeFragment home = mock(HomeFragment.class);
+        ServerRequest server = new ServerRequest();
+        HomeLogic logic = mock(HomeLogic.class);
+
+        when(home.getHomeContext()).thenReturn(context);
+
+        logic.getHomeContext();
+
+        verify(logic,times(1)).getHomeContext();
     }
 
 }

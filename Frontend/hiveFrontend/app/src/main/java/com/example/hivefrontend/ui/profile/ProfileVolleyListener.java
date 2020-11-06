@@ -12,7 +12,11 @@ public interface ProfileVolleyListener {
     public void onHiveListSuccess(JSONArray response);
     public void onHiveListError(VolleyError error);
     public void pollenCountSuccess(String response);
+    public int getMemberCount();
+    public String getHiveDescrip();
+    public void onFetchHiveDescriptionSuccess(JSONArray response, String hiveName);
     public void pollenCountError(VolleyError error);
+    public void onFetchMemberCountSuccess(JSONArray response, String hiveName);
     public Context getProfileContext();
     public int getUserId();
 }

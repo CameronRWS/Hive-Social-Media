@@ -9,5 +9,10 @@ public interface IHiveView {
     public void displayBio(String description);
     public void displayMemberCount(int count);
     void clearData();
+    int getUserId();
+    public void addToHiveIdsHome(int hiveId);
+    public void addToHiveOptionsHome(String hiveName);
+    public void notifyDataChange();
+    void sortPosts();
 
 }

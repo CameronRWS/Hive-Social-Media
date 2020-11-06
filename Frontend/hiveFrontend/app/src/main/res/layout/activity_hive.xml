@@ -82,7 +82,7 @@
         app:srcCompat="@drawable/joinhivebutton" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homePostRecyler"
+        android:id="@+id/hivePostRecyler"
         android:layout_width="409dp"
         android:layout_height="368dp"
         android:background="#FFFFFF"
