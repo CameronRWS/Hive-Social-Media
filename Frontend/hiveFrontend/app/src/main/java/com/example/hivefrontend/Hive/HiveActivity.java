@@ -39,6 +39,9 @@ import java.util.Collections;
 
 public class HiveActivity extends AppCompatActivity implements IHiveView {
 
+    public static HiveLogic logic;
+    public static Context context;
+
     int joinState = 0;
     SharedPrefManager sharedPrefManager;
     int userId = 1;
@@ -56,12 +59,18 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
     public static HiveAdapter hiveAdapter;
     public int selectedTab;
 
-    public static HiveLogic logic;
-    public static Context context;
 
-
-    public void onCreateView(@NonNull LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                                 ViewGroup container, Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_hive);
+
+        ServerRequest serverRequest = new ServerRequest();
+        logic = new HiveLogic(this, serverRequest);
+        //logic.setUserHives();
+
+
+        serverRequest.displayScreen(givenHiveName);
 
         final ImageButton joined = (ImageButton) findViewById(R.id.joinedHiveButton);
         final ImageButton join = (ImageButton) findViewById(R.id.joinHiveButton);
@@ -90,18 +99,15 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
             }
         });
 
+
         final RecyclerView recyclerView = root.findViewById(R.id.hivePostRecyler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
         hiveAdapter = new HiveAdapter(this.getApplicationContext(), discoverPostObjects, hiveIdsHome, hiveOptionsHome);
         recyclerView.setAdapter(hiveAdapter);
 
-
-        ServerRequest serverRequest = new ServerRequest();
-        logic = new HiveLogic(this, serverRequest);
-        logic.setUserHives();
-
         context = root.getContext();
-        serverRequest.displayScreen(givenHiveName);
+        return root;
+
 
     }
 
@@ -119,7 +125,7 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
     @Override
     public void onResume() {
         super.onResume();
-        logic.onPageResume();
+       // logic.onPageResume();
     }
 
 
