@@ -10,6 +10,7 @@ import com.example.hivefrontend.ui.search.Logic.ISearchVolleyListener;
 import com.example.hivefrontend.ui.search.Logic.SearchLogic;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 public class SearchServerRequest implements ISearchServerRequest {
     private ISearchVolleyListener logic;
@@ -32,6 +33,35 @@ public class SearchServerRequest implements ISearchServerRequest {
                     public void onResponse(JSONArray response) {
 
                         logic.onHiveRequestSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        logic.onError(error);
+
+                    }
+                });
+
+        // Add the request to the RequestQueue.
+        VolleySingleton.getInstance(logic.getSearchContext()).addToRequestQueue(hiveRequest);
+    }
+
+    public void getOtherHives(){
+        String url ="http://10.24.227.37:8080/hives";
+
+        JsonArrayRequest hiveRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        try {
+                            logic.onGetOtherHivesRequestSuccess(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
 

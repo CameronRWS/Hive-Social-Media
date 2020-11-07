@@ -7,4 +7,6 @@ public interface ISearchServerRequest {
     void addVolleyListener(ISearchVolleyListener searchLogic);
 
     void getUserHives(int userId);
+
+    void getOtherHives();
 }

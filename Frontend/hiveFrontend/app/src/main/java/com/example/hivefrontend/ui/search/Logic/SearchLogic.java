@@ -51,5 +51,21 @@ public class SearchLogic implements ISearchVolleyListener {
             e.printStackTrace();
             Log.i("jsonAppError", e.toString());
         }
+        server.getOtherHives();
     }
+
+    @Override
+    public void onGetOtherHivesRequestSuccess(JSONArray response) throws JSONException {
+        for(int i = 0; i<response.length(); i++){
+            JSONObject hive = response.getJSONObject(i);
+            boolean viewable = !hive.getString("type").equals("private"); //will be true if the hive is not private
+            boolean notJoined = !s.getUserHives().contains(hive.getInt("hiveId")); //will be true if the user is not a member of this hive
+            if( viewable && notJoined ){
+                s.addToDisplayedHiveList(hive);
+                Log.i("other hives: ", " " + hive.getInt("hiveId"));
+            }
+        }
+    }
+
+
 }

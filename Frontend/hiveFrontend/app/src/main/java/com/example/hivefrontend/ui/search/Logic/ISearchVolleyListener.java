@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.volley.VolleyError;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 public interface ISearchVolleyListener  {
 
@@ -15,4 +16,6 @@ public interface ISearchVolleyListener  {
     void onError(VolleyError error);
 
     void onHiveRequestSuccess(JSONArray response);
+
+    void onGetOtherHivesRequestSuccess(JSONArray response) throws JSONException;
 }
