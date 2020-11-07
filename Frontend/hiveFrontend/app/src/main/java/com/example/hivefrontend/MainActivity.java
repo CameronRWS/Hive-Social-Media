@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         final BottomNavigationView navView = findViewById(R.id.nav_view);
         final ImageView hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
         final TextView activeUsers = findViewById(R.id.activeUserCount);
-        activeUsers.setText("hello!!!");
+        //activeUsers.setText("hello!!!");
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onOpen(ServerHandshake handshake) {
                     Log.d("OPEN", "run() returned: " + "is connecting");
+
                 }
 
                 @Override
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Log.d("Exception:", e.toString());
                 }
+
             };
         }
         catch (URISyntaxException e) {
@@ -129,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         cc.connect();
+        if (cc.isClosed()) {
+            cc.connect();
+        }
 
     }
 
