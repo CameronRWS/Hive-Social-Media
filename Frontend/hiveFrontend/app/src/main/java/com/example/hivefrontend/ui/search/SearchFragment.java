@@ -1,5 +1,6 @@
 package com.example.hivefrontend.ui.search;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
+import com.example.hivefrontend.ui.search.Logic.SearchLogic;
+import com.example.hivefrontend.ui.search.Server.SearchServerRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -23,21 +29,47 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONObject;
 
-public class SearchFragment extends Fragment {
+import java.util.ArrayList;
+
+
+public class SearchFragment extends Fragment implements ISearchView{
 
     MapView mMapView;
     private GoogleMap googleMap;
 
     private SearchViewModel searchViewModel;
     private int selectedTab;
+    private RecyclerView recycler;
+    private SearchLogic logic;
+    private SearchServerRequest server;
+    private int userId;
+
+    private ArrayList<JSONObject> hives;
+
+    private ArrayList<Integer> userHives;
+
+    private SearchAdapter mAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         searchViewModel =
                 ViewModelProviders.of(this).get(SearchViewModel.class);
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        
+
+        SearchServerRequest server = new SearchServerRequest();
+        logic = new SearchLogic(this,server);
+        userHives = new ArrayList<>();
+        hives = new ArrayList<>();
+        userId = SharedPrefManager.getInstance(this.getContext()).getUser().getId();
+
+        recycler = rootView.findViewById(R.id.hiveListRecyler);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        mAdapter = new SearchAdapter(this.getContext(), hives);
+        recycler.setAdapter(mAdapter);
+        recycler.setVisibility(View.GONE);
+
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
@@ -74,9 +106,11 @@ public class SearchFragment extends Fragment {
                 selectedTab = tab.getPosition();
                 if(selectedTab == 0){
                     mMapView.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
                 }
                 else{
                     mMapView.setVisibility(View.GONE);
+                    recycler.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -91,13 +125,48 @@ public class SearchFragment extends Fragment {
 
                 if(selectedTab == 0){
                     mMapView.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
                 }
                 else{
                     mMapView.setVisibility(View.GONE);
+                    recycler.setVisibility(View.VISIBLE);
                 }
             }
         });
+
+        logic.getHives();
+
         return rootView;
+    }
+
+    public void notifyAdapterChange(){
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void addToDisplayedHiveList(JSONObject hive){
+        hives.add(hive);
+    }
+
+    public void addToUserHives(Integer id){
+        userHives.add(id);
+    }
+
+    @Override
+    public ArrayList<Integer> getUserHives() {
+        return this.userHives;
+    }
+
+    @Override
+    public ArrayList<JSONObject> getDisplayedHives() {
+        return this.hives;
+    }
+
+    public int getUserId(){
+        return userId;
+    }
+
+    public Context getSearchContext(){
+        return this.getContext();
     }
 
 //    @Override
