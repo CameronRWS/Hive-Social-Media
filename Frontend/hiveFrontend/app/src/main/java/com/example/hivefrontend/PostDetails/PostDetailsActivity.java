@@ -34,6 +34,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Displays a detailed view of a post and allows the user to see and add comments.
+ */
 public class PostDetailsActivity extends AppCompatActivity implements IPostView{
 
 
@@ -104,10 +107,17 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
                 .into(postImage);
     }
 
+    /**
+     * Returns the current user's user id
+     * @return The current user's user id
+     */
     public int getUserId(){
         return currentUserId;
     }
 
+    /**
+     * Builds an alertDialog that allows the user to submit comments on the post
+     */
     public void promptDialog() {
         LayoutInflater li = LayoutInflater.from(PostDetailsActivity.this);
         View promptsView = li.inflate(R.layout.prompts, null);
@@ -150,14 +160,27 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
         alertDialog.show();
     }
 
+    /**
+     * Calls the logic class to request the post information for the given post id
+     * @param postId The post id of the post to display
+     */
     public void getPostInfo(int postId){
         logic.getPostInfoJson(postId);
     }
 
+    /**
+     * Sets the PostDetailsLogic variable to the provided one
+     * @param logic The logic class to use for this PostDetailsActivity
+     */
     public void setLogic(PostDetailsLogic logic){
         if(this.logic==null) this.logic = logic;
     }
 
+    /**
+     * Handles user click on the username or display name of the poster by starting the ProfileActivity
+     * @param userId The userId of the user
+     * @param view The provided view
+     */
     public void onUserClick(int userId, View view){
         logic.onUserClick(userId, view);
 
@@ -168,20 +191,37 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
             view.getContext().startActivity(intent);
     }
 
+    /**
+     * Returns the Context for this activity
+     * @return Context for this activity
+     */
     @Override
     public Context getPostContext() {
         return PostDetailsActivity.this;
     }
 
+    /**
+     * Returns the post id for the post currently displayed
+     * @return The post id for the displayed post
+     */
     public int getPostId() {
         return postId;
     }
 
+    /**
+     * Sets the hive name of the post to the given name
+     * @param name The hive name to set this post's hive name to
+     */
     @Override
     public void setHiveName(String name) {
         hiveName = name;
     }
 
+    /**
+     * Using the given post, sets the TextViews of the screen to display details of the post
+     * @param post The post to display
+     * @throws JSONException
+     */
     @Override
     public void setPost(JSONObject post) throws JSONException {
         //title
@@ -236,6 +276,9 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
         });
     }
 
+    /**
+     * Handles a successful comment
+     */
     @Override
     public void handleCommentSuccess() {
         comments.clear();

@@ -6,6 +6,9 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
 
+/**
+ * Interface implemented by PostDetailsLogic
+ */
 public interface IPostVolleyListener {
 
     void onError(VolleyError error);
