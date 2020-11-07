@@ -30,7 +30,7 @@ public class SpringFoxConfig {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 				.title("Hive API Documentation")
-				.description("auto-generated using swagger.")
+				.description("")
 				.version("0.0.2")
 				.build();
 	}
