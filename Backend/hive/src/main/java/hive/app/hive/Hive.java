@@ -48,7 +48,7 @@ public class Hive {
     public Hive() {  }
     
     public Hive(String name, String description, String type, Double latitude, Double longitude) {
-        this.setDateCreated(DateTime.GetCurrentDateTime());
+        this.setDateCreated(DateTime.getCurrentDateTime());
         this.setName(name);
         this.setDescription(description);
         this.setType(type);

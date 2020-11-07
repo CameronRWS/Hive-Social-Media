@@ -37,7 +37,7 @@ public class Notification {
         this.setCreatorUserId(creatorUserId);
         this.setEntityId(entityId);
         this.setNotiType(notiType);
-        this.setDateCreated(DateTime.GetCurrentDateTime());
+        this.setDateCreated(DateTime.getCurrentDateTime());
         this.setIsNew(true);
     }
     
