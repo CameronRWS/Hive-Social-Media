@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hivefrontend.R;
@@ -49,6 +50,8 @@ public class SearchFragment extends Fragment implements ISearchView{
 
     private ArrayList<Integer> userHives;
 
+    private SearchAdapter mAdapter;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         searchViewModel =
@@ -60,7 +63,12 @@ public class SearchFragment extends Fragment implements ISearchView{
         userHives = new ArrayList<>();
         hives = new ArrayList<>();
         userId = SharedPrefManager.getInstance(this.getContext()).getUser().getId();
+
         recycler = rootView.findViewById(R.id.hiveListRecyler);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        mAdapter = new SearchAdapter(this.getContext(), hives);
+        recycler.setAdapter(mAdapter);
+        recycler.setVisibility(View.GONE);
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -129,6 +137,10 @@ public class SearchFragment extends Fragment implements ISearchView{
         logic.getHives();
 
         return rootView;
+    }
+
+    public void notifyAdapterChange(){
+        mAdapter.notifyDataSetChanged();
     }
 
     public void addToDisplayedHiveList(JSONObject hive){

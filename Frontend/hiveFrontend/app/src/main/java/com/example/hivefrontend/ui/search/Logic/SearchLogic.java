@@ -65,6 +65,7 @@ public class SearchLogic implements ISearchVolleyListener {
                 Log.i("other hives: ", " " + hive.getInt("hiveId"));
             }
         }
+        s.notifyAdapterChange();
     }
 
 

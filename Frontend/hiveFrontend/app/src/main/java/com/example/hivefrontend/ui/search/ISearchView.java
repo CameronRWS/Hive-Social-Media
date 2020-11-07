@@ -19,4 +19,6 @@ public interface ISearchView {
     int getUserId();
 
     Context getSearchContext();
+
+    void notifyAdapterChange();
 }
