@@ -23,6 +23,9 @@ import com.example.hivefrontend.GlideApp;
 
 import java.util.ArrayList;
 
+/**
+ * Activity to display another user's profile
+ */
 public class ProfileActivity extends AppCompatActivity implements IProfileView {
 
     private ProfileViewModel mViewModel;
@@ -47,6 +50,10 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
+    /**
+     * Upon creation, instantiates variables and makes appropriate calls to display user information
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,64 +108,113 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
                 .error(R.drawable.defaultb)
                 .into(header);
     }
-    
+
+    /**
+     * Returns the Context of this activity
+     * @return The Context of this activity
+     */
     @Override
     public Context getProfileContext() {
         return this.getApplicationContext();
     }
 
+    /**
+     * Gets the user id of the user's profile currently being viewed
+     * @return The user id of the user's profile being viewed
+     */
     @Override
     public int getUserId() {
         return userId;
     }
 
+    /**
+     * Sets the display name TextView to the given name
+     * @param name The name to display
+     */
     @Override
     public void setDisplayName(String name) {
         displayName.setText(name);
     }
 
+    /**
+     * Sets the location TextView to the given String
+     * @param location The location to display
+     */
     @Override
     public void setDisplayLocation(String location) {
         displayLocation.setText(location);
     }
 
+    /**
+     * Sets the location TextView to invisible
+     */
     @Override
     public void setLocationInvisible() {
         displayLocation.setVisibility(View.INVISIBLE);
         locationPin.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Sets the user name TextView to the given name
+     * @param uName The name to display
+     */
     @Override
     public void setUserName(String uName) {
         userName.setText(uName);
     }
 
+    /**
+     * Sets the bio TextView to the given String
+     * @param biography The biography to display
+     */
     @Override
     public void setBio(String biography) {
         bio.setText(biography);
     }
 
+    /**
+     * Sets the hive list heading TextView using the given String
+     * @param your_hives The String used to determine the hive list heading
+     */
     @Override
     public void setHiveListHeading(String your_hives) {
         String heading = your_hives + "'s Public Hives:";
+        if(your_hives.length() == 0){
+            heading = "Public Hives:";
+        }
         hiveListHeading.setText(heading);
     }
 
+    /**
+     * Adds a hive id to the list of hive ids
+     * @param hiveId The hive id to add
+     */
     @Override
     public void addHiveId(Integer hiveId) {
         hiveIds.add(hiveId);
     }
 
+    /**
+     * Adds a hive name to the list of hive names
+     * @param hiveName The hive name to add
+     */
     @Override
     public void addToHiveOptions(String hiveName) {
         hiveOptions.add(hiveName);
     }
 
+    /**
+     * Notifies the adapter of a data change
+     */
     @Override
     public void notifyChangeForAdapter() {
         myAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Sets the pollen count TextView to the given String
+     * @param substring String to set pollen count as
+     */
     @Override
     public void setPollenCountText(String substring) {
         pollenCount.setText(substring);
