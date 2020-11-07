@@ -20,17 +20,28 @@ import org.json.JSONObject;
 
 import java.util.Collections;
 
+/**
+ * Class to make server requests needed by the home screen
+ */
 public class ServerRequest implements IServerRequest{
 
     private static IHomeVolleyListener logic;
 
+    /**
+     * Adds a IHomeVolleyListener to this ServerRequest instance
+     * @param l The IHomeVolleyListener to add
+     */
     public void addVolleyListener(IHomeVolleyListener l){
         logic = l;
     }
 
+    /**
+     * Gets the hives that the currently logged in user is a part of
+     * @param userId The user id of the current user
+     */
     public void setUserHiveRequest(int userId){
         //Request: hive information of this user
-        String url ="http://10.24.227.37:8080/members/byUserId/" + userId; //for now, getting this user's hive information until we have login functionality
+        String url ="http://10.24.227.37:8080/members/byUserId/" + userId;
 
         JsonArrayRequest hiveRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -54,11 +65,17 @@ public class ServerRequest implements IServerRequest{
         VolleySingleton.getInstance(logic.getHomeContext()).addToRequestQueue(hiveRequest);
     }
 
+    /**
+     * Method called when the page resumes
+     */
     public void pageResumeRequests(){
         updatePostRequest();
         logic.notifyDataSetChanged();
     }
 
+    /**
+     * Method called when the post information needs updating
+     */
     public void updatePostRequest() {
         setUserHiveRequest(logic.getUserId());
         logic.clearAdapterData();
@@ -66,6 +83,10 @@ public class ServerRequest implements IServerRequest{
         getDiscoverPosts();
     }
 
+    /**
+     * Gets the posts from the server to display on the discover page.
+     * This method causes a chain of subsequent requests to get the discover page hive's names and the home posts.
+     */
     public void getDiscoverPosts() {
         //request posts from all hives:
         String url = "http://10.24.227.37:8080/posts"; //for now, getting all posts
@@ -106,17 +127,23 @@ public class ServerRequest implements IServerRequest{
         VolleySingleton.getInstance(logic.getHomeContext()).addToRequestQueue(hivePostRequest);
     }
 
-    //sorts the discover and home page posts chronologically, notifies the adapters of the changes
+
+    /**
+     * Calls the logic methods to sort posts and notify adapters of a data change.
+     */
     public static void sortPosts(){
         logic.sortData();
         logic.notifyDataSetChanged();
     }
 
+    /**
+     * Makes a server call to get the hive names for the hives shown on the discover page
+     */
     public static void getDiscoverHives(){
         //get each hive
         for(int i = 0; i<logic.getHiveIdsDiscover().size(); i++){
             int hiveId = logic.getHiveIdsDiscover().get(i);
-            //request posts from each hive:
+
             String url ="http://10.24.227.37:8080/hives/byHiveId/" + hiveId;
             JsonObjectRequest hiveNameRequest = new JsonObjectRequest
                     (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -144,6 +171,9 @@ public class ServerRequest implements IServerRequest{
         }
     }
 
+    /**
+     * Makes a server call to get the posts to display on the home page using the current user's hive ids.
+     */
     public static void getHomePosts(){
         //get each hive id
         for(int i = 0; i<logic.getHiveIdsHome().size(); i++){
@@ -182,6 +212,10 @@ public class ServerRequest implements IServerRequest{
         }
     }
 
+    /**
+     * Checks if the logged in user has liked the current post. If not, calls postLike to like the post.
+     * @param postId The post id of the post to like
+     */
     public void checkLikes(final int postId){
         String url ="http://10.24.227.37:8080/likes/byPostId/" + postId;
         JsonArrayRequest likeRequest = new JsonArrayRequest
@@ -218,6 +252,11 @@ public class ServerRequest implements IServerRequest{
         VolleySingleton.getInstance(logic.getHomeContext()).addToRequestQueue(likeRequest);
         updatePostRequest();
     }
+
+    /**
+     * Makes a server call to like the post
+     * @param postId Post id of the post to be liked
+     */
     public void postLike(int postId){
         String url ="http://10.24.227.37:8080/likes";
 

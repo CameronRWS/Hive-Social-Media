@@ -6,18 +6,21 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Interface implemented by the HomeFragment
+ */
 public interface IHomeView {
 
-    public void addToHiveIdsHome(int hiveId);
-    public void addToHiveOptionsHome(String hiveName);
+    void addToHiveIdsHome(int hiveId);
+    void addToHiveOptionsHome(String hiveName);
 
-    public void addToHiveIdsDiscover(int hiveId);
+    void addToHiveIdsDiscover(int hiveId);
 
-    public void addToHiveOptionsDiscover(String hiveName);
+    void addToHiveOptionsDiscover(String hiveName);
 
-    public void notifyDataChange();
+    void notifyDataChange();
 
-    public Context getHomeContext();
+    Context getHomeContext();
 
     int getUserId();
 
