@@ -7,6 +7,9 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Interface implemented by HiveCreationLogic
+ */
 public interface IHiveCreationVolleyListener {
 
     void onError(VolleyError error);
@@ -15,7 +18,7 @@ public interface IHiveCreationVolleyListener {
 
     void onHiveCreationSuccess(JSONObject response) throws JSONException;
 
-    public void createHive(JSONObject hive);
+    void createHive(JSONObject hive);
 
     void onMemberCreationSuccess(JSONObject response);
 

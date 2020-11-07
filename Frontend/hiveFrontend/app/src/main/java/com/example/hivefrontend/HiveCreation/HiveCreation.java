@@ -27,6 +27,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Activity to create a new hive.
+ */
 public class HiveCreation extends AppCompatActivity implements IHiveCreationView, AdapterView.OnItemSelectedListener {
 
     private HiveCreationLogic logic;
@@ -75,10 +78,21 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
         });
     }
 
+    /**
+     * Returns the id of the current user
+     * @return The user id of the current user
+     */
     public int getUserId(){
         return userId;
     }
 
+    /**
+     * Called when an item is selected in the spinner and sets the selected item position variable appropriately.
+     * @param adapterView
+     * @param view
+     * @param pos The selected position in the spinner
+     * @param id
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
         selectedItemPos = pos;
@@ -90,11 +104,19 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
     }
 
 
+    /**
+     * Returns the context of this activity
+     * @return
+     */
     @Override
     public Context getViewContext() {
         return this.getApplicationContext();
     }
 
+    /**
+     * Called when a user presses the "create hive" button. Calls the logic class to handle the logic of hive creation.
+     * @throws JSONException
+     */
     @Override
     public void handleClick() throws JSONException {
 
@@ -123,11 +145,25 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
 
     }
 
+    /**
+     * Determines if the provided hive title and bio are valid
+     * @return Returns true if input is valid, false if not
+     */
     @Override
     public boolean validInput(){
-        return true;
+        EditText title= findViewById(R.id.hiveTitleInput);
+        EditText bio= findViewById(R.id.hiveBioInput);
+        if(title.getText().toString().length()>0 && title.getText().toString().length()>0) {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
+    /**
+     * Starts the intent to go back to the home screen
+     */
     @Override
     public void goHome(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
