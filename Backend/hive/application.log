@@ -18603,3 +18603,7 @@ Verify the connector's configuration, identify and stop any process that's liste
 2020-11-07 11:33:03.424  INFO 1529 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
 2020-11-07 11:33:03.424  INFO 1529 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
 2020-11-07 11:33:03.441  INFO 1529 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 15 ms
+2020-11-07 11:35:14.342  INFO 1529 --- [Thread-4] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@4de5031f: startup date [Sat Nov 07 11:32:54 CST 2020]; root of context hierarchy
+2020-11-07 11:35:14.345  INFO 1529 --- [Thread-4] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 2147483647
+2020-11-07 11:35:14.346  INFO 1529 --- [Thread-4] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2020-11-07 11:35:14.358  INFO 1529 --- [Thread-4] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
