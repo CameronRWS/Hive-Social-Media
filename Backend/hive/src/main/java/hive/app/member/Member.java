@@ -30,7 +30,7 @@ public class Member {
     public Member(MemberIdentity memberIdentity, Boolean isModerator) {
         this.memberIdentity = memberIdentity;
         this.setIsModerator(isModerator);
-        this.setDateCreated(DateTime.GetCurrentDateTime());
+        this.setDateCreated(DateTime.getCurrentDateTime());
     }
     
     public Hive getHive() {

@@ -26,7 +26,7 @@ public class Like {
     
     public Like(LikeIdentity likeIdentity) {
         this.likeIdentity = likeIdentity;
-        this.setDateCreated(DateTime.GetCurrentDateTime());
+        this.setDateCreated(DateTime.getCurrentDateTime());
     }
     
     public int getPostId() {

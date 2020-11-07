@@ -34,7 +34,7 @@ public class User {
     public User() {  }
     
     public User(String userName, String displayName, String birthday, String biography, String location) {
-        this.setDateCreated(DateTime.GetCurrentDateTime());
+        this.setDateCreated(DateTime.getCurrentDateTime());
         this.setUserName(userName);
         this.setDisplayName(displayName);
         this.setBirthday(birthday);

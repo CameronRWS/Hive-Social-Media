@@ -35,7 +35,7 @@ public class Comment {
     public Comment(int postId, User user, String textContent) {
         this.setPostId(postId);
         this.setUser(user);
-        this.setDateCreated(DateTime.GetCurrentDateTime());
+        this.setDateCreated(DateTime.getCurrentDateTime());
         this.setTextContent(textContent);
     }
 
