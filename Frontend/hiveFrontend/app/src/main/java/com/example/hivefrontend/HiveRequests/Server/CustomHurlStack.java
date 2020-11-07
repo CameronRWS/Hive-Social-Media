@@ -43,6 +43,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 /**
  * An {@link HttpStack} based on {@link HttpURLConnection}.
+ * Modified version of the standard HurlStack to allow DELETE requests to add a body to the request
  */
 public class CustomHurlStack implements HttpStack {
     private static final String HEADER_CONTENT_TYPE = "Content-Type";

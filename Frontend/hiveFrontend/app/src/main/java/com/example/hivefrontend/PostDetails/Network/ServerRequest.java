@@ -20,9 +20,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Handles server calls needed by the PostDetailsActivity
+ */
 public class ServerRequest implements IPostServerRequest{
     private IPostVolleyListener logic;
 
+    /**
+     * Gets the post information from the server for a given post id
+     * @param postId The post id of the post to get
+     */
     public void requestPostJson(int postId){
         String url ="http://10.24.227.37:8080/posts/byPostId/" + postId;
         JsonObjectRequest postDetailsRequest = new JsonObjectRequest
@@ -47,6 +54,11 @@ public class ServerRequest implements IPostServerRequest{
         VolleySingleton.getInstance(logic.getPostContext()).addToRequestQueue(postDetailsRequest);
     }
 
+    /**
+     * Gets the hive name for the hive where the given post came from
+     * @param post The post to display
+     * @throws JSONException
+     */
     public void getHiveName(final JSONObject post) throws JSONException {
         int hiveId = post.getInt("hiveId");
 
@@ -69,13 +81,15 @@ public class ServerRequest implements IPostServerRequest{
 
     }
 
-    //post comment
+    /**
+     * Posts the provided comment to the server
+     * @param comment The comment to post
+     */
     public void postComment(String comment){
 
         Log.i(" status ", "got into post comment ");
 
         String url ="http://10.24.227.37:8080/comments";
-
 
         final JSONObject postObject = new JSONObject();
         try{
@@ -87,7 +101,6 @@ public class ServerRequest implements IPostServerRequest{
             e.printStackTrace();
             Toast.makeText(logic.getPostContext(), "Error commenting on this post. Try again.", Toast.LENGTH_LONG).show();
         }
-
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 postObject, new Response.Listener<JSONObject>(){
@@ -106,6 +119,9 @@ public class ServerRequest implements IPostServerRequest{
     }
 
 
+    /**
+     * Gets the current likes of the post from the server and checks if the user has liked this post already. If not, calls postLike() to like the post
+     */
     public void checkLikesAndPost(){
         String url ="http://10.24.227.37:8080/likes/byPostId/" + logic.getPostId();
         JsonArrayRequest likeRequest = new JsonArrayRequest
@@ -134,7 +150,6 @@ public class ServerRequest implements IPostServerRequest{
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
                         logic.onError(error);
 
                     }
@@ -142,6 +157,9 @@ public class ServerRequest implements IPostServerRequest{
         VolleySingleton.getInstance(logic.getPostContext()).addToRequestQueue(likeRequest);
     }
 
+    /**
+     * Posts a like on this post to the server
+     */
     private void postLike(){
 
         String url ="http://10.24.227.37:8080/likes";
@@ -158,13 +176,11 @@ public class ServerRequest implements IPostServerRequest{
             Toast.makeText(logic.getPostContext(), "Error liking this post. Try again.", Toast.LENGTH_LONG).show();
         }
 
-
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 postObject, new Response.Listener<JSONObject>(){
 
             public void onResponse(JSONObject response) {
                 requestPostJson(logic.getPostId());
-
                 Log.i("request","success!");
             }
 
@@ -173,12 +189,13 @@ public class ServerRequest implements IPostServerRequest{
                 Log.i("request","fail!");
             }
         });
-        // Add the request to the RequestQueue.
-
         VolleySingleton.getInstance(logic.getPostContext()).addToRequestQueue(jsonObjectRequest);
     }
 
-
+    /**
+     * Sets the logic variable to the provided IPostVolleyListener
+     * @param l The IPostVolleyListener to use
+     */
     public void addVolleyListener(IPostVolleyListener l) {
         logic = l;
     }

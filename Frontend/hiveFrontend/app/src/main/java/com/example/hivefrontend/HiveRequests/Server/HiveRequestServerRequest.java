@@ -25,14 +25,25 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * Class to handle server requests for HiveRequestsActivity
+ */
 public class HiveRequestServerRequest implements IHiveRequestServerRequest {
 
     private IHiveRequestVolleyListener logic;
+
+    /**
+     * Adds an IHiveRequestVolleyListener to this instance
+     * @param logic The IHiveRequestVolleyListener to be added
+     */
     @Override
     public void addVolleyListener(IHiveRequestVolleyListener logic) {
         this.logic = logic;
     }
 
+    /**
+     * Makes a server call to get the hive requests for this hive
+     */
     @Override
     public void getHiveRequests() {
         String url = "http://10.24.227.37:8080/requests/byHiveId/4";
@@ -58,8 +69,14 @@ public class HiveRequestServerRequest implements IHiveRequestServerRequest {
         VolleySingleton.getInstance(logic.getRequestsContext()).addToRequestQueue(hiveReqsRequest);
     }
 
+    /**
+     * Makes a server call to accept or deny a request based on the given status
+     * @param request The request to handle
+     * @param status The status to give this request--accepted or denied
+     * @throws JSONException
+     */
     @Override
-    public void acceptRequest(JSONObject request, final String status) throws JSONException {
+    public void handleRequest(JSONObject request, final String status) throws JSONException {
         final int hiveId = request.getInt("hiveId");
         final int userId = request.getJSONObject("user").getInt("userId");
 
@@ -89,20 +106,10 @@ public class HiveRequestServerRequest implements IHiveRequestServerRequest {
                         logic.onError();
                     }
                 }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//                headers.put("Content-Type", "application/json");
-//                headers.put("hiveId",String.valueOf(hiveId));
-//                headers.put("userId",String.valueOf(userId));
-//                headers.put("status",status);
-//                return headers;
-//            }
+
             };
 
         queue.add(hiveReqAccept);
-
-        //VolleySingleton.getInstance(logic.getRequestsContext()).addToRequestQueue(hiveReqAccept);
 
     }
 

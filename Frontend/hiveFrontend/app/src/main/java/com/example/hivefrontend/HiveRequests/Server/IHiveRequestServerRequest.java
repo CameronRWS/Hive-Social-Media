@@ -6,10 +6,13 @@ import com.example.hivefrontend.HiveRequests.Logic.IHiveRequestVolleyListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Interface implemented by HiveRequestServerRequest
+ */
 public interface IHiveRequestServerRequest {
     void addVolleyListener(IHiveRequestVolleyListener logic);
 
     void getHiveRequests();
 
-    void acceptRequest(JSONObject request, String status) throws JSONException;
+    void handleRequest(JSONObject request, String status) throws JSONException;
 }
