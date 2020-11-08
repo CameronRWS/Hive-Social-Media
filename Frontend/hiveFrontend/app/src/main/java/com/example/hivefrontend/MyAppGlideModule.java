@@ -11,8 +11,25 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 
 import java.io.InputStream;
 
+/**
+ * This class is for handeling photos. MyAppGlideModule allows us to use the Glide
+ * Module, which is an image loader library for Android.
+ */
 @GlideModule
 public class MyAppGlideModule extends AppGlideModule {
+
+    /**
+     * This function registers components of a glide singleton immediately after
+     * initialization of a glide instance. This function takes an application context,
+     * the glide singleton to be registered, and a registry to be used to register the
+     * compontents.
+     * @param context
+     *        the application context
+     * @param glide
+     *        the glide singleton to be registered
+     * @param registry
+     *        the registry to be used to register components
+     */
     @Override
     public void registerComponents(Context context, Glide glide, Registry registry) {
         // Register FirebaseImageLoader to handle StorageReference
