@@ -33,25 +33,65 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
+/**
+ * Fragment for the search screen. Consists of two tabs, a map view and a list view showing nearby hives.
+ * Will not show hives the user is already a part of, primary function is to discover new hives.
+ */
 public class SearchFragment extends Fragment implements ISearchView{
 
+    /**
+     * MapView used for this SearchFragment to hold the GoogleMap
+     */
     MapView mMapView;
+    /**
+     * GoogleMap used for this SearchFragment
+     */
     private GoogleMap googleMap;
 
     private SearchViewModel searchViewModel;
+
+    /**
+     * The selected tab, 0 if map tab 1 if list tab
+     */
     private int selectedTab;
+    /**
+     * RecyclerView for this SearchFragment
+     */
     private RecyclerView recycler;
+    /**
+     * SearchLogic for this SearchFragment
+     */
     private SearchLogic logic;
+    /**
+     * SearchServerRequest for this SearchFragment
+     */
     private SearchServerRequest server;
+    /**
+     * The current user's user id
+     */
     private int userId;
-
+    /**
+     * The list of hive objects to be displayed on this SearchFragment
+     */
     private ArrayList<JSONObject> hives;
-
+    /**
+     * The list of hive ids of hives this user is a part of
+     * Used to ensure the user's hives are not displayed
+     */
     private ArrayList<Integer> userHives;
-
+    /**
+     * The adapter used for this SearchFragment's RecyclerView
+     */
     private SearchAdapter mAdapter;
 
+    /**
+     * Upon creation, makes a MapView to be displayed on a map tab, and sets up tabs
+     * Also calls the logic class to get list of hives to show.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         searchViewModel =
@@ -139,32 +179,59 @@ public class SearchFragment extends Fragment implements ISearchView{
         return rootView;
     }
 
+    /**
+     * Notifies the adapter of a data change
+     */
     public void notifyAdapterChange(){
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Adds the given hive object to the list of hives
+     * @param hive The hive to add
+     */
     public void addToDisplayedHiveList(JSONObject hive){
         hives.add(hive);
     }
 
+    /**
+     * Adds the given id to the list of user ids
+     * @param id
+     */
     public void addToUserHives(Integer id){
         userHives.add(id);
     }
 
+    /**
+     * Returns the list of hive ids of hives this user is a part of
+     * @return The list of hive ids of hives this user is a part of
+     */
     @Override
     public ArrayList<Integer> getUserHives() {
         return this.userHives;
     }
 
+    /**
+     * Returns the list of hive objects of hives to be displayed
+     * @return The list of hive object of hives to be displayed
+     */
     @Override
     public ArrayList<JSONObject> getDisplayedHives() {
         return this.hives;
     }
 
+    /**
+     * Returns the user id of the logged in user
+     * @return The user id of the logged in user
+     */
     public int getUserId(){
         return userId;
     }
 
+    /**
+     * Returns the Context for this fragment
+     * @return Context for this fragment
+     */
     public Context getSearchContext(){
         return this.getContext();
     }

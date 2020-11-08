@@ -29,11 +29,24 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+/**
+ *  Adapter to use for the RecyclerView in the SearchFragment
+ */
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>  {
+    /**
+     * List of hive JSONObjects to display in the RecyclerView
+     */
     private List<JSONObject> hives;
+    /**
+     * Context for this adapter
+     */
     private Context context;
-    private int memberCount;
 
+    /**
+     * Creates a SearchAdapter with the given Context and data
+     * @param context The context for this adapter
+     * @param data The list of hives to display
+     */
     public SearchAdapter(Context context, List<JSONObject> data) {
         this.hives = data;
         this.context = context;
@@ -47,7 +60,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return viewHolder;
     }
 
-    // binds the data to the TextView in each row
+    /**
+     * Binds data to a given ViewHolder
+     * @param holder The ViewHolder to bind data to
+     * @param position Position in the RecyclerView
+     */
     @Override
     public void onBindViewHolder(final SearchAdapter.ViewHolder holder, final int position) {
 
@@ -92,20 +109,41 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         }
     }
 
-    // total number of rows
+    /**
+     * Gets number of hives this adapter holds
+     * @return Number of hives
+     */
     @Override
     public int getItemCount() {
         return hives.size();
     }
 
 
-    // stores and recycles views as they are scrolled off screen
+    /**
+     * ViewHolder for one row in the RecyclerView
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
+        /**
+         * TextView for hive name
+         */
         public TextView itemTxt;
+        /**
+         * TextView for the number of members of the hive
+         */
         public TextView memberCnt;
+        /**
+         * TextView for the HiveDescription
+         */
         public TextView hiveDescrip;
+        /**
+         * ConstraintLayout for this ViewHolder
+         */
         ConstraintLayout relativeLayout;
 
+        /**
+         * Constructs a ViewHolder from the given View
+         * @param itemView The View for this ViewHolder
+         */
         ViewHolder(View itemView) {
             super(itemView);
             itemTxt = itemView.findViewById(R.id.hiveCardName);
@@ -114,8 +152,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             hiveDescrip = itemView.findViewById(R.id.hiveCardDescription);
         }
     }
-
-    // convenience method for getting data at click position
-
 
 }

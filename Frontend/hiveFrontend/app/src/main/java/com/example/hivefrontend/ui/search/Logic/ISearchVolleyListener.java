@@ -7,6 +7,9 @@ import com.android.volley.VolleyError;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+/**
+ * Interface implemented by SearchLogic
+ */
 public interface ISearchVolleyListener  {
 
     void getHives();

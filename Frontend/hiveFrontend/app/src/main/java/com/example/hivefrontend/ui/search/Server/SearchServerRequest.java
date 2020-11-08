@@ -12,15 +12,31 @@ import com.example.hivefrontend.ui.search.Logic.SearchLogic;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+/**
+ * Class to handle all server requests needed by the SearchFragment
+ */
 public class SearchServerRequest implements ISearchServerRequest {
-    private ISearchVolleyListener logic;
-    private ISearchView search;
 
+    /**
+     * The ISearchVolleyListener used for this ISearchServerRequest.
+     * Called to handle logic after requests.
+     */
+    private ISearchVolleyListener logic;
+
+
+    /**
+     * Assigns the given ISearchVolleyListener to the local variable 'logic'
+     * @param searchLogic The ISearchVolleyListener to use for this instance
+     */
     @Override
     public void addVolleyListener(ISearchVolleyListener searchLogic) {
         this.logic = searchLogic;
     }
 
+    /**
+     * Makes a server call to get the hives this user is a part of
+     * @param userId The user id of the current user
+     */
     @Override
     public void getUserHives(int userId) {
         //get the ids of the hive this user is a part of
@@ -48,6 +64,9 @@ public class SearchServerRequest implements ISearchServerRequest {
         VolleySingleton.getInstance(logic.getSearchContext()).addToRequestQueue(hiveRequest);
     }
 
+    /**
+     * Makes a server call to get all hives
+     */
     public void getOtherHives(){
         String url ="http://10.24.227.37:8080/hives";
 
