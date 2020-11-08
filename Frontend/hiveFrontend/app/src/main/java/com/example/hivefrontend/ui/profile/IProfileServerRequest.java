@@ -1,5 +1,8 @@
 package com.example.hivefrontend.ui.profile;
 
+/**
+ * Interface implemented by the profile ServerRequest class
+ */
 public interface IProfileServerRequest {
     public void userInfoRequest();
     public void hiveListRequest();

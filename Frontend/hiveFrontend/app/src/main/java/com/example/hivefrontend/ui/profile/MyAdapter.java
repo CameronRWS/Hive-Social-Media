@@ -26,6 +26,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter used for the profile RecyclerView
+ */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private List<String> mData;
@@ -36,6 +39,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     ProfileLogic logic = new ProfileLogic(profile, serverRequest);
 
 
+    /**
+     * Creates an adapter from the given Context and list of Hives
+     * @param context The Context for this adapter
+     * @param data The data to be used, in the form of hive names
+     */
     public MyAdapter(Context context, List<String> data) {
         this.mData = data;
         this.context = context;
@@ -49,7 +57,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return viewHolder;
     }
 
-    // binds the data to the TextView in each row
+    /**
+     * Binds data to the given holder using its position
+     * @param holder The ViewHolder to bind data to
+     * @param position The ViewHolder's position
+     */
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.itemTxt.setText(mData.get(position));
@@ -89,20 +101,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         //holder.hiveDescrip.setText(logic.getHiveDescrip());
     }
 
-    // total number of rows
+    /**
+     * Returns the number of hives in this adapter
+     * @return The number of hives in this adapter
+     */
     @Override
     public int getItemCount() {
         return mData.size();
     }
 
 
-    // stores and recycles views as they are scrolled off screen
+    /**
+     * ViewHolder for each row of the RecyclerView
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView itemTxt;
         public TextView memberCnt;
         public TextView hiveDescrip;
         ConstraintLayout relativeLayout;
 
+        /**
+         * Creates a ViewHolder from the given View
+         * @param itemView The View to use
+         */
         ViewHolder(View itemView) {
             super(itemView);
             itemTxt = itemView.findViewById(R.id.hiveCardName);

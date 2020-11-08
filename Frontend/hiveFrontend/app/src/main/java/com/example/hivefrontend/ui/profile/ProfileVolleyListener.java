@@ -6,17 +6,20 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONArray;
 
+/**
+ * Interface implemented by ProfileLogic
+ */
 public interface ProfileVolleyListener {
-    public void onUserInfoSuccess(JSONArray response);
-    public void onUserInfoError(VolleyError error);
-    public void onHiveListSuccess(JSONArray response);
-    public void onHiveListError(VolleyError error);
-    public void pollenCountSuccess(String response);
-    public int getMemberCount();
-    public String getHiveDescrip();
-    public void onFetchHiveDescriptionSuccess(JSONArray response, String hiveName);
-    public void pollenCountError(VolleyError error);
-    public void onFetchMemberCountSuccess(JSONArray response, String hiveName);
-    public Context getProfileContext();
-    public int getUserId();
+    void onUserInfoSuccess(JSONArray response);
+    void onUserInfoError(VolleyError error);
+    void onHiveListSuccess(JSONArray response);
+    void onHiveListError(VolleyError error);
+    void pollenCountSuccess(String response);
+    int getMemberCount();
+    String getHiveDescrip();
+    void onFetchHiveDescriptionSuccess(JSONArray response, String hiveName);
+    void pollenCountError(VolleyError error);
+    void onFetchMemberCountSuccess(JSONArray response, String hiveName);
+    Context getProfileContext();
+    int getUserId();
 }
