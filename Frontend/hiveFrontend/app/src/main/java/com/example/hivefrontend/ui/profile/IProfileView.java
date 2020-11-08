@@ -4,11 +4,14 @@ import android.content.Context;
 
 import org.json.JSONArray;
 
+/**
+ * Interface implemented by ProfileFragment
+ */
 public interface IProfileView {
 
-    public Context getProfileContext();
+    Context getProfileContext();
 
-    public int getUserId();
+    int getUserId();
 
     void setDisplayName(String name);
 

@@ -13,6 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Logic for the ProfileFragment and ProfileActivity
+ */
 public class ProfileLogic implements ProfileVolleyListener{
     IProfileView profileView;
     public Context context;
@@ -22,6 +25,11 @@ public class ProfileLogic implements ProfileVolleyListener{
     private int memberCount;
     private String hiveDescrip;
 
+    /**
+     * Constructs a ProfileLogic from the given IProfileView and IProfileRequestServerRequest
+     * @param p The IProfileView to use for this instance
+     * @param serverRequest The IProfileRequestServerRequest to use for this instance
+     */
     public ProfileLogic(IProfileView p, IProfileServerRequest serverRequest){
         this.profileView = p;
         context = p.getProfileContext();
@@ -30,20 +38,36 @@ public class ProfileLogic implements ProfileVolleyListener{
         server.addVolleyListener(this);
     }
 
-
+    /**
+     * Returns the user id for this profile page
+     * @return The user id for this profile
+     */
     public int getUserId(){
         return userId;
     }
 
+    /**
+     * Returns the IProfileView's Context
+     * @return The IProfileView's Context
+     */
     public Context getProfileContext(){
         return profileView.getProfileContext();
     }
+
+    /**
+     * Calls the server class to get the user's information
+     */
     public void displayProfile(){
         server.userInfoRequest();
         server.hiveListRequest();
         server.pollenCountRequest();
     }
 
+    /**
+     * Called after a successful server call to get the user's information.
+     * Uses the IProfileView to display the informaton.
+     * @param response The user object returned from the server
+     */
     public void onUserInfoSuccess(JSONArray response){
         try{
             JSONObject user1 = response.getJSONObject(userId-1);
@@ -90,6 +114,10 @@ public class ProfileLogic implements ProfileVolleyListener{
         }
     }
 
+    /**
+     * Called upon an error during a server request. Logs the error message.
+     * @param error The VolleyError received
+     */
     public void onUserInfoError(VolleyError error){
         // TODO: Handle error
         Log.i("volleyAppError","Error: " + error.getMessage());
@@ -98,6 +126,11 @@ public class ProfileLogic implements ProfileVolleyListener{
         profileView.setDisplayName("Error.");
     }
 
+    /**
+     * Called upon a successful request to get this user's hive information from the server.
+     * Handles the logic behind passing hive information to the IProfileView.
+     * @param response The array of user/hive member objects returned from the server
+     */
     public void onHiveListSuccess(JSONArray response){
         try{
             for(int i = 0; i < response.length(); i++){
@@ -126,6 +159,10 @@ public class ProfileLogic implements ProfileVolleyListener{
         }
     }
 
+    /**
+     * Called upon an error during a server request. Logs the error message.
+     * @param error The VolleyError received
+     */
     public void onHiveListError(VolleyError error){
         // TODO: Handle error
         Log.i("volleyAppError","Error: " + error.getMessage());
@@ -134,11 +171,21 @@ public class ProfileLogic implements ProfileVolleyListener{
         //profile.displayName.setText("Error.");
         profileView.setDisplayName("Error.");
     }
+
+    /**
+     * Called upon a successful request to get this user's pollen count.
+     * Handles the logic behind passing the pollen count to the IProfileView.
+     * @param response The response
+     */
     public void pollenCountSuccess(String response){
         //profile.pollenCount.setText(response.substring(13, response.length() - 1));
         profileView.setPollenCountText(response.substring(13,response.length()-1));
     }
 
+    /**
+     * Called upon an error during a server request. Logs the error message.
+     * @param error The VolleyError received
+     */
     public void pollenCountError(VolleyError error){
         // TODO: Handle error
         Log.i("volleyAppError","Error: " + error.getMessage());
@@ -148,6 +195,12 @@ public class ProfileLogic implements ProfileVolleyListener{
         profileView.setDisplayName("Error.");
     }
 
+    /**
+     * Called upon a successful request to get the member objects for a hive.
+     * Gets the member count for the given hive name
+     * @param response The member objects returned from the server
+     * @param hiveName The hive name to determine the member count for
+     */
     @Override
     public void onFetchMemberCountSuccess(JSONArray response, String hiveName) {
         try {
@@ -165,6 +218,12 @@ public class ProfileLogic implements ProfileVolleyListener{
         }
     }
 
+    /**
+     * Called upon a successful request to get the member objects for a hive.
+     * Gets the description for the given hive name
+     * @param response The member objects returned from the server
+     * @param hiveName The hive name to determine the description of
+     */
     @Override
     public void onFetchHiveDescriptionSuccess(JSONArray response, String hiveName) {
         try {
@@ -182,9 +241,17 @@ public class ProfileLogic implements ProfileVolleyListener{
         }
     }
 
+    /**
+     * Returns the stored member count
+     * @return The stored member count
+     */
     public int getMemberCount() {return memberCount;}
 
 
+    /**
+     * Returns the stored hive description
+     * @return The stored hive description
+     */
     @Override
     public String getHiveDescrip() {return hiveDescrip;}
 

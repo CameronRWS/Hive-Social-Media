@@ -19,17 +19,33 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Class to handle all server requests for the ProfileFragment and ProfileActivity
+ */
 public class ServerRequest implements IProfileServerRequest {
     private String tag_json_obj = "json_obj_req";
     private int memberCount;
 
     private ProfileVolleyListener profileVolleyListener;
 
+    /**
+     * Adds the given ProfileVolleyListener to this ServerRequest
+     * @param logic The ProfileVolleyListener to use
+     */
    public void addVolleyListener(ProfileVolleyListener logic){
        profileVolleyListener = logic;
    }
+
+    /**
+     * Returns the stored member count
+     * @return The stored member count
+     */
     public int getMemberCount() {return memberCount;}
 
+    /**
+     * Makes a server call to get member objects to determine hives' member count
+     * @param hiveName The hive name of the hive to count the members of
+     */
     @Override
     public void fetchMemberCount(final String hiveName) {
             String url = "http://10.24.227.37:8080/members";
@@ -54,6 +70,10 @@ public class ServerRequest implements IProfileServerRequest {
 
     }
 
+    /**
+     * Makes a server call to get the description of the hive with the given hiveName
+     * @param hiveName The name of the hive to get the description of
+     */
     @Override
     public void fetchHiveDescription(final String hiveName) {
         String url = "http://10.24.227.37:8080/hives";
@@ -77,7 +97,9 @@ public class ServerRequest implements IProfileServerRequest {
 
     }
 
-
+    /**
+     * Makes a server call to get the user object of this user
+     */
     public void userInfoRequest(){
 
         String url ="http://10.24.227.37:8080/users";
@@ -103,9 +125,12 @@ public class ServerRequest implements IProfileServerRequest {
     }
 
 
+    /**
+     * Makes a server call to get the list of hives this user is a part of
+     */
     public void hiveListRequest(){
         //second request: hive information
-        String url ="http://10.24.227.37:8080/members/byUserId/" + profileVolleyListener.getUserId(); //for now, getting this user's hive information until we have login functionality
+        String url ="http://10.24.227.37:8080/members/byUserId/" + profileVolleyListener.getUserId();
 
         JsonArrayRequest hiveRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -125,6 +150,9 @@ public class ServerRequest implements IProfileServerRequest {
         VolleySingleton.getInstance(profileVolleyListener.getProfileContext()).addToRequestQueue(hiveRequest);
     }
 
+    /**
+     * Makes a server call to get the pollen count of this user
+     */
     public void pollenCountRequest(){
         //third request: pollen count
         String url ="http://10.24.227.37:8080/likeCount/byUserId/" + profileVolleyListener.getUserId(); //for now, getting this user's hive information until we have login functionality
