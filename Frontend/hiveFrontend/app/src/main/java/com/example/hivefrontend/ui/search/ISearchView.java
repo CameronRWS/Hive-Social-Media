@@ -6,6 +6,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Interface implemented by SearchFragment
+ */
 public interface ISearchView {
 
     void addToDisplayedHiveList(JSONObject hive);
