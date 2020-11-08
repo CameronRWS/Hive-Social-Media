@@ -61,7 +61,6 @@ public class ProfileFragment extends Fragment implements IProfileView{
     public TextView dateJoined;
     public RecyclerView recyclerView;
     public MyAdapter myAdapter;
-
     private ImageView profilePic;
     private ImageView header;
     private Uri imageUri;
@@ -73,6 +72,11 @@ public class ProfileFragment extends Fragment implements IProfileView{
         return new ProfileFragment();
     }
 
+    /**
+     * Upon creation, instantiates variables and makes appropriate calls to display user information.
+     * Also uses this GlideApp to load images.
+     * @param savedInstanceState
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

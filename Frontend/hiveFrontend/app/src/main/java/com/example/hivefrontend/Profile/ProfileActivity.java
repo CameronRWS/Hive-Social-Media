@@ -51,7 +51,8 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
     private StorageReference storageReference;
 
     /**
-     * Upon creation, instantiates variables and makes appropriate calls to display user information
+     * Upon creation, instantiates variables and makes appropriate calls to display user information.
+     * Also uses this GlideApp to load images.
      * @param savedInstanceState
      */
     @Override

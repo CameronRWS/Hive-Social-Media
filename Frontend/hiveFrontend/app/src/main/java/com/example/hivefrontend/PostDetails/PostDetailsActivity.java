@@ -47,14 +47,11 @@ public class PostDetailsActivity extends AppCompatActivity implements IPostView{
     public int postId;
     public PostDetailsLogic logic;
     private int currentUserId;
-
-
     private ImageView postImage;
     private ImageView header;
     private Uri imageUri;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-
     private ServerRequest server;
 
     @Override
