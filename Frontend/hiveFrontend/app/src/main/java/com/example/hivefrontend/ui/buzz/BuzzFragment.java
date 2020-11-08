@@ -67,6 +67,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Fragment to display a buzz
+ */
 public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnItemSelectedListener {
 
     EditText buzzTitle;
@@ -162,6 +165,10 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         Intent intent = new Intent(BuzzFragment.this.getActivity(), HiveCreation.class);
         startActivity(intent);
     }
+
+    /**
+     * Handles choosing an image from a user's photo gallery.
+     */
     private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -169,18 +176,34 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST_CODE);
     }
 
+    /**
+     * Returns this userId.
+     * @return this userId
+     */
     public int getUserId() {
         return userId;
     }
 
+    /**
+     * Adds the specified int value i to this hiveIds.
+     * @param i - the specified value
+     */
     public void addHiveIdValue(int i) {
         hiveIds.add(i);
     }
 
+    /**
+     * Adds the specified String value s to this hiveOptions.
+     * @param s - the specified value
+     */
     public void addHiveOptionsValue(String s) {
         hiveOptions.add(s);
     }
 
+    /**
+     * Returns the context of this BuzzFragment.
+     * @return the context
+     */
     public Context getBuzzContext() {
         return this.getContext();
     }
@@ -190,6 +213,14 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         mySpinner.setAdapter(adapter);
     }
 
+    /**
+     * Handles the result of onCreateView. This method takes an int valued requestCode and
+     * resultCode to correctly handle the result of onCreateView, and an Intent as data to
+     * be loaded.
+     * @param requestCode - the value of the requestCode
+     * @param resultCode - the value of the result code
+     * @param data - the data to be loaded
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -200,6 +231,10 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         }
     }
 
+    /**
+     * Handles uploading an image to Firebase Storage. Also displays progress information on
+     * the status of the upload to the app user.
+     **/
     private void uploadImage() {
         if (imageUri != null) {
             final ProgressDialog progressDialog = new ProgressDialog(getContext());
@@ -240,27 +275,49 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
         // TODO: Use the ViewModel
     }
 
+    /**
+     * Returns this selectedItemPos.
+     * @return this selectedItemPos
+     */
     public int getSelectedItemPos() { return selectedItemPos; }
     public void openHome() {
         Intent intent = new Intent(BuzzFragment.this.getActivity(), MainActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Returns the hiveId located at int value pos in this hiveIds.
+     * @param pos - the value to return in this hiveIds
+     * @return - the hiveId at position pos of this hiveIds
+     */
     @Override
     public int getHiveId(int pos) {
         return hiveIds.get(pos);
     }
 
+    /**
+     * Returns a String of this buzzTitle.
+     * @return the String of this buzTitle
+     */
     @Override
     public String getBuzzTitle() {
         return buzzTitle.getText().toString();
     }
 
+    /**
+     * Returns the String of this buzzContent.
+     * @return - the String of this buzzContent
+     */
     @Override
     public String getBuzzContent() {
         return buzzContent.getText().toString();
     }
 
+    /**
+     * Returns this HiveOptions at position int value pos.
+     * @param pos - the position of the desired HiveOption
+     * @return the HiveOption at pos in this HiveOptions
+     */
     @Override
     public String getHiveOption(int pos) {
         return hiveOptions.get(pos);
