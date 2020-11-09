@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.example.hivefrontend.Hive.Network.ServerRequest;
 
+/**
+ * The interface that the HiveActivity implements.
+ */
 public interface IHiveView {
     public Context getHiveContext();
     public void displayBio(String description);

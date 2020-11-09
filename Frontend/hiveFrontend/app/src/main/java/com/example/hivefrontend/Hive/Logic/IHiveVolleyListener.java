@@ -6,6 +6,9 @@ import com.android.volley.VolleyError;
 
 import org.json.JSONArray;
 
+/**
+ * Interface implemented by HiveLogic.
+ */
 public interface IHiveVolleyListener {
     Context getHiveContext();
     public void setUserHives();

@@ -29,6 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * The activity for logging in a user.
+ */
 public class LoginActivity extends AppCompatActivity implements ILoginView {
 
     EditText editTextUsername;
@@ -66,6 +69,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         });
     }
 
+    /**
+     * Checks if the values in the text boxes are valid
+     */
     public void fieldChecks() {
         if (TextUtils.isEmpty(getUsername())) {
             editTextUsername.setError("Oops! Please enter your username.");
@@ -79,24 +85,51 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
             return;
         }
     }
+
+    /**
+     * Opens the home activity.
+     */
     public void openHome() {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
+
+    /**
+     * Returns the username of a user
+     * @return the username
+     */
     public String getUsername() { return editTextUsername.getText().toString(); }
+
+    /**
+     * Checks to see if the entered username and password are valid and matching
+     */
     @Override
     public void userDNE() {
         editTextPassword.setError("Oops! The username or password is incorrect.");
         editTextPassword.requestFocus();
         return;
     }
+
+    /**
+     * Returns the user's password
+     * @return The user's password
+     */
     public String getPassword() { return editTextPassword.getText().toString(); }
     public void setExistsTrue() {
         userExists = true;
     }
+
+    /**
+     * Returns if the user exists
+     * @return if the user exists
+     */
     public boolean getUserExists() {
         return userExists;
     }
 
+    /**
+     * Returns the login context.
+     * @return The context.
+     */
     public Context getLoginContext() {
         return this.getApplicationContext();
     }

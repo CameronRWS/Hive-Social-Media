@@ -37,6 +37,9 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Activity to display a hive
+ */
 public class HiveActivity extends AppCompatActivity implements IHiveView {
 
     public static HiveLogic logic;
@@ -112,42 +115,72 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
 
     }
 
+    /**
+     * Gets the hive's context
+     * @return The hive's context
+     */
     @Override
     public Context getHiveContext() {
         return this.getApplicationContext();
     }
 
+    /**
+     * Changes the hive's bio via text view.
+     * @param description The string literal which holds the description.
+     */
     @Override
     public void displayBio(String description) {
         final TextView bio = (TextView) findViewById(R.id.hiveDescription);
         bio.setText(description);
     }
 
+    /**
+     * Handles the situation where a resume is invoked.
+     */
     @Override
     public void onResume() {
         super.onResume();
        // logic.onPageResume();
     }
 
-
+    /**
+     * Handles liking a post
+     * @param postId The id of the liked post.
+     */
     public static void likePost(final int postId){
         logic.likePostLogic(postId);
     }
 
+    /**
+     * Displays the member count of the hive via text view.
+     * @param count The member count
+     */
     @Override
     public void displayMemberCount(int count) {
         final TextView memberCount = (TextView) findViewById(R.id.hiveMemberCount);
         memberCount.setText(count + " bees and counting");
     }
 
+    /**
+     * Gets the user id.
+     * @return The user id.
+     */
     public int getUserId() {return userId;}
     public void addToHiveIdsHome(int hiveId){
         hiveIdsHome.add(hiveId);
     }
+
+    /**
+     * Adds to the options of hives.
+     * @param hiveName The string literal which holds the hive's display name.
+     */
     public void addToHiveOptionsHome(String hiveName){
         hiveOptionsHome.add(hiveName);
     }
 
+    /**
+     * Clears data from classes.
+     */
     @Override
     public void clearData() {
 
@@ -159,11 +192,18 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
             hiveOptionsHome.clear();
 
     }
+
+    /**
+     * Detects a change in data.
+     */
     @Override
     public void notifyDataChange() {
         hiveAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Sorts posts by time using the Comparator class.
+     */
     @Override
     public void sortPosts() {
         Collections.sort(homePostObjects, new PostComparator());

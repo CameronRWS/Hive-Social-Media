@@ -12,16 +12,26 @@ import com.example.hivefrontend.ui.buzz.Logic.IBuzzVolleyListener;
 
 import org.json.JSONArray;
 
+/**
+ * The server request for logging in a user
+ */
 public class ServerRequest implements ILoginServerRequest {
 
     private String tag_json_obj = "json_obj_req";
     private ILoginVolleyListener loginVolleyListener;
 
+    /**
+     * Adds a given logic to this instance.
+     * @param l The given logic
+     */
     @Override
     public void addVolleyListener(ILoginVolleyListener l) {
         this.loginVolleyListener = l;
     }
 
+    /**
+     * Handles the server call to login a user
+     */
     @Override
     public void loginUser() {
         String url ="http://10.24.227.37:8080/userRegistrations";

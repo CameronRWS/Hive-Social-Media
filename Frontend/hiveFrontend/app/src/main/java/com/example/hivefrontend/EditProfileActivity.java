@@ -30,6 +30,9 @@ import com.google.firebase.storage.UploadTask;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * The EditProfile activity
+ */
 public class EditProfileActivity extends AppCompatActivity {
 
     public int userId = 2;
@@ -104,6 +107,9 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Uploads an image
+     */
     private void uploadImage() {
         if (imageUri != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -137,6 +143,9 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Chooses a new image and opens the gallery activity
+     */
     private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -144,6 +153,12 @@ public class EditProfileActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST_CODE);
     }
 
+    /**
+     * Handles the selection of an image
+     * @param requestCode The code of the specific request
+     * @param resultCode The code of the specific result
+     * @param data The data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -2,6 +2,9 @@ package com.example.hivefrontend.Register;
 
 import android.content.Context;
 
+/**
+ * The interface that the RegisterActivity implements
+ */
 public interface IRegisterView {
 
     public String getUsername();
