@@ -206,7 +206,9 @@ public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnI
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference updatedPhoto = storageReference.child("images/" + userId + ".jpg");
+            String postId = userId + getHiveId(getSelectedItemPos()) + "";
+
+            StorageReference updatedPhoto = storageReference.child("images/" + postId + ".jpg");
             updatedPhoto.putFile(imageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
