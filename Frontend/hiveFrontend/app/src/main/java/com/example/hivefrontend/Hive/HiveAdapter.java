@@ -24,6 +24,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+/**
+ * Adapter for a hive page
+ */
 public class HiveAdapter extends RecyclerView.Adapter<HiveAdapter.ViewHolder> {
 
     private Context context;
@@ -37,6 +40,7 @@ public class HiveAdapter extends RecyclerView.Adapter<HiveAdapter.ViewHolder> {
         this.hiveIds = hiveIds;
         this.hiveNames = hiveNames;
     }
+
 
 
    // @NonNull
@@ -79,11 +83,18 @@ public class HiveAdapter extends RecyclerView.Adapter<HiveAdapter.ViewHolder> {
         }
     }
 
+    /**
+     * Returns the amount of posts
+     * @return the amount of posts in integer format
+     */
     @Override
     public int getItemCount() {
         return posts.size();
     }
 
+    /**
+     * Defines the view holder
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView postTitle;
         public TextView postContent;
@@ -173,6 +184,12 @@ public class HiveAdapter extends RecyclerView.Adapter<HiveAdapter.ViewHolder> {
         }
     }
 
+    /**
+     * An easy way to retrieve a post
+     * @param id the post's id
+     * @return the post
+     * @throws JSONException error
+     */
     String getItem(int id) throws JSONException {
         return posts.get(id).getString("title");
     }

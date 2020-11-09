@@ -16,14 +16,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Handles the server calls needed for hive pages
+ */
 public class ServerRequest implements IHiveServerRequest {
 
     private String tag_json_obj = "json_obj_req";
 
     private static IHiveVolleyListener logic;
+
+    /**
+     * Assigns this instance's logic to the parameter
+     * @param logic The parameter, or, the given logic
+     */
     @Override
     public void addVolleyListener(IHiveVolleyListener logic) { this.logic = logic;}
 
+    /**
+     * Invokes the logic to handle displaying the hive page
+     * @param hiveName The string literal which holds the display name of the hive.
+     */
     @Override
     public void displayScreen(final String hiveName) {
         String url = "http://10.24.227.37:8080/hives";
@@ -45,16 +57,27 @@ public class ServerRequest implements IHiveServerRequest {
         VolleySingleton.getInstance(logic.getHiveContext()).addToRequestQueue(jsonArrayRequest);
     }
 
+    /**
+     * Invokes another method of this instance and the logic to handle a page resume
+     */
     public void pageResumeRequests(){
         updatePostRequest();
         logic.notifyDataSetChanged();
     }
 
+    /**
+     * Invokes another method of this instance and the logic to handle the instance of updating a post
+     */
     public void updatePostRequest() {
         setUserHiveRequest(logic.getUserId());
         logic.clearAdapterData();
         logic.notifyDataSetChanged();
     }
+
+    /**
+     * Parses the server data to find the number of likes a post has by id.
+     * @param postId A given post's id
+     */
     public void checkLikes(final int postId){
         String url ="http://10.24.227.37:8080/likes/byPostId/" + postId;
         JsonArrayRequest likeRequest = new JsonArrayRequest
@@ -91,6 +114,11 @@ public class ServerRequest implements IHiveServerRequest {
         VolleySingleton.getInstance(logic.getHiveContext()).addToRequestQueue(likeRequest);
         updatePostRequest();
     }
+
+    /**
+     * Handles liking a post
+     * @param postId The given post's id
+     */
     public void postLike(int postId){
         String url ="http://10.24.227.37:8080/likes";
         Log.i("post id in home frag", " " + postId);
@@ -123,6 +151,10 @@ public class ServerRequest implements IHiveServerRequest {
     }
 
 
+    /**
+     * Handles the action of setting up a hive page by invoking the logic
+     * @param userId The current session's user's id.
+     */
     public void setUserHiveRequest(int userId) {
         String url = "http://10.24.227.37:8080/members/byUserId/" + userId;
         JsonArrayRequest hiveRequest = new JsonArrayRequest (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -143,6 +175,10 @@ public class ServerRequest implements IHiveServerRequest {
         VolleySingleton.getInstance(logic.getHiveContext()).addToRequestQueue(hiveRequest);
     }
 
+    /**
+     * Invokes the logic to fetch the number of members is in the hive to display.
+     * @param hiveName The string literal which holds this hive page's display name.
+     */
     @Override
     public void fetchMemberCount(final String hiveName) {
         String url = "http://10.24.227.37:8080/members";

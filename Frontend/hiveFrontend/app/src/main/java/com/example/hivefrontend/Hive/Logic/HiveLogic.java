@@ -52,9 +52,9 @@ public class HiveLogic implements IHiveVolleyListener {
     }
 
     /**
-     *
-     * @param response
-     * @param hiveName
+     * Get's the hive's respective description and member count
+     * @param response JSONArray response containing member information
+     * @param hiveName The string literal which contains the hive's display name
      */
     @Override
     public void onGetHiveNameSuccess(JSONArray response, String hiveName) {
@@ -64,8 +64,6 @@ public class HiveLogic implements IHiveVolleyListener {
                 if (member.getString("name").equals(hiveName)) {
                     hiveView.displayBio(member.getString("description"));
                     server.fetchMemberCount(hiveName);
-
-
                     // join status
                 }
             }
@@ -74,21 +72,47 @@ public class HiveLogic implements IHiveVolleyListener {
             e.printStackTrace();
         }
     }
+
+    /**
+     * clearAdapterData() clears the data from the adapter class
+     */
     public void clearAdapterData() {
         hiveView.clearData();
     }
+
+    /**
+     * onPageResume() handles a resume instance by calling the server
+     */
     public void onPageResume() {
         server.pageResumeRequests();
     }
+
+    /**
+     * Calls the activity once a change in data is detected.
+     */
     public void notifyDataSetChanged() {
         hiveView.notifyDataChange();
     }
+
+    /**
+     * Invokes the server by checking the amount of likes on a single post in a hive.
+     * @param postId The corresponding post's id for reference
+     */
     public void likePostLogic(int postId){
         server.checkLikes(postId);
     }
 
+    /**
+     * Fetches the current user's id.
+     * @return the id
+     */
     @Override
     public int getUserId() {return hiveView.getUserId();}
+
+    /**
+     * Fetches the hive's display name.
+     * @param response JSONArray response which holds member data
+     */
     public void onHiveRequestSuccess(JSONArray response){
         try {
             for (int i = 0; i < response.length(); i++) {
@@ -105,11 +129,20 @@ public class HiveLogic implements IHiveVolleyListener {
         }
     }
 
+    /**
+     * Logs error messages on an error
+     * @param error Received error
+     */
     public void onError(VolleyError error){
         Log.i("volleyAppError", "Error: " + error.getMessage());
         Log.i("volleyAppError", "VolleyError: " + error);
     }
 
+    /**
+     * Fetches the member count
+     * @param response The JSONArray which holds member data
+     * @param hiveName The string literal which contains the hive's display name.
+     */
     @Override
     public void onFetchMemberCountSuccess(JSONArray response, String hiveName) {
         try {

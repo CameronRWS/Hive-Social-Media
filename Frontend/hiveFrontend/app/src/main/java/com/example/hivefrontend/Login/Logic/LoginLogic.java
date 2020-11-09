@@ -11,6 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * The logic for logging in a user.
+ */
 public class LoginLogic implements ILoginVolleyListener {
     ILoginView loginView;
     ServerRequest server;
@@ -22,6 +25,10 @@ public class LoginLogic implements ILoginVolleyListener {
     }
 
 
+    /**
+     * Handles logging in a user and storing the current session's data
+     * @param response The JSONArray response holding member data.
+     */
     @Override
     public void onLoginUserSuccess(JSONArray response) {
         loginView.fieldChecks();
@@ -45,6 +52,10 @@ public class LoginLogic implements ILoginVolleyListener {
         }
     }
 
+    /**
+     * Returns the context.
+     * @return The context.
+     */
     @Override
     public Context getLoginContext() {
         return loginView.getLoginContext();

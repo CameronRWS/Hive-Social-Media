@@ -23,6 +23,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+/**
+ * Main activity which the app opens on, if there is a user logged in.
+ */
 public class MainActivity extends AppCompatActivity {
     public BottomNavigationView navView;
     public ImageView hiveLogo;
@@ -60,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Handles if a new fragment within the activity is selected
+     * @param id The id of the destination
+     */
     public void destinationChange(int id) {
         if(id == R.id.navigation_buzz) {
             navView.setVisibility(View.GONE);
@@ -77,21 +84,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static void hideKeyboard(Context context) {
-        try {
-            ((Activity) context).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            if ((((Activity) context).getCurrentFocus() != null) && (((Activity) context).getCurrentFocus().getWindowToken() != null)) {
-                ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), 0);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public static void showKeyboard(Context context) {
-        ((InputMethodManager) (context).getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-    }
-
+    /**
+     * Opens the Android-default settings activity
+     * @param view the view.
+     */
     public void viewSettings(View view){
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);

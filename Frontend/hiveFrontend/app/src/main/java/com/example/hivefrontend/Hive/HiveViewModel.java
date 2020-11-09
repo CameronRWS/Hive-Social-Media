@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+/**
+ * The view model for a hive page
+ */
 public class HiveViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
