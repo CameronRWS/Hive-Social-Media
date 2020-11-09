@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.fragment.app.Fragment;
+
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +24,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONObject;
+
+import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.Hive.Logic.HiveLogic;
 import com.example.hivefrontend.Hive.Network.ServerRequest;
 import com.example.hivefrontend.R;
@@ -30,6 +38,12 @@ import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.home.HomeAdapter;
 import com.example.hivefrontend.ui.home.HomeViewModel;
 import com.example.hivefrontend.ui.home.Logic.HomeLogic;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -59,6 +73,14 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
     public static HiveAdapter hiveAdapter;
     public int selectedTab;
 
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private ImageButton editHivePicture;
+    private ImageButton editHiveHeader;
+    private ImageButton toSet;
+    private String imageFolder;
+    private static final int GALLERY_REQUEST_CODE = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                                 ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +100,11 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
         final TextView tvHiveName = (TextView) findViewById(R.id.hiveName);
         givenHiveName = getIntent().getStringExtra("hiveName");
         tvHiveName.setText(givenHiveName);
+
+        editHivePicture = findViewById(R.id.editHivePicture);
+        editHiveHeader = findViewById(R.id.editHiveHeader);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         userId = SharedPrefManager.getInstance(this.getApplicationContext()).getUser().getId();
         hiveIdsHome = new ArrayList<>();
@@ -100,6 +127,23 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
             }
         });
 
+        editHivePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toSet = editHivePicture;
+                imageFolder = "profilePictures/";
+                chooseImage();
+            }
+        });
+        
+        editHiveHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toSet = editHiveHeader;
+                imageFolder = "profileBackgrounds/";
+                chooseImage();
+            }
+        });
 
         final RecyclerView recyclerView = root.findViewById(R.id.hivePostRecyler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
@@ -110,6 +154,47 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
         return root;
 
 
+
+    }
+
+    private void uploadImage() {
+        if (imageUri != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference updatedPhoto = storageReference.child(imageFolder + userId + ".jpg");
+            updatedPhoto.putFile(imageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(HiveActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(HiveActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
+    }
+
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST_CODE);
     }
 
     @Override
