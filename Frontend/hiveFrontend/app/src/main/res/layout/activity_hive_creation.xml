@@ -17,12 +17,12 @@
         android:gravity="top|left"
         android:hint="Hive Name"
         android:inputType="textPersonName"
+        android:maxLength="35"
+        android:maxLines="1"
         android:textColor="#000000"
         android:textColorHighlight="#9A9A9a"
         android:textColorHint="#000000"
         android:textSize="20sp"
-        android:maxLength="35"
-        android:maxLines="1"
         app:boxBackgroundMode="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.447"
@@ -135,5 +135,15 @@
         android:src="@drawable/accessgallery"
         app:layout_constraintStart_toEndOf="@+id/accessCamera"
         app:layout_constraintTop_toBottomOf="@+id/hiveBioInput" />
+
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="250dp"
+        android:layout_height="265dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textBox"
+        app:srcCompat="@drawable/whitebg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

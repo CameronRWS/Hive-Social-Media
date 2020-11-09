@@ -131,16 +131,16 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
             @Override
             public void onClick(View view) {
                 toSet = editHivePicture;
-                imageFolder = "profilePictures/";
+                imageFolder = "hivePictures/";
                 chooseImage();
             }
         });
-        
+
         editHiveHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toSet = editHiveHeader;
-                imageFolder = "profileBackgrounds/";
+                imageFolder = "hiveBackgrounds/";
                 chooseImage();
             }
         });
@@ -152,9 +152,6 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
 
         context = root.getContext();
         return root;
-
-
-
     }
 
     private void uploadImage() {

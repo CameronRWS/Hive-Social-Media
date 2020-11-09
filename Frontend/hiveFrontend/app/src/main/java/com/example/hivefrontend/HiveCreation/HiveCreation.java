@@ -1,9 +1,12 @@
 package com.example.hivefrontend.HiveCreation;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,6 +26,12 @@ import com.example.hivefrontend.HiveCreation.Server.IHiveCreationServerRequest;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +49,11 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
     private int selectedItemPos;
     private Spinner mySpinner;
     ArrayList<String> hiveTypes;
+    public ImageView imagePreview;
+    private static final int GALLERY_REQUEST_CODE = 123;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +73,27 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_spinner_item,hiveTypes);
         mySpinner.setAdapter(adapter);
         mySpinner.setOnItemSelectedListener(this);
+        ImageButton accessGallery = findViewById(R.id.accessGallery);
+        ImageButton accessCamera = findViewById(R.id.accessCamera);
+        imagePreview = findViewById(R.id.imagePreview);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
+        accessGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseImage();
+            }
+        });
+
+        accessCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, GALLERY_REQUEST_CODE);
+            }
+        });
 
         Button back = findViewById(R.id.cancelButton);
         back.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +112,46 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
                 }
             }
         });
+    }
+
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST_CODE);
+    }
+
+    private void uploadImage() {
+        if (imageUri != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference updatedPhoto = storageReference.child("images/" + userId + ".jpg");
+            updatedPhoto.putFile(imageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(HiveCreation.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(HiveCreation.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
     }
 
     /**
