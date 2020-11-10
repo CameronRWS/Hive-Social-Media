@@ -21,4 +21,6 @@ public interface ISearchVolleyListener  {
     void onHiveRequestSuccess(JSONArray response);
 
     void onGetOtherHivesRequestSuccess(JSONArray response) throws JSONException;
+
+
 }

@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -127,7 +128,9 @@ public class SearchFragment extends Fragment implements ISearchView{
                 googleMap = mMap;
 
                 // For dropping a marker at a point on the Map
-                LatLng ames = new LatLng(42.031, -93.612);
+                //LatLng ames = new LatLng(42.031, -93.612);
+                LatLng ames = new LatLng(9.98, 9.98);
+
                 googleMap.addMarker(new MarkerOptions().position(ames).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
@@ -178,6 +181,31 @@ public class SearchFragment extends Fragment implements ISearchView{
 
         return rootView;
     }
+
+    public void addMarkers() throws JSONException {
+        for(int i = 0; i < hives.size(); i++){
+            JSONObject hive = hives.get(i);
+            double lat = hive.getDouble("latitude");
+            double lon = hive.getDouble("longitude");
+            String name = hive.getString("name");
+            addMarker(lat,lon, name);
+        }
+    }
+    public void addMarker(double lat, double lon, String name){
+        // Creating a marker
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        LatLng latLng = new LatLng(lat, lon);
+        // Setting the position for the marker
+        markerOptions.position(latLng);
+
+        // Setting the title for the marker.
+        // This will be displayed on tapping the marker
+        markerOptions.title(name);
+
+        googleMap.addMarker(markerOptions);
+    }
+
 
     /**
      * Notifies the adapter of a data change

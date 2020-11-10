@@ -2,6 +2,7 @@ package com.example.hivefrontend.ui.search;
 
 import android.content.Context;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -24,4 +25,8 @@ public interface ISearchView {
     Context getSearchContext();
 
     void notifyAdapterChange();
+
+    void addMarker(double lat, double lon, String name);
+
+    void addMarkers() throws JSONException;
 }
