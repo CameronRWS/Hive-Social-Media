@@ -12,4 +12,6 @@ public interface ISearchServerRequest {
     void getUserHives(int userId);
 
     void getOtherHives();
+
+    void joinHiveRequest(String userInput);
 }

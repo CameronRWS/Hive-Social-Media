@@ -1,11 +1,15 @@
 package com.example.hivefrontend.ui.search;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hivefrontend.PostDetails.PostDetailsActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.search.Logic.SearchLogic;
@@ -29,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -84,6 +90,44 @@ public class SearchFragment extends Fragment implements ISearchView{
      */
     private SearchAdapter mAdapter;
 
+    public void joinHive(int hiveId) {
+        LayoutInflater li = LayoutInflater.from(this.getContext());
+        View promptsView = li.inflate(R.layout.prompts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this.getContext());
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                server.joinHiveRequest(userInput.getText().toString());
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
     /**
      * Upon creation, makes a MapView to be displayed on a map tab, and sets up tabs
      * Also calls the logic class to get list of hives to show.
@@ -127,7 +171,9 @@ public class SearchFragment extends Fragment implements ISearchView{
                 googleMap = mMap;
 
                 // For dropping a marker at a point on the Map
-                LatLng ames = new LatLng(42.031, -93.612);
+                //LatLng ames = new LatLng(42.031, -93.612);
+                LatLng ames = new LatLng(9.98, 9.98);
+
                 googleMap.addMarker(new MarkerOptions().position(ames).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
@@ -178,6 +224,31 @@ public class SearchFragment extends Fragment implements ISearchView{
 
         return rootView;
     }
+
+    public void addMarkers() throws JSONException {
+        for(int i = 0; i < hives.size(); i++){
+            JSONObject hive = hives.get(i);
+            double lat = hive.getDouble("latitude");
+            double lon = hive.getDouble("longitude");
+            String name = hive.getString("name");
+            addMarker(lat,lon, name);
+        }
+    }
+    public void addMarker(double lat, double lon, String name){
+        // Creating a marker
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        LatLng latLng = new LatLng(lat, lon);
+        // Setting the position for the marker
+        markerOptions.position(latLng);
+
+        // Setting the title for the marker.
+        // This will be displayed on tapping the marker
+        markerOptions.title(name);
+
+        googleMap.addMarker(markerOptions);
+    }
+
 
     /**
      * Notifies the adapter of a data change
