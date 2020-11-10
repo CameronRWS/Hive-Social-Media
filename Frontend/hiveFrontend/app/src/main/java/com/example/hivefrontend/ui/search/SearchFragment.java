@@ -1,11 +1,15 @@
 package com.example.hivefrontend.ui.search;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hivefrontend.PostDetails.PostDetailsActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.search.Logic.SearchLogic;
@@ -84,6 +89,44 @@ public class SearchFragment extends Fragment implements ISearchView{
      * The adapter used for this SearchFragment's RecyclerView
      */
     private SearchAdapter mAdapter;
+
+    public void joinHive(int hiveId) {
+        LayoutInflater li = LayoutInflater.from(this.getContext());
+        View promptsView = li.inflate(R.layout.prompts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this.getContext());
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                server.joinHiveRequest(userInput.getText().toString());
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
 
     /**
      * Upon creation, makes a MapView to be displayed on a map tab, and sets up tabs
