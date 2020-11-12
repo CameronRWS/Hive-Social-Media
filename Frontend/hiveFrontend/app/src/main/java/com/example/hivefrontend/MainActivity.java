@@ -25,7 +25,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-<<<<<<< Frontend/hiveFrontend/app/src/main/java/com/example/hivefrontend/MainActivity.java
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
@@ -58,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        final BottomNavigationView navView = findViewById(R.id.nav_view);
-        final ImageView hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
         final TextView activeUsers = findViewById(R.id.activeUserCount);
 
         navView = findViewById(R.id.nav_view);
