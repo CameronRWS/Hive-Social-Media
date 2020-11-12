@@ -2,6 +2,9 @@ package com.example.hivefrontend.Login;
 
 import android.content.Context;
 
+/**
+ * The interface which LoginActivity implements.
+ */
 public interface ILoginView {
 
     public String getUsername();

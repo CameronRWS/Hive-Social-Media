@@ -22,7 +22,7 @@ public class HiveInterest {
     
     public HiveInterest(HiveInterestIdentity hiveInterestIdentity) {
         this.hiveInterestIdentity = hiveInterestIdentity;
-        this.setDateCreated(DateTime.GetCurrentDateTime());
+        this.setDateCreated(DateTime.getCurrentDateTime());
     }
     
     public int getHiveId() {

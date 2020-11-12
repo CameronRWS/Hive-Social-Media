@@ -19,16 +19,26 @@ import com.example.hivefrontend.ui.buzz.Logic.IBuzzVolleyListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * The server request for registering a new user.
+ */
 public class ServerRequest implements IRegisterServerRequest {
 
     private String tag_json_obj = "json_obj_req";
     private IRegisterVolleyListener registerVolleyListener;
 
+    /**
+     * Adds the given register logic to this instance
+     * @param r The register logic
+     */
     @Override
     public void addVolleyListener(IRegisterVolleyListener r) {
         this.registerVolleyListener = r;
     }
 
+    /**
+     * Invokes the logic to register a new user.
+     */
     @Override
     public void registerUser() {
         String url = "http://10.24.227.37:8080/userRegistrations";

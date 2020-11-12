@@ -6,6 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Interface implemented by HiveRequestLogic
+ */
 public interface IHiveRequestVolleyListener {
     void getHiveRequests();
 
@@ -14,7 +17,7 @@ public interface IHiveRequestVolleyListener {
 
     Context getRequestsContext();
 
-    void acceptRequestLogic(JSONObject request, String status) throws JSONException;
+    void handleRequestLogic(JSONObject request, String status) throws JSONException;
 
     void onAcceptDenySuccess();
 }

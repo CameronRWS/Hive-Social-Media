@@ -25,11 +25,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Fragment for leftmost tab on the bottom navigation, containing the home and discover tabs
+ */
 public class HomeFragment extends Fragment implements IHomeView{
 
     private HomeViewModel homeViewModel;
-    public static ArrayList<Integer> hiveIds;
-    public static ArrayList<String> hiveOptions;
+
     public static ArrayList<Integer> hiveIdsHome;
     public static ArrayList<String> hiveOptionsHome;
     public static ArrayList<Integer> hiveIdsDiscover;
@@ -55,8 +57,6 @@ public class HomeFragment extends Fragment implements IHomeView{
         hiveOptionsHome = new ArrayList<>();
         hiveIdsDiscover = new ArrayList<>();
         hiveOptionsDiscover = new ArrayList<>();
-        hiveIds= new ArrayList(hiveIdsHome);
-        hiveOptions = new ArrayList(hiveOptionsHome);
 
 
         homePostObjects = new ArrayList<>();
@@ -123,43 +123,84 @@ public class HomeFragment extends Fragment implements IHomeView{
         return root;
     }
 
+    /**
+     * Method called from the adapter when a post is liked. Calls the logic method to handle the logic behind liking a post
+     * @param postId The id of the post to be liked
+     */
     public static void likePost(final int postId){
         logic.likePostLogic(postId);
     }
 
+    /**
+     * Makes a call to the logic class to handle page resume
+     */
     @Override
     public void onResume() {
         super.onResume();
         logic.onPageResume();
     }
 
+    /**
+     * Gets the user id of the logged in user
+     * @return The user id of the logged in user
+     */
     public int getUserId(){
         return userId;
     }
 
+    /**
+     * Adds to the list of hiveIds for hives to display on the home page (hives this user is a part of)
+     * @param hiveId The hive id to add
+     */
     public void addToHiveIdsHome(int hiveId){
         hiveIdsHome.add(hiveId);
     }
+
+    /**
+     * Adds to the hive names to be shown on the home page
+     * @param hiveName Name of the hive to be added
+     */
     public void addToHiveOptionsHome(String hiveName){
         hiveOptionsHome.add(hiveName);
     }
+
+    /**
+     * Adds to the list of hiveIds for hives to display on the discover page (hives this user is not a part of)
+     * @param hiveId The hive id to add
+     */
     public void addToHiveIdsDiscover(int hiveId){
         hiveIdsDiscover.add(hiveId);
     }
+
+    /**
+     * Adds to the hive names to be shown on the discover page
+     * @param hiveName The hive name to add
+     */
     public void addToHiveOptionsDiscover(String hiveName){
         hiveOptionsDiscover.add(hiveName);
     }
 
+    /**
+     * Notifies the home adapter and discover adapter that the data has been changed. Called after the user interacts with the posts or when the page resumes.
+     */
     @Override
     public void notifyDataChange() {
         homeAdapter.notifyDataSetChanged();
         discoverAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Returns the context for the HomeFragment
+     * @return The context for this fragment
+     */
     public Context getHomeContext(){
         return this.getContext();
     }
 
+    /**
+     * Clears the ArrayLists of posts, hive ids, and hive options for both the home and discover tab.
+     * Called before a request to get the data again to update any changed data.
+     */
     public void clearData(){
         discoverPostObjects.clear();
         homePostObjects.clear();
@@ -169,37 +210,64 @@ public class HomeFragment extends Fragment implements IHomeView{
         hiveOptionsHome.clear();
     }
 
+    /**
+     * Using the PostComparator, sorts the home and discover posts chronologically. Newer posts will appear on top.
+     */
     @Override
     public void sortPosts() {
         Collections.sort(homePostObjects, new PostComparator());
         Collections.sort(discoverPostObjects, new PostComparator());
     }
 
+    /**
+     * Adds to the list of posts for the discover tab.
+     * @param post The post to add to the discover tab
+     */
     @Override
     public void addToDiscoverPosts(JSONObject post) {
         discoverPostObjects.add(post);
     }
 
+    /**
+     * Adds to the list of posts for the home tab.
+     * @param post The post to add to the home tab
+     */
     @Override
     public void addToHomePosts(JSONObject post) {
         homePostObjects.add(post);
     }
 
+    /**
+     * Returns back the hive ids for the home tab (the hives this user is a member of)
+     * @return The home tab hive ids
+     */
     @Override
     public ArrayList<Integer> getHiveIdsHome() {
         return hiveIdsHome;
     }
 
+    /**
+     * Returns back the hive names for the home tab (the hives this user is a member of)
+     * @return The home tab hive names
+     */
     @Override
     public ArrayList<String> getHiveOptionsHome() {
         return hiveOptionsHome;
     }
 
+    /**
+     * Returns back the hive ids for the discover tab (the hives this user is not a member of)
+     * @return The discover tab hive ids
+     */
     @Override
     public ArrayList<Integer> getHiveIdsDiscover() {
         return hiveIdsDiscover;
     }
 
+    /**
+     * Returns back the hive names for the discover tab (the hives this user is not a member of)
+     * @return The discover tab hive names
+     */
     @Override
     public ArrayList<String> getHiveOptionsDiscover() {
         return hiveOptionsDiscover;

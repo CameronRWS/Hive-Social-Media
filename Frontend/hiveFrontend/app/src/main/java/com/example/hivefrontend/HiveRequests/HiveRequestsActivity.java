@@ -18,6 +18,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Activity to handle manage hive requests. A hive beekeeper will be able to see this page and accept or deny users' requests.
+ */
 public class HiveRequestsActivity extends AppCompatActivity implements IHiveRequestView{
 
     private HiveRequestServerRequest server;
@@ -26,8 +29,10 @@ public class HiveRequestsActivity extends AppCompatActivity implements IHiveRequ
     private static ArrayList<JSONObject> hiveRequests;
     private HiveRequestAdapter hiveRequestAdapter;
 
-
-
+    /**
+     * Upon creation of the HiveRequestsActivity, instantiates local variables and makes call to logic to get the hive requests.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,18 +51,21 @@ public class HiveRequestsActivity extends AppCompatActivity implements IHiveRequ
 
         logic.getHiveRequests();
     }
-    public static void denyRequest(int position) {
 
+    /**
+     * Calls the logic function to handle the logic for accepting or denying the given request.
+     * @param position Position in the RecyclerView that the request to handle holds
+     * @param status Status of the request, either accepted or denied
+     * @throws JSONException
+     */
+    public static void handleRequest(int position, String status) throws JSONException {
+        logic.handleRequestLogic(hiveRequests.get(position), status);
     }
-    public static void acceptRequest(int position, String status) throws JSONException {
-        logic.acceptRequestLogic(hiveRequests.get(position), status);
-    }
 
-    @Override
-    public void setRequests(ArrayList<JSONObject> requests) {
-
-    }
-
+    /**
+     * Adds a request to the list of requests
+     * @param request The request to be added
+     */
     @Override
     public void addToRequests(JSONObject request) {
 
@@ -66,22 +74,18 @@ public class HiveRequestsActivity extends AppCompatActivity implements IHiveRequ
         hiveRequestAdapter.notifyDataSetChanged();
     }
 
-//    @Override
-//    public void acceptRequest(int position) {
-//
-//    }
-//
-//    @Override
-//    public void denyRequest(int position) {
-//
-//    }
-
-
+    /**
+     * Returns the context for this activity
+     * @return The context for this activity
+     */
     @Override
     public Context getRequestsContext() {
         return this.getApplicationContext();
     }
 
+    /**
+     * Clears the data from the hive requests and notifies the adapter of the data change
+     */
     @Override
     public void clearData(){
         hiveRequests.clear();

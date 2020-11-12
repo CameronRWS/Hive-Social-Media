@@ -25,6 +25,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+<<<<<<< Frontend/hiveFrontend/app/src/main/java/com/example/hivefrontend/MainActivity.java
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
@@ -33,7 +34,15 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * Main activity which the app opens on, if there is a user logged in.
+ */
+
 public class MainActivity extends AppCompatActivity {
+    public BottomNavigationView navView;
+    public ImageView hiveLogo;
+    public ImageButton gearIcon;
+    public NavController navController;
 
 
     private WebSocketClient cc;
@@ -48,18 +57,22 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+
         final BottomNavigationView navView = findViewById(R.id.nav_view);
         final ImageView hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
         final TextView activeUsers = findViewById(R.id.activeUserCount);
-        //activeUsers.setText("hello!!!");
+
+        navView = findViewById(R.id.nav_view);
+        hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
+
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications, R.id.navigation_buzz, R.id.navigation_profile)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
@@ -82,9 +95,10 @@ public class MainActivity extends AppCompatActivity {
                     hiveLogo.setVisibility(View.VISIBLE);
                 }
 
+                destinationChange(destination.getId());
+
             }
         });
-
         NavigationUI.setupWithNavController(navView, navController);
 
 
@@ -137,20 +151,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static void hideKeyboard(Context context) {
-        try {
-            ((Activity) context).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            if ((((Activity) context).getCurrentFocus() != null) && (((Activity) context).getCurrentFocus().getWindowToken() != null)) {
-                ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), 0);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+    /**
+     * Handles if a new fragment within the activity is selected
+     * @param id The id of the destination
+     */
+    public void destinationChange(int id) {
+        if(id == R.id.navigation_buzz) {
+            navView.setVisibility(View.GONE);
+        } else {
+            navView.setVisibility(View.VISIBLE);
         }
-    }
 
-    public static void showKeyboard(Context context) {
-        ((InputMethodManager) (context).getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-    }
+        if(id == R.id.navigation_profile || id == R.id.navigation_buzz) {
+            hiveLogo.setVisibility(View.GONE);
+        } else {
+            hiveLogo.setVisibility(View.VISIBLE);
+        }
 
+    }
 
 }

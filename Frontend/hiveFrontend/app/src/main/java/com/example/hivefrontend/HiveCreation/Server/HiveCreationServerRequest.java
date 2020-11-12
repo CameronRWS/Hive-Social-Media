@@ -13,15 +13,26 @@ import com.example.hivefrontend.VolleySingleton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Handles the server calls needed for hive creation
+ */
 public class HiveCreationServerRequest implements IHiveCreationServerRequest{
 
     private IHiveCreationVolleyListener logic;
 
+    /**
+     * Sets IHiveCreationVolleyListener to the logic variable
+     * @param l The IHiveCreationVolleyListener to add to this instance
+     */
     @Override
     public void addVolleyListener(IHiveCreationVolleyListener l) {
         this.logic = l;
     }
 
+    /**
+     * Makes a server request to create a new hive using the provided JSONObject
+     * @param hive The JSONObject to post to the server
+     */
     @Override
     public void createHive(JSONObject hive) {
         String url ="http://10.24.227.37:8080/hives";
@@ -47,6 +58,11 @@ public class HiveCreationServerRequest implements IHiveCreationServerRequest{
         VolleySingleton.getInstance(logic.getPostContext()).addToRequestQueue(jsonObjectRequest);
     }
 
+    /**
+     * Adds the logged in user to the newly created hive
+     * @param hiveId The hive id of the newly created hive
+     * @throws JSONException
+     */
     public void addMembership(int hiveId) throws JSONException {
         String url ="http://10.24.227.37:8080/members";
 

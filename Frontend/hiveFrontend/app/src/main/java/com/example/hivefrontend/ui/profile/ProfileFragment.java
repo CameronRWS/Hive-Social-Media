@@ -39,40 +39,96 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
+/**
+ * Fragment showing the logged in user's profile.
+ * Accessible from the rightmost tab of the bottom navigation.
+ */
 public class ProfileFragment extends Fragment implements IProfileView{
 
-    //private RecyclerView recyclerView;
-    //private RecyclerView.Adapter mAdapter;
-    //private RecyclerView.LayoutManager layoutManager;
-    private ProfileViewModel mViewModel;
-    public ArrayList<Integer> hiveIds;
-    public ArrayList<String> hiveOptions;
-    public int userId;
-    private RequestQueue queue;
-    private String pollen;
-    public TextView displayName;
-    public ImageView locationPin;
-    public TextView userName;
-    public Button editProfile;
-    public TextView pollenCount;
-    public TextView displayLocation;
-    public TextView hiveListHeading;
-    public TextView bio;
-    public TextView dateJoined;
-    public RecyclerView recyclerView;
-    public MyAdapter myAdapter;
 
+    private ProfileViewModel mViewModel;
+    /**
+     * List of hive ids for this user
+     */
+    private ArrayList<Integer> hiveIds;
+    /**
+     * List of hive names for this user
+     */
+    private ArrayList<String> hiveOptions;
+    /**
+     * This user's user id
+     */
+    private int userId;
+
+    /**
+     * TextView for the user's display name
+     */
+    private TextView displayName;
+    /**
+     * ImageView for the user's location
+     */
+    private ImageView locationPin;
+    /**
+     * TextView for the user's user name
+     */
+    private TextView userName;
+    /**
+     * Edit profile button
+     */
+    private Button editProfile;
+    /**
+     * TextView for the user's pollen count
+     */
+    private TextView pollenCount;
+    /**
+     * TextView for the user's location
+     */
+    private TextView displayLocation;
+    /**
+     * TextView for the hive list heading
+     */
+    private TextView hiveListHeading;
+    /**
+     * TextView for the user's bio
+     */
+    private TextView bio;
+    private TextView dateJoined;
+    /**
+     * RecyclerView for this user's hives
+     */
+    private RecyclerView recyclerView;
+    /**
+     * Adapter for the RecyclerView
+     */
+    private MyAdapter myAdapter;
+
+    /**
+     * ImageView for this user's profile picture
+     */
     private ImageView profilePic;
+    /**
+     * ImageView for this user's profile picture
+     */
     private ImageView header;
     private Uri imageUri;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    /**
+     * Create hive button
+     */
     private Button createHive;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
 
+    /**
+     * Upon creation, sets up screen structure and calls the logic class to get profile information to display.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -146,62 +202,108 @@ public class ProfileFragment extends Fragment implements IProfileView{
 
     }
 
+    /**
+     * Returns the Context of this ProfileFragment
+     * @return Context of this ProfileFragment
+     */
     @Override
     public Context getProfileContext() {
         return this.getContext();
     }
 
+    /**
+     * Returns the user id of the current user
+     * @return The user id of the current user
+     */
     @Override
     public int getUserId() {
         return userId;
     }
 
+    /**
+     * Sets the display name TextView to the given name
+     * @param name The display name of this user
+     */
     @Override
     public void setDisplayName(String name) {
         displayName.setText(name);
     }
 
+    /**
+     * Sets the location TextView to the given location
+     * @param location The location of this user
+     */
     @Override
     public void setDisplayLocation(String location) {
         displayLocation.setText(location);
     }
 
+    /**
+     * Sets the location TextView and pin invisible
+     */
     @Override
     public void setLocationInvisible() {
         displayLocation.setVisibility(View.INVISIBLE);
         locationPin.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Sets the user name TextView to the given name
+     * @param uName The user name of this user
+     */
     @Override
     public void setUserName(String uName) {
         userName.setText(uName);
     }
 
+    /**
+     * Sets the bio TextView to the given bio
+     * @param biography The bio of this user
+     */
     @Override
     public void setBio(String biography) {
         bio.setText(biography);
     }
 
+    /**
+     * Sets the text of the hive list heading
+     * @param your_hives String to set the text to
+     */
     @Override
     public void setHiveListHeading(String your_hives) {
         hiveListHeading.setText("Your Hives:");
     }
 
+    /**
+     * Adds  the given id to the list of this user's hive ids
+     * @param hiveId The hive id to add
+     */
     @Override
     public void addHiveId(Integer hiveId) {
         hiveIds.add(hiveId);
     }
 
+    /**
+     * Adds the given name to the list of hive names
+     * @param hiveName The hive name to add
+     */
     @Override
     public void addToHiveOptions(String hiveName) {
         hiveOptions.add(hiveName);
     }
 
+    /**
+     * Notifies the adapter of a data change
+     */
     @Override
     public void notifyChangeForAdapter() {
         myAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Sets the pollen count text to the given String
+     * @param substring The pollen count text
+     */
     @Override
     public void setPollenCountText(String substring) {
         pollenCount.setText(substring);

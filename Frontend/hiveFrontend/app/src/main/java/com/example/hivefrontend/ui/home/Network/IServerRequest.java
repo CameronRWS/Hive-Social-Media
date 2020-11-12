@@ -15,18 +15,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Interface implemented by the ServerRequest for the home screen
+ */
 public interface IServerRequest {
-    public void addVolleyListener(IHomeVolleyListener l);
+    void addVolleyListener(IHomeVolleyListener l);
 
-    public void setUserHiveRequest(int userId);
+    void setUserHiveRequest(int userId);
 
-    public void pageResumeRequests();
+    void pageResumeRequests();
 
-    public void updatePostRequest();
+    void updatePostRequest();
 
-    public void getDiscoverPosts();
+    void getDiscoverPosts();
 
-    public void checkLikes(final int postId);
+    void checkLikes(final int postId);
 
-    public void postLike(int postId);
+    void postLike(int postId);
 }

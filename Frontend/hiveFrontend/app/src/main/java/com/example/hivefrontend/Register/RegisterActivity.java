@@ -19,6 +19,9 @@ import com.example.hivefrontend.Register.Logic.RegisterLogic;
 import com.example.hivefrontend.Register.Network.ServerRequest;
 import com.example.hivefrontend.SharedPrefManager;
 
+/**
+ * The activity for registering a new user.
+ */
 public class RegisterActivity extends AppCompatActivity implements IRegisterView {
 
     EditText usernameField, passwordField, emailAddressField;
@@ -59,29 +62,51 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         });
     }
 
+    /**
+     * Returns the register context.
+     * @return The context.
+     */
     @Override
     public Context getRegisterContext() {return this.getApplicationContext();}
 
+    /**
+     * Starts the Edit Profile activity upon successful registration.
+     */
     @Override
     public void successfullyRegistered() {
         startActivity(new Intent(getApplicationContext(), EditProfileActivity.class));
     }
 
+    /**
+     * Returns the username of the newly-registered user.
+     * @return the username
+     */
     @Override
     public String getUsername() {
         return usernameField.getText().toString().trim();
     }
 
+    /**
+     * Returns the password of the newly-registered user.
+     * @return The password.
+     */
     @Override
     public String getPassword() {
         return passwordField.getText().toString().trim();
     }
 
+    /**
+     * Returns the email address of the newly-registered user.
+     * @return The email address
+     */
     @Override
     public String getEmailAddress() {
         return emailAddressField.getText().toString().trim();
     }
 
+    /**
+     * Checks to see if the text box value is valid.
+     */
     @Override
     public void usernameCheck() {
         if (TextUtils.isEmpty(getUsername())) {
@@ -91,6 +116,9 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         }
     }
 
+    /**
+     * Checks to see if the text box value is valid.
+     */
     @Override
     public void passwordCheck() {
         if (TextUtils.isEmpty(getPassword())) {
@@ -100,6 +128,9 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         }
     }
 
+    /**
+     * Checks to see if the text box value is valid.
+     */
     @Override
     public void emailAddressCheck() {
         if (TextUtils.isEmpty(getEmailAddress())) {
@@ -109,6 +140,9 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         }
     }
 
+    /**
+     * Checks to see if the text box value is valid.
+     */
     @Override
     public void validateEmailAddress() {
         if (!Patterns.EMAIL_ADDRESS.matcher(getEmailAddress()).matches()) {
