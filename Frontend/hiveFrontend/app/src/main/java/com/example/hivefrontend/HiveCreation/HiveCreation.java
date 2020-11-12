@@ -124,8 +124,11 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
             JSONObject hive = new JSONObject();
             EditText title= findViewById(R.id.hiveTitleInput);
             EditText bio= findViewById(R.id.hiveBioInput);
+            EditText latitude= findViewById(R.id.hiveLatitudeInput);
+            EditText longitude= findViewById(R.id.hiveLongitudeInput);
             hive.put("name",title.getText().toString());
             hive.put("description",bio.getText().toString());
+
             if(selectedItemPos==1){
                 hive.put("type","public");
             }
@@ -135,14 +138,23 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
             if(selectedItemPos==3){
                 hive.put("type","private");
             }
-            hive.put("latitude",10);
-            hive.put("longitude",10);
+            hive.put("latitude", Double.parseDouble(latitude.getText().toString()));
+            hive.put("longitude", Double.parseDouble(longitude.getText().toString()));
             logic.createHive(hive);
         }
         else{
-            Toast.makeText(this.getApplicationContext(), "Invalid name or description.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getApplicationContext(), "Invalid name, description, or location.", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
     /**
@@ -153,7 +165,9 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
     public boolean validInput(){
         EditText title= findViewById(R.id.hiveTitleInput);
         EditText bio= findViewById(R.id.hiveBioInput);
-        if(title.getText().toString().length()>0 && title.getText().toString().length()>0) {
+        EditText latitude= findViewById(R.id.hiveLatitudeInput);
+        EditText longitude= findViewById(R.id.hiveLongitudeInput);
+        if(title.getText().toString().length()>0 && bio.getText().toString().length()>0 && isNumeric(latitude.getText().toString()) && isNumeric(longitude.getText().toString())) {
             return true;
         }
         else{
