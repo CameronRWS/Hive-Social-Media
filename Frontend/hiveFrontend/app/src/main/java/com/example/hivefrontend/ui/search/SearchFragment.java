@@ -134,7 +134,7 @@ public class SearchFragment extends Fragment implements ISearchView{
 
                 // For dropping a marker at a point on the Map
                 LatLng ames = new LatLng(42.031, -93.612);
-                googleMap.addMarker(new MarkerOptions().position(ames).title("Marker Title").snippet("Marker Description"));
+                googleMap.addMarker(new MarkerOptions().position(ames).title("Iowa State University").snippet("Ames, IA"));
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(ames).zoom(12).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
