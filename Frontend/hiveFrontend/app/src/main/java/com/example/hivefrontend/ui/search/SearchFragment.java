@@ -90,44 +90,6 @@ public class SearchFragment extends Fragment implements ISearchView{
      */
     private SearchAdapter mAdapter;
 
-    public void joinHive(int hiveId) {
-        LayoutInflater li = LayoutInflater.from(this.getContext());
-        View promptsView = li.inflate(R.layout.prompts, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                this.getContext());
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        final EditText userInput = (EditText) promptsView
-                .findViewById(R.id.editTextDialogUserInput);
-
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-
-                                server.joinHiveRequest(userInput.getText().toString());
-
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-    }
-
     /**
      * Upon creation, makes a MapView to be displayed on a map tab, and sets up tabs
      * Also calls the logic class to get list of hives to show.
@@ -171,14 +133,15 @@ public class SearchFragment extends Fragment implements ISearchView{
                 googleMap = mMap;
 
                 // For dropping a marker at a point on the Map
-                //LatLng ames = new LatLng(42.031, -93.612);
-                LatLng ames = new LatLng(9.98, 9.98);
-
+                LatLng ames = new LatLng(42.031, -93.612);
                 googleMap.addMarker(new MarkerOptions().position(ames).title("Marker Title").snippet("Marker Description"));
-
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(ames).zoom(12).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                googleMap.getUiSettings().setZoomControlsEnabled(true);
+                googleMap.getUiSettings().setMapToolbarEnabled(true);
+                googleMap.getUiSettings().setScrollGesturesEnabled(true);
+                googleMap.setMaxZoomPreference(20);
             }
         });
 
@@ -307,11 +270,11 @@ public class SearchFragment extends Fragment implements ISearchView{
         return this.getContext();
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mMapView.onResume();
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
 //
 //    @Override
 //    public void onPause() {

@@ -3,6 +3,7 @@ package com.example.hivefrontend.ui.search;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.hivefrontend.Hive.HiveActivity;
+import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.VolleySingleton;
@@ -77,43 +80,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final SearchAdapter.ViewHolder holder, final int position) {
 
-//        serverRequest.fetchMemberCount(mData.get(position));
-//        //serverRequest.fetchHiveDescription(mData.get(position));
-//        holder.memberCnt.setText( logic.getMemberCount()+ " bees and counting");
-//        String url = "http://10.24.227.37:8080/hives";
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-//                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//
-//                        try {
-//                            for(int i = 0; i < response.length(); i++) {
-//                                JSONObject member = response.getJSONObject(i);
-//                                if (member.getString("name").equals(mData.get(position))) {
-//                                    Log.i("princess", "name: " + member.getString("name") + "description: " + member.getString("description"));
-//                                    holder.hiveDescrip.setText(member.getString("description"));
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // TODO: Handle error
-//                        Log.i("volleyAppError","Error: " + error.getMessage());
-//                        Log.i("volleyAppError","VolleyError: "+ error);
-//                    }
-//                });
-//        VolleySingleton.getInstance(this.context).addToRequestQueue(jsonArrayRequest);
         try {
             holder.joinHiveCardButton.setTag(position);
             holder.hiveDescrip.setText(hives.get(position).getString("description"));
             holder.itemTxt.setText(hives.get(position).getString("name"));
+            holder.itemTxt.setTag(position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -132,7 +103,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     /**
      * ViewHolder for one row in the RecyclerView
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         /**
          * TextView for hive name
          */
@@ -159,6 +130,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         ViewHolder(View itemView) {
             super(itemView);
             itemTxt = itemView.findViewById(R.id.hiveCardName);
+            itemTxt.setOnClickListener(this);
             relativeLayout=itemView.findViewById(R.id.postViewLayout);
             memberCnt = itemView.findViewById(R.id.hiveCardMemberCount);
             hiveDescrip = itemView.findViewById(R.id.hiveCardDescription);
@@ -251,6 +223,25 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 }
             });
         }
+
+        @Override
+        public void onClick(View v) {
+            //for find item that hold in list
+            int position = (Integer) v.getTag();
+            Intent intent = new Intent(v.getContext(), HiveActivity.class);
+            try {
+
+                int hiveId = hives.get(position).getInt("hiveId");
+                //start new activity and pass the user ID to it
+                intent.putExtra("hiveId", hiveId);
+                v.getContext().startActivity(intent);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }
