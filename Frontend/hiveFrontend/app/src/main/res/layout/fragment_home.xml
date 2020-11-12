@@ -50,4 +50,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp"></androidx.recyclerview.widget.RecyclerView>
 
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
