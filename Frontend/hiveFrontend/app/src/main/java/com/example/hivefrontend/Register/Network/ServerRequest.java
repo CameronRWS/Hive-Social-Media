@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.Register.Logic.IRegisterVolleyListener;
@@ -16,6 +17,7 @@ import com.example.hivefrontend.User;
 import com.example.hivefrontend.VolleySingleton;
 import com.example.hivefrontend.ui.buzz.Logic.IBuzzVolleyListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +36,41 @@ public class ServerRequest implements IRegisterServerRequest {
     @Override
     public void addVolleyListener(IRegisterVolleyListener r) {
         this.registerVolleyListener = r;
+    }
+
+    /**
+     * Checks to see if the username or email address is available prior to registering for it.
+     */
+    @Override
+    public void availableCheck() {
+        // check to see if the username/email address is available.
+        // if it is, call registerUser
+        // if not, send a message and focus request to the main activity
+        String url ="http://10.24.227.37:8080/userRegistrations";
+        JsonArrayRequest arrayRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            if (registerVolleyListener.isAvailable(response)) {
+                                registerUser();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.i("volleyAppError","Error: " + error.getMessage());
+                        Log.i("volleyAppError","VolleyError: "+ error);
+                    }
+                });
+        VolleySingleton.getInstance(registerVolleyListener.getRegisterContext()).addToRequestQueue(arrayRequest);
+
     }
 
     /**
