@@ -12,6 +12,8 @@ public interface IRegisterView {
     public String getEmailAddress();
     public void usernameCheck();
     public void passwordCheck();
+    public void setRegParametersMet();
+    public boolean getRegParametersMet();
     public void emailAddressCheck();
     public void validateEmailAddress();
     public Context getRegisterContext();

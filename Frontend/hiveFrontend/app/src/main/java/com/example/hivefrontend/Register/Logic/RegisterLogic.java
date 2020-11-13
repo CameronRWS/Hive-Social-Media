@@ -38,6 +38,7 @@ public class RegisterLogic implements IRegisterVolleyListener {
             registerView.passwordCheck();
             registerView.emailAddressCheck();
             registerView.validateEmailAddress();
+
             object.put("email", registerView.getEmailAddress());
             object.put("userRegistrationIdentity", null);
             object.put("password", registerView.getPassword());
@@ -57,9 +58,15 @@ public class RegisterLogic implements IRegisterVolleyListener {
      */
     @Override
     public void onRegisterUserSuccess(JSONObject response) throws JSONException {
-        User user = new User(registerView.getUsername(), registerView.getPassword(), response.getJSONObject("userRegistrationIdentity").getJSONObject("user").getInt("userId"));
-        SharedPrefManager.getInstance(getRegisterContext()).userLogin(user);
-        registerView.successfullyRegistered();
+
+        if (registerView.getRegParametersMet() == true) {
+            User user = new User(registerView.getUsername(), registerView.getPassword(), response.getJSONObject("userRegistrationIdentity").getJSONObject("user").getInt("userId"));
+            SharedPrefManager.getInstance(getRegisterContext()).userLogin(user);
+            registerView.successfullyRegistered();
+        }
+        else {
+            registerView.setRegParametersMet();
+        }
     }
 
     /**

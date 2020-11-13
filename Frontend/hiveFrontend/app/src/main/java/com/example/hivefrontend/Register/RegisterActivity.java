@@ -24,8 +24,8 @@ import com.example.hivefrontend.SharedPrefManager;
  */
 public class RegisterActivity extends AppCompatActivity implements IRegisterView {
 
-    EditText usernameField, passwordField, emailAddressField;
-
+    EditText usernameField, passwordField, emailAddressField, confirmEmailAddressField, confirmPasswordField;
+    boolean regParametersMet = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +41,8 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         usernameField = (EditText) findViewById(R.id.usernameField);
         passwordField = (EditText) findViewById(R.id.passwordField);
         emailAddressField = (EditText) findViewById(R.id.emailAddressField);
+        confirmEmailAddressField = (EditText) findViewById(R.id.confirmEmailAddressField);
+        confirmPasswordField = (EditText) findViewById(R.id.confirmPasswordField);
         final Button cancelButton = (Button) findViewById(R.id.cancelButton);
 
         final ServerRequest serverRequest = new ServerRequest();
@@ -95,6 +97,8 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         return passwordField.getText().toString().trim();
     }
 
+    public void setRegParametersMet() {regParametersMet = true;}
+    public boolean getRegParametersMet() {return regParametersMet;}
     /**
      * Returns the email address of the newly-registered user.
      * @return The email address
@@ -124,7 +128,19 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         if (TextUtils.isEmpty(getPassword())) {
             passwordField.setError("Oops! Please enter something for a password.");
             passwordField.requestFocus();
-            return;
+            regParametersMet = false;
+        }
+
+        if (TextUtils.isEmpty(confirmPasswordField.getText().toString().trim())) {
+            confirmPasswordField.setError("Oops! Please re-enter your password.");
+            confirmPasswordField.requestFocus();
+            regParametersMet = false;
+        }
+
+        if (!getPassword().equals(confirmPasswordField.getText().toString().trim())) {
+            confirmPasswordField.setError("Your passwords don't match!");
+            confirmPasswordField.requestFocus();
+            regParametersMet = false;
         }
     }
 
@@ -133,11 +149,22 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
      */
     @Override
     public void emailAddressCheck() {
+        if (TextUtils.isEmpty(confirmEmailAddressField.getText().toString().trim())) {
+            confirmEmailAddressField.setError("Oops! Please re-enter your email address.");
+            confirmEmailAddressField.requestFocus();
+            regParametersMet = false;
+        }
         if (TextUtils.isEmpty(getEmailAddress())) {
             emailAddressField.setError("Oops! Please enter something for an email address.");
             emailAddressField.requestFocus();
-            return;
+            regParametersMet = false;
         }
+        if (!getEmailAddress().equals(confirmEmailAddressField.getText().toString().trim())) {
+            confirmEmailAddressField.setError("Your email addresses don't match!");
+            confirmEmailAddressField.requestFocus();
+            regParametersMet = false;
+        }
+
     }
 
     /**
