@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
 import javax.websocket.OnClose;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -26,8 +27,8 @@ public class WebSocketServer {
     	notiService = ns;
     }
 	
-    private static Map<Integer, Session> userSessions = new HashMap<Integer, Session>();
-    private static Map<Session, Integer> sessionUsers = new HashMap<Session, Integer>();
+    public static Map<Integer, Session> userSessions = new HashMap<Integer, Session>();
+    public static Map<Session, Integer> sessionUsers = new HashMap<Session, Integer>();
 
 	@OnOpen
 	public void onOpen(Session session, @PathParam("userId") int userId) throws IOException {
@@ -44,7 +45,7 @@ public class WebSocketServer {
 	}
 	
 	public static void addUserToWebSocket(Session session, int userId) {
-		System.out.println("userId: " + userId + " added");
+		System.out.println("userId: " + userId + " added " + session);
 		userSessions.put(userId, session);
 		sessionUsers.put(session, userId);
 	}
