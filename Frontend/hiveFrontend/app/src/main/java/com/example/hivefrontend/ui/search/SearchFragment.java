@@ -1,11 +1,15 @@
 package com.example.hivefrontend.ui.search;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hivefrontend.PostDetails.PostDetailsActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.search.Logic.SearchLogic;
@@ -29,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -128,11 +134,14 @@ public class SearchFragment extends Fragment implements ISearchView{
 
                 // For dropping a marker at a point on the Map
                 LatLng ames = new LatLng(42.031, -93.612);
-                googleMap.addMarker(new MarkerOptions().position(ames).title("Marker Title").snippet("Marker Description"));
-
+                googleMap.addMarker(new MarkerOptions().position(ames).title("Iowa State University").snippet("Ames, IA"));
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(ames).zoom(12).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                googleMap.getUiSettings().setZoomControlsEnabled(true);
+                googleMap.getUiSettings().setMapToolbarEnabled(true);
+                googleMap.getUiSettings().setScrollGesturesEnabled(true);
+                googleMap.setMaxZoomPreference(20);
             }
         });
 
@@ -178,6 +187,31 @@ public class SearchFragment extends Fragment implements ISearchView{
 
         return rootView;
     }
+
+    public void addMarkers() throws JSONException {
+        for(int i = 0; i < hives.size(); i++){
+            JSONObject hive = hives.get(i);
+            double lat = hive.getDouble("latitude");
+            double lon = hive.getDouble("longitude");
+            String name = hive.getString("name");
+            addMarker(lat,lon, name);
+        }
+    }
+    public void addMarker(double lat, double lon, String name){
+        // Creating a marker
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        LatLng latLng = new LatLng(lat, lon);
+        // Setting the position for the marker
+        markerOptions.position(latLng);
+
+        // Setting the title for the marker.
+        // This will be displayed on tapping the marker
+        markerOptions.title(name);
+
+        googleMap.addMarker(markerOptions);
+    }
+
 
     /**
      * Notifies the adapter of a data change
@@ -236,11 +270,11 @@ public class SearchFragment extends Fragment implements ISearchView{
         return this.getContext();
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mMapView.onResume();
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
 //
 //    @Override
 //    public void onPause() {

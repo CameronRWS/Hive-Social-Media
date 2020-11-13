@@ -1,5 +1,7 @@
 package com.example.hivefrontend.ui.search.Server;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -94,5 +96,10 @@ public class SearchServerRequest implements ISearchServerRequest {
 
         // Add the request to the RequestQueue.
         VolleySingleton.getInstance(logic.getSearchContext()).addToRequestQueue(hiveRequest);
+    }
+
+    @Override
+    public void joinHiveRequest(String userInput) {
+        Log.i(" status ", "got into server request method ! ");
     }
 }

@@ -103,6 +103,7 @@ public class SearchLogic implements ISearchVolleyListener {
             }
         }
         s.notifyAdapterChange();
+    s.addMarkers();
     }
 
 

@@ -1,11 +1,18 @@
 package com.example.hivefrontend.ui.search;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,8 +21,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.hivefrontend.Hive.HiveActivity;
+import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.VolleySingleton;
+import com.example.hivefrontend.ui.home.HomeFragment;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.MyAdapter;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
@@ -68,42 +80,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final SearchAdapter.ViewHolder holder, final int position) {
 
-//        serverRequest.fetchMemberCount(mData.get(position));
-//        //serverRequest.fetchHiveDescription(mData.get(position));
-//        holder.memberCnt.setText( logic.getMemberCount()+ " bees and counting");
-//        String url = "http://10.24.227.37:8080/hives";
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-//                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//
-//                        try {
-//                            for(int i = 0; i < response.length(); i++) {
-//                                JSONObject member = response.getJSONObject(i);
-//                                if (member.getString("name").equals(mData.get(position))) {
-//                                    Log.i("princess", "name: " + member.getString("name") + "description: " + member.getString("description"));
-//                                    holder.hiveDescrip.setText(member.getString("description"));
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // TODO: Handle error
-//                        Log.i("volleyAppError","Error: " + error.getMessage());
-//                        Log.i("volleyAppError","VolleyError: "+ error);
-//                    }
-//                });
-//        VolleySingleton.getInstance(this.context).addToRequestQueue(jsonArrayRequest);
         try {
+            holder.joinHiveCardButton.setTag(position);
             holder.hiveDescrip.setText(hives.get(position).getString("description"));
             holder.itemTxt.setText(hives.get(position).getString("name"));
+            holder.itemTxt.setTag(position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -122,7 +103,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     /**
      * ViewHolder for one row in the RecyclerView
      */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         /**
          * TextView for hive name
          */
@@ -140,6 +121,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
          */
         ConstraintLayout relativeLayout;
 
+        public ImageButton joinHiveCardButton;
+
         /**
          * Constructs a ViewHolder from the given View
          * @param itemView The View for this ViewHolder
@@ -147,10 +130,118 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         ViewHolder(View itemView) {
             super(itemView);
             itemTxt = itemView.findViewById(R.id.hiveCardName);
+            itemTxt.setOnClickListener(this);
             relativeLayout=itemView.findViewById(R.id.postViewLayout);
             memberCnt = itemView.findViewById(R.id.hiveCardMemberCount);
             hiveDescrip = itemView.findViewById(R.id.hiveCardDescription);
+
+            joinHiveCardButton = itemView.findViewById(R.id.joinedHiveCardButton);
+
+            joinHiveCardButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(final View view) {
+
+                    Log.i(" icon clicked ", " icon clicked ! ");
+                    int position = (Integer) view.getTag();
+                    try {
+                        final int hiveId = hives.get(position).getInt("hiveId");
+                        Log.i("post id in adapter ", " " + hiveId);
+
+                        LayoutInflater li = LayoutInflater.from(context);
+                        View promptsView = li.inflate(R.layout.request_prompts, null);
+
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                context);
+
+                        // set prompts.xml to alertdialog builder
+                        alertDialogBuilder.setView(promptsView);
+
+                        final EditText userInput = (EditText) promptsView
+                                .findViewById(R.id.editTextDialogUserInput);
+
+                        // set dialog message
+                        alertDialogBuilder
+                                .setCancelable(false)
+                                .setPositiveButton("OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog,int id) {
+
+                                                joinHiveRequest(userInput.getText().toString());
+
+                                            }
+
+                                            private void joinHiveRequest(String toString) {
+
+                                                String url ="http://10.24.227.37:8080/requests";
+                                                int userId = SharedPrefManager.getInstance(context).getUser().getId();
+
+                                                final JSONObject postObject = new JSONObject();
+                                                try{
+                                                    postObject.put("hiveId", hiveId);
+                                                    postObject.put("userId",userId);
+                                                    postObject.put("requestMessage", toString);
+
+                                                } catch (JSONException e){
+                                                    e.printStackTrace();
+                                                    Toast.makeText(context, "Error commenting on this post. Try again.", Toast.LENGTH_LONG).show();
+                                                }
+
+                                                final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                                                        postObject, new Response.Listener<JSONObject>(){
+
+                                                    public void onResponse(JSONObject response) {
+                                                        Toast.makeText(context, "Request successful!", Toast.LENGTH_LONG).show();
+                                                    }
+
+                                                }, new Response.ErrorListener() {
+                                                    public void onErrorResponse(VolleyError error){
+                                                        Log.i("request","fail!");
+                                                    }
+                                                });
+                                                // Add the request to the RequestQueue.
+                                                VolleySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
+                                            }
+                                        })
+                                .setNegativeButton("Cancel",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog,int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                        // create alert dialog
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+
+                        // show it
+                        alertDialog.show();
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
+
+        @Override
+        public void onClick(View v) {
+            //for find item that hold in list
+            int position = (Integer) v.getTag();
+            Intent intent = new Intent(v.getContext(), HiveActivity.class);
+            try {
+
+                int hiveId = hives.get(position).getInt("hiveId");
+                //start new activity and pass the user ID to it
+                intent.putExtra("hiveId", hiveId);
+                v.getContext().startActivity(intent);
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }
