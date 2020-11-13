@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         final TextView activeUsers = findViewById(R.id.activeUserCount);
+        final TextView newNotifications = findViewById(R.id.newNotificationCount);
 
         navView = findViewById(R.id.nav_view);
         hiveLogo = (ImageView) findViewById(R.id.hiveLogo);
@@ -110,11 +111,21 @@ public class MainActivity extends AppCompatActivity {
                 public void onMessage(String message) {
                     Log.d("", "run() returned: " + message);
 
-                    //message is of form "onlineUsers: #"
-                    String num = message.substring(13);
-                    int count = Integer.parseInt(num);
+                    if(message.contains("onlineUsers")){
+                        //message is of form "onlineUsers: #"
+                        String num = message.substring(13);
+                        int count = Integer.parseInt(num);
 
-                    activeUsers.setText("Total bees buzzing: " + count);
+                        activeUsers.setText("Total bees buzzing: " + count);
+                    }
+                    else if(message.contains("notifications")){
+                        //message is of form "newNotifications: #"
+                        String num = message.substring(18);
+                        int count = Integer.parseInt(num);
+
+                        newNotifications.setText(String.valueOf(count));
+                    }
+
 
                 }
 
