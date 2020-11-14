@@ -22,7 +22,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.hivefrontend.Hive.HiveActivity;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
@@ -228,13 +227,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         public void onClick(View v) {
             //for find item that hold in list
             int position = (Integer) v.getTag();
-            Intent intent = new Intent(v.getContext(), HiveActivity.class);
+            //Intent intent = new Intent(v.getContext(), HiveActivity.class);
             try {
 
                 int hiveId = hives.get(position).getInt("hiveId");
                 //start new activity and pass the user ID to it
-                intent.putExtra("hiveId", hiveId);
-                v.getContext().startActivity(intent);
+                //intent.putExtra("hiveId", hiveId);
+               // v.getContext().startActivity(intent);
 
 
             } catch (JSONException e) {

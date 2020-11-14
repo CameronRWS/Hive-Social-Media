@@ -2,6 +2,7 @@ package com.example.hivefrontend.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
+import com.example.hivefrontend.ui.hive.HiveFragment;
 import com.example.hivefrontend.ui.home.Logic.HomeLogic;
 import com.example.hivefrontend.ui.home.Network.ServerRequest;
 import com.google.android.material.tabs.TabLayout;
@@ -44,7 +46,7 @@ public class HomeFragment extends Fragment implements IHomeView{
     public int selectedTab;
     public int userId;
 
-
+    public static View root;
     public static HomeLogic logic;
     public static Context context;
 
@@ -63,9 +65,9 @@ public class HomeFragment extends Fragment implements IHomeView{
         postObjects = new ArrayList(homePostObjects);
         discoverPostObjects = new ArrayList<>();
 
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        root = inflater.inflate(R.layout.fragment_home, container, false);
+
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -77,8 +79,8 @@ public class HomeFragment extends Fragment implements IHomeView{
         final RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), homePostObjects,hiveIdsHome,hiveOptionsHome);
-        discoverAdapter = new HomeAdapter(getActivity().getApplicationContext(), discoverPostObjects,hiveIdsDiscover,hiveOptionsDiscover);
+        homeAdapter = new HomeAdapter(this, getActivity().getApplicationContext(), homePostObjects,hiveIdsHome,hiveOptionsHome);
+        discoverAdapter = new HomeAdapter(this, getActivity().getApplicationContext(), discoverPostObjects,hiveIdsDiscover,hiveOptionsDiscover);
         recyclerView.setAdapter(homeAdapter);
 
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabLayout);
@@ -235,6 +237,13 @@ public class HomeFragment extends Fragment implements IHomeView{
     @Override
     public void addToHomePosts(JSONObject post) {
         homePostObjects.add(post);
+    }
+
+    @Override
+    public void openHivePage(String str) {
+        HiveFragment nextFrag = new HiveFragment();
+        ViewGroup vG = (ViewGroup) root;
+        getActivity().getSupportFragmentManager().beginTransaction().replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "findThisFrag").addToBackStack(null).commit();
     }
 
     /**

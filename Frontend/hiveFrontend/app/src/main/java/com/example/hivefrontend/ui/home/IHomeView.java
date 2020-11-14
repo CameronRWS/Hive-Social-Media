@@ -32,6 +32,8 @@ public interface IHomeView {
 
     void addToHomePosts(JSONObject post);
 
+    void openHivePage(String str);
+
     ArrayList<Integer> getHiveIdsHome();
 
     ArrayList<String> getHiveOptionsHome();

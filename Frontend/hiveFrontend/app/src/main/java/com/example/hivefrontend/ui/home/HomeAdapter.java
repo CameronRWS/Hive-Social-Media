@@ -16,8 +16,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
-import com.example.hivefrontend.Hive.HiveActivity;
-import com.example.hivefrontend.Hive.IHiveView;
+
+
 import com.example.hivefrontend.Login.LoginActivity;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.PostDetails.PostDetailsActivity;
@@ -40,7 +40,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<JSONObject> posts;
     private List<Integer> hiveIds;
     private List<String> hiveNames;
-    private IHiveView hiveView;
+    private IHomeView homeView;
 
     /**
      * Creates an adapter for the home page
@@ -49,7 +49,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
      * @param hiveIds The hive ids that the posts come from
      * @param hiveNames The hive names that the posts come from
      */
-    HomeAdapter(Context context, List<JSONObject> posts, List<Integer> hiveIds, List<String> hiveNames) {
+    HomeAdapter(IHomeView hV, Context context, List<JSONObject> posts, List<Integer> hiveIds, List<String> hiveNames) {
+        this.homeView = hV;
         this.context = context;
         this.posts=posts;
         this.hiveIds=hiveIds;
@@ -91,9 +92,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.hiveName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), HiveActivity.class);
-                   intent.putExtra("hiveName", holder.hiveName.getText().toString());
-                    view.getContext().startActivity(intent);
+//                    Intent intent = new Intent(view.getContext(), HiveActivity.class);
+//                   intent.putExtra("hiveName", holder.hiveName.getText().toString());
+//                    view.getContext().startActivity(intent);
+                    Log.i("versace", "WHAT");
+                    homeView.openHivePage("ISU Math Nerds");
 
                 }
             });
@@ -160,11 +163,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     Intent intent = new Intent(view.getContext(), ProfileActivity.class);
                     int position = (Integer) view.getTag();
                     try {
+
                         int userId = posts.get(position).getJSONObject("user").getInt("userId");
                         //start new activity and pass the user ID to it
                         intent.putExtra("userId", userId);
                         view.getContext().startActivity(intent);
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
