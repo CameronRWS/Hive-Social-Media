@@ -85,6 +85,7 @@ public class MemberServiceTest {
 	public Hive testHive;
 	public User testUser;
 	public HashMap<String, String> body;
+	public Member testMember;
 	
 	@Before
 	public void beforeTests() {
@@ -113,6 +114,30 @@ public class MemberServiceTest {
 	// check for created member
 		verify(mr, times(1)).save((Member) any(Member.class));
 		
+		resetMocked();
+	}
+	
+	@Test
+	public void testUpdate() {
+		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		testUser = new User("Lauren", "displayName", "birthday", "biography", "location");
+		MemberIdentity memberIdentity = new MemberIdentity(testHive, testUser);
+		testMember = new Member(memberIdentity, false);
+		
+		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
+		when(hr.findOne((Integer) any(Integer.class))).thenReturn(testHive);
+		when(mr.findOne((MemberIdentity) any(MemberIdentity.class))).thenReturn(testMember);
+		
+		Map<String, String> body = new HashMap<String, String>();
+		body.put("hiveId", "0");
+		body.put("userId", "0");
+		body.put("isModerator", "true");
+		
+		Member updatedMember = ms.update(body);
+		
+	//check requestMessage was updated
+		assertEquals(true, updatedMember.getIsModerator());
+		verify(nr, times(1)).save((Notification) any(Notification.class));
 		resetMocked();
 	}
 	
