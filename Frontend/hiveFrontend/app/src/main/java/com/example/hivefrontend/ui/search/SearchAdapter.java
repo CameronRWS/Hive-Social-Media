@@ -149,7 +149,23 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             hiveProfile = itemView.findViewById(R.id.hiveCardPicture);
             hiveBanner = itemView.findViewById(R.id.hiveCardHeader);
 
-            
+            int hiveId = 1;
+            StorageReference test1 = storageReference.child("hivePictures/" + hiveId + ".jpg");
+            StorageReference test2 = storageReference.child("hiveBackgrounds/" + hiveId + ".jpg");
+
+            GlideApp.with(context)
+                    .load(test1)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.defaulth)
+                    .into(hiveProfile);
+
+            GlideApp.with(context)
+                    .load(test2)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.defaultb)
+                    .into(hiveBanner);
 
             joinHiveCardButton = itemView.findViewById(R.id.joinedHiveCardButton);
 
