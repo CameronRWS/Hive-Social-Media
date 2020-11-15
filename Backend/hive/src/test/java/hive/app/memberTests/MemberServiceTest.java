@@ -118,7 +118,7 @@ public class MemberServiceTest {
 	}
 	
 	@Test
-	public void testUpdate() {
+	public void testUpdate_rolePromotion() {
 		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
 		testUser = new User("Lauren", "displayName", "birthday", "biography", "location");
 		MemberIdentity memberIdentity = new MemberIdentity(testHive, testUser);
@@ -135,9 +135,60 @@ public class MemberServiceTest {
 		
 		Member updatedMember = ms.update(body);
 		
-	//check requestMessage was updated
+	//check Member was updated
 		assertEquals(true, updatedMember.getIsModerator());
+	//check notification was created
 		verify(nr, times(1)).save((Notification) any(Notification.class));
+		resetMocked();
+	}
+	
+	@Test
+	public void testUpdate_roleDemotion() {
+		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		testUser = new User("Lila", "displayName", "birthday", "biography", "location");
+		MemberIdentity memberIdentity = new MemberIdentity(testHive, testUser);
+		testMember = new Member(memberIdentity, true);
+		
+		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
+		when(hr.findOne((Integer) any(Integer.class))).thenReturn(testHive);
+		when(mr.findOne((MemberIdentity) any(MemberIdentity.class))).thenReturn(testMember);
+		
+		Map<String, String> body = new HashMap<String, String>();
+		body.put("hiveId", "0");
+		body.put("userId", "0");
+		body.put("isModerator", "false");
+		
+		Member updatedMember = ms.update(body);
+		
+	//check Member was updated
+		assertEquals(false, updatedMember.getIsModerator());
+	//check notification was created
+		verify(nr, times(1)).save((Notification) any(Notification.class));
+		resetMocked();
+	}
+	
+	@Test
+	public void testUpdate_alreadyModerator() {
+		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		testUser = new User("Lila", "displayName", "birthday", "biography", "location");
+		MemberIdentity memberIdentity = new MemberIdentity(testHive, testUser);
+		testMember = new Member(memberIdentity, true);
+		
+		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
+		when(hr.findOne((Integer) any(Integer.class))).thenReturn(testHive);
+		when(mr.findOne((MemberIdentity) any(MemberIdentity.class))).thenReturn(testMember);
+		
+		Map<String, String> body = new HashMap<String, String>();
+		body.put("hiveId", "0");
+		body.put("userId", "0");
+		body.put("isModerator", "true");
+		
+		Member updatedMember = ms.update(body);
+		
+	//check Member stayed the same
+		assertEquals(true, updatedMember.getIsModerator());
+	//check notification was not created
+		verify(nr, times(0)).save((Notification) any(Notification.class));
 		resetMocked();
 	}
 	
