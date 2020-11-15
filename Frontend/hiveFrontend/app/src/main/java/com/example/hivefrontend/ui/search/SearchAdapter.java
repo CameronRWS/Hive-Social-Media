@@ -148,8 +148,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             hiveDescrip = itemView.findViewById(R.id.hiveCardDescription);
             hiveProfile = itemView.findViewById(R.id.hiveCardPicture);
             hiveBanner = itemView.findViewById(R.id.hiveCardHeader);
+            storage = FirebaseStorage.getInstance();
+            storageReference = storage.getReference();
 
-            int hiveId = 1;
+            int hiveId = 3;
             StorageReference test1 = storageReference.child("hivePictures/" + hiveId + ".jpg");
             StorageReference test2 = storageReference.child("hiveBackgrounds/" + hiveId + ".jpg");
 
@@ -267,7 +269,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 //start new activity and pass the user ID to it
                 intent.putExtra("hiveId", hiveId);
                 v.getContext().startActivity(intent);
-
 
             } catch (JSONException e) {
                 e.printStackTrace();
