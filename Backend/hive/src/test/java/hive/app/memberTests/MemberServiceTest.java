@@ -168,7 +168,7 @@ public class MemberServiceTest {
 	}
 	
 	@Test
-	public void testUpdate_alreadyModerator() {
+	public void testUpdate_noDemotion() {
 		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
 		testUser = new User("Lila", "displayName", "birthday", "biography", "location");
 		MemberIdentity memberIdentity = new MemberIdentity(testHive, testUser);
@@ -179,8 +179,8 @@ public class MemberServiceTest {
 		when(mr.findOne((MemberIdentity) any(MemberIdentity.class))).thenReturn(testMember);
 		
 		Map<String, String> body = new HashMap<String, String>();
-		body.put("hiveId", "0");
-		body.put("userId", "0");
+		body.put("hiveId", "11");
+		body.put("userId", "3");
 		body.put("isModerator", "true");
 		
 		Member updatedMember = ms.update(body);
@@ -189,6 +189,53 @@ public class MemberServiceTest {
 		assertEquals(true, updatedMember.getIsModerator());
 	//check notification was not created
 		verify(nr, times(0)).save((Notification) any(Notification.class));
+		resetMocked();
+	}
+	
+	@Test
+	public void testUpdate_noPromotion() {
+		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		testUser = new User("Samantha", "displayName", "birthday", "biography", "location");
+		MemberIdentity memberIdentity = new MemberIdentity(testHive, testUser);
+		testMember = new Member(memberIdentity, false);
+		
+		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
+		when(hr.findOne((Integer) any(Integer.class))).thenReturn(testHive);
+		when(mr.findOne((MemberIdentity) any(MemberIdentity.class))).thenReturn(testMember);
+		
+		Map<String, String> body = new HashMap<String, String>();
+		body.put("hiveId", "9");
+		body.put("userId", "10");
+		body.put("isModerator", "false");
+		
+		Member updatedMember = ms.update(body);
+		
+	//check Member stayed the same
+		assertEquals(false, updatedMember.getIsModerator());
+	//check notification was not created
+		verify(nr, times(0)).save((Notification) any(Notification.class));
+		resetMocked();
+	}
+	
+	@Test
+	public void testDelete() {
+		testHive = new Hive("name", "description", "type", Double.valueOf("10"), Double.valueOf("20"));
+		testUser = new User("Fred", "displayName", "birthday", "biography", "location");
+		MemberIdentity memberIdentity = new MemberIdentity(testHive, testUser);
+		testMember = new Member(memberIdentity, true);
+		
+		when(ur.findOne((Integer) any(Integer.class))).thenReturn(this.testUser);
+		when(hr.findOne((Integer) any(Integer.class))).thenReturn(testHive);
+		
+		Map<String, String> body = new HashMap<String, String>();
+		body.put("hiveId", "23");
+		body.put("userId", "2");
+		
+		boolean result = ms.delete(body);
+		
+		assertEquals(true, result);
+		verify(mr, times(0)).save((Member) any(Member.class));
+		
 		resetMocked();
 	}
 	
