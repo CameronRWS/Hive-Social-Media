@@ -14,7 +14,9 @@ import hive.app.notification.NotificationRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
 import hive.app.utils.Regex;
+import hive.app.websocket.WebSocketServer;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +53,7 @@ public class PostService {
         return postRepository.findByUserId(theUserId); 
     }
 
-    public Post create(Map<String, String> body){
+    public Post create(Map<String, String> body) {
         int hiveId = Integer.parseInt(body.get("hiveId"));
         int userId = Integer.parseInt(body.get("userId"));
         User user = userRepository.findOne(userId);
@@ -78,6 +80,11 @@ public class PostService {
         		if(member != null) {
         			//create notification for the user
         			notificationRepository.save(new Notification(userToTag.getUserId(), user.getUserId(), post.getPostId(), "post-postMention"));
+        			try {
+						WebSocketServer.sendUpdatedNotiCount(userToTag.getUserId());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
         		}
     		}
     	}

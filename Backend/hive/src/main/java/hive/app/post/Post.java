@@ -50,7 +50,7 @@ public class Post {
     public Post(int hiveId, User user, String title, String textContent) {
         this.setHiveId(hiveId);
         this.setUser(user);
-        this.setDateCreated(DateTime.GetCurrentDateTime());
+        this.setDateCreated(DateTime.getCurrentDateTime());
         this.setTitle(title);
         this.setTextContent(textContent);
     }

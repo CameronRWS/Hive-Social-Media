@@ -4,7 +4,11 @@ import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+/**
+ * Interface implemented by HiveRequestLogic
+ */
 public interface IHiveRequestVolleyListener {
     void getHiveRequests();
 
@@ -12,4 +16,8 @@ public interface IHiveRequestVolleyListener {
     void onError();
 
     Context getRequestsContext();
+
+    void handleRequestLogic(JSONObject request, String status) throws JSONException;
+
+    void onAcceptDenySuccess();
 }

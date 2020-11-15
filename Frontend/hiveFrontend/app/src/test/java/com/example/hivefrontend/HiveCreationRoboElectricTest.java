@@ -31,12 +31,10 @@ public class HiveCreationRoboElectricTest {
 
     public void setUp() throws Exception
     {
-
         activity = Robolectric.buildActivity( HiveCreation.class )
                 .create()
                 .resume()
                 .get();
-
     }
 
     @Test
@@ -54,7 +52,6 @@ public class HiveCreationRoboElectricTest {
         Intent intent = Shadows.shadowOf(activity).peekNextStartedActivity();
 
         assertEquals(MainActivity.class.getCanonicalName(),intent.getComponent().getClassName());
-
     }
 
 

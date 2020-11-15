@@ -23,7 +23,7 @@ public class ServerRequest implements INotificationsServerRequest {
 
     @Override
     public void setNotifications() {
-        String url = "http://10.24.227.37:8080/notifications";
+        String url = "http://10.24.227.37:8080/notifications/byUserId/" + notificationsVolleyListener.getUserId();
         JsonArrayRequest notiRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
@@ -80,7 +80,6 @@ public class ServerRequest implements INotificationsServerRequest {
                     }
                 });
         VolleySingleton.getInstance(notificationsVolleyListener.getNotificationsContext()).addToRequestQueue(userRequest);
-
     }
 
 }

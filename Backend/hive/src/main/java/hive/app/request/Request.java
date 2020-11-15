@@ -25,7 +25,7 @@ public class Request {
 	
 	public Request(RequestIdentity requestIdentity, String requestMessage){
 		this.setRequestIdentity(requestIdentity);
-		this.setDateCreated(DateTime.GetCurrentDateTime());
+		this.setDateCreated(DateTime.getCurrentDateTime());
 		this.setRequestMessage(requestMessage);
 		this.setIsActive(true);
 	}

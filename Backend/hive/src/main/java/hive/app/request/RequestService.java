@@ -1,5 +1,6 @@
 package hive.app.request;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import hive.app.notification.Notification;
 import hive.app.notification.NotificationRepository;
 import hive.app.user.User;
 import hive.app.user.UserRepository;
+import hive.app.websocket.WebSocketServer;
 
 @Service
 public class RequestService {
@@ -57,6 +59,11 @@ public class RequestService {
 		List<Member> modsOfHive = memberRepository.findByHiveIdAndIsMod(hiveId);
 		for(Member m : modsOfHive) {
 			notificationRepository.save(new Notification(m.getUser().getUserId(), userId, hiveId, "hive-requestReceived"));
+			try {
+				WebSocketServer.sendUpdatedNotiCount(m.getUser().getUserId());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		RequestIdentity requestIdentity = new RequestIdentity(hiveId, user);
 		return requestRepository.save(new Request(requestIdentity, requestMessage));
@@ -86,6 +93,11 @@ public class RequestService {
 	        notificationRepository.save(new Notification(userId, -1, hiveId, "hive-requestAccepted"));
 		} else {
 	        notificationRepository.save(new Notification(userId, -1, hiveId, "hive-requestDeclined"));
+		}
+		try {
+			WebSocketServer.sendUpdatedNotiCount(userId);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		Request r = requestRepository.findOne(requestIdentity);
 		r.setIsActive(false);

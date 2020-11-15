@@ -34,6 +34,30 @@ public class HomePageTest {
     @Mock
     private Context context;
 
+    @Test
+    public void TestUpdateLogic(){
+        HomeFragment view = mock(HomeFragment.class);
+        final ServerRequest server = mock(ServerRequest.class);
+        final HomeLogic logic = new HomeLogic(view,server);
+
+        doAnswer( new Answer(){
+
+                      @Override
+                      public Object answer(InvocationOnMock invocation) throws Throwable {
+                          server.getDiscoverPosts();
+                          return null;
+                      }
+                  }
+
+        ).when(server).updatePostRequest();
+
+
+        logic.updatePostLogic();
+
+        verify(server,times(1)).updatePostRequest();
+        verify(server,times(1)).getDiscoverPosts();
+
+    }
 
     @Test
     public void TestAddToDiscoverHiveIds(){
@@ -70,31 +94,6 @@ public class HomePageTest {
         assertEquals(testIds,logic.getHiveIdsDiscover());
         assertEquals(testIds,verify);
         verify(view,times(1)).getHiveIdsDiscover();
-
-    }
-
-    @Test
-    public void TestUpdateLogic(){
-        HomeFragment view = mock(HomeFragment.class);
-        final ServerRequest server = mock(ServerRequest.class);
-        final HomeLogic logic = new HomeLogic(view,server);
-
-        doAnswer( new Answer(){
-
-                      @Override
-                      public Object answer(InvocationOnMock invocation) throws Throwable {
-                          server.getDiscoverPosts();
-                          return null;
-                      }
-                  }
-
-        ).when(server).updatePostRequest();
-
-
-        logic.updatePostLogic();
-
-        verify(server,times(1)).updatePostRequest();
-        verify(server,times(1)).getDiscoverPosts();
 
     }
 

@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 
 import com.example.hivefrontend.Login.LoginActivity;
 
+/**
+ * The SharedPrefManager which stores the current session's user data
+ */
 public class SharedPrefManager {
 
     private static final String SHARED_PREF_NAME = "simplifiedcodingsharedpref";
@@ -30,6 +33,10 @@ public class SharedPrefManager {
         return mInstance;
     }
 
+    /**
+     * Invoked when a user is logged in and stores the information
+     * @param user The user object.
+     */
     public void userLogin(User user) {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -42,11 +49,19 @@ public class SharedPrefManager {
         editor.apply();
     }
 
+    /**
+     * Checks if a user is logged in
+     * @return Whether or not a user is logged in
+     */
     public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString(KEY_EMAIL, null) != null;
     }
 
+    /**
+     * Returns a user object
+     * @return User object
+     */
     public User getUser() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return new User(sharedPreferences.getString(KEY_EMAIL, null),

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,11 +29,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for the hive requests in HiveRequestsActivity
+ */
 public class HiveRequestAdapter extends RecyclerView.Adapter<HiveRequestAdapter.ViewHolder> {
 
     private Context context;
     private List<JSONObject> hiveRequests;
 
+    /**
+     * Constructs an adapter from the given Context and list of hiveRequests
+     * @param applicationContext The application context
+     * @param hiveRequests The requests to display
+     */
     public HiveRequestAdapter(Context applicationContext, ArrayList<JSONObject> hiveRequests) {
         this.context = applicationContext;
         this.hiveRequests = hiveRequests;
@@ -46,10 +55,17 @@ public class HiveRequestAdapter extends RecyclerView.Adapter<HiveRequestAdapter.
         return viewHolder;
     }
 
+    /**
+     * Sets the data in the given ViewHolder to the data provided at the appropriate position
+     * @param holder the ViewHolder to use
+     * @param position The position in the RecyclerView this ViewHolder has
+     */
     @Override
     public void onBindViewHolder(@NonNull HiveRequestAdapter.ViewHolder holder, int position) {
         holder.cv.setTag(position);
         holder.userName.setTag(position);
+        holder.acceptButton.setTag(position);
+        holder.denyButton.setTag(position);
 
         try {
             holder.userName.setText("@" + hiveRequests.get(position).getJSONObject("user").getString("userName"));
@@ -63,26 +79,35 @@ public class HiveRequestAdapter extends RecyclerView.Adapter<HiveRequestAdapter.
             e.printStackTrace();
         }
 
-
     }
 
+    /**
+     * Returns the number of hive requests
+     * @return The number of hive requests
+     */
     @Override
     public int getItemCount() {
         return hiveRequests.size();
     }
 
 
-
-    // stores and recycles views as they are scrolled off screen
+    /**
+     * Viewholder for each row in the RecyclerView, containing one request
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView requestContent;
         public TextView userName;
         public CardView cv;
         //public ImageView icon;
+        public Button acceptButton;
+        public Button denyButton;
 
         ConstraintLayout constraintLayout;
 
-
+        /**
+         * Constructs a ViewHolder from the provided View and provides sets onClickListeners for the buttons
+         * @param itemView The view for one row in the RecyclerView
+         */
         ViewHolder(View itemView) {
             super(itemView);
             cv = itemView.findViewById(R.id.cardView);
@@ -107,42 +132,37 @@ public class HiveRequestAdapter extends RecyclerView.Adapter<HiveRequestAdapter.
                     }
                 }});
 
-            //icon = itemView.findViewById(R.id.likeCountIcon);
-//            icon.setOnClickListener(new View.OnClickListener(){
-//
-//                @Override
-//                public void onClick(final View view) {
-//
-//                    Log.i(" icon clicked ", " icon clicked ! ");
-//                    int position = (Integer) view.getTag();
-//                    try {
-//                        int postId = posts.get(position).getInt("postId");
-//                        Log.i("post id in adapter ", " " + postId);
-//                        HomeFragment.likePost(postId);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-            //cv = itemView.findViewById(R.id.cardView);
-            //cv.setOnClickListener(this);
+            acceptButton = itemView.findViewById(R.id.acceptRequest);
+            acceptButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    int position = (int) view.getTag();
+
+                    try {
+                        HiveRequestsActivity.handleRequest(position, "accepted");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+            denyButton = itemView.findViewById(R.id.denyRequest);
+            denyButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    int position = (int) view.getTag();
+
+                    try {
+                        HiveRequestsActivity.handleRequest(position, "declined");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
-
-
-//        @Override
-//        public void onClick(View v) {
-//            //for find item that hold in list
-//            int position = (Integer) v.getTag();
-//            Intent intent = new Intent(v.getContext(), PostDetailsActivity.class);
-//            try {
-//                //start new activity and pass the post ID to it
-//                int postId = posts.get(position).getInt("postId");
-//                intent.putExtra("postId", postId);
-//                v.getContext().startActivity(intent);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
     }
 

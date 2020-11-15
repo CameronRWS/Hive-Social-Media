@@ -7,30 +7,16 @@
     android:layout_height="match_parent"
     android:paddingTop="0dp">
 
+
     <ImageView
         android:id="@+id/hiveLogo"
         android:layout_width="43dp"
         android:layout_height="37dp"
+        android:layout_marginStart="184dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/gearIcon"
-        app:layout_constraintHorizontal_bias="0.536"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
         app:srcCompat="@drawable/ic_honeycomb" />
-
-    <ImageButton
-        android:id="@+id/gearIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/transparent"
-        android:onClick="viewSettings"
-        android:src="@drawable/ic_baseline_settings_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.912"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -45,6 +31,16 @@
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled"/>
 
+    <TextView
+        android:id="@+id/activeUserCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="44dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -57,13 +53,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />
-
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LOGOUT"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

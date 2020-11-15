@@ -11,18 +11,28 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
+import com.example.hivefrontend.Hive.HiveActivity;
+import com.example.hivefrontend.Hive.IHiveView;
+import com.example.hivefrontend.Login.LoginActivity;
+import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.PostDetails.PostDetailsActivity;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
+import com.example.hivefrontend.ui.buzz.BuzzFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
+/**
+ * Adapter for the home page RecyclerView.
+ */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
 
@@ -30,7 +40,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<JSONObject> posts;
     private List<Integer> hiveIds;
     private List<String> hiveNames;
+    private IHiveView hiveView;
 
+    /**
+     * Creates an adapter for the home page
+     * @param context The context of the HomeFragment
+     * @param posts The posts to display
+     * @param hiveIds The hive ids that the posts come from
+     * @param hiveNames The hive names that the posts come from
+     */
     HomeAdapter(Context context, List<JSONObject> posts, List<Integer> hiveIds, List<String> hiveNames) {
         this.context = context;
         this.posts=posts;
@@ -47,8 +65,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     // binds the data to the TextView in each row
+
+    /**
+     * Binds the data to the TextView in each row
+     * @param holder The TextView to bind this data to
+     * @param position The position in the RecyclerView this will hold
+     */
     @Override
-    public void onBindViewHolder(HomeAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final HomeAdapter.ViewHolder holder, final int position) {
         try {
             holder.cv.setTag(position);
             holder.icon.setTag(position);
@@ -64,22 +88,33 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             int id = posts.get(position).getInt("hiveId");
             String hive = hiveNames.get(hiveIds.indexOf(id));
             holder.hiveName.setText(hive);
+            holder.hiveName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), HiveActivity.class);
+                   intent.putExtra("hiveName", holder.hiveName.getText().toString());
+                    view.getContext().startActivity(intent);
 
-
-
+                }
+            });
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    // total number of rows
+    /**
+     * Gets the total number of items in the RecyclerView (total number of posts)
+     * @return Returns the total number of posts
+     */
     @Override
     public int getItemCount() {
         return posts.size();
     }
 
-    // stores and recycles views as they are scrolled off screen
+    /**
+     * ViewHolder for one position in the RecyclerView. Contains all the post data and handles user interaction, such as clicking the like button or clicking the post for more details.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView postTitle;
         public TextView postContent;

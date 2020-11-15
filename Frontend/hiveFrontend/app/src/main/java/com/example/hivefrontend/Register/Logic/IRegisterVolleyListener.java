@@ -6,6 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * The interface tht the RegisterLogic implements.
+ */
 public interface IRegisterVolleyListener {
 
     public JSONObject createUser();

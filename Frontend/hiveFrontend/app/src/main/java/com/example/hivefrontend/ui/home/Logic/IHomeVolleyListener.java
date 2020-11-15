@@ -14,43 +14,48 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Interface implemented by the HomeLogic.
+ */
 public interface IHomeVolleyListener {
-    public void setUserHives();
+    void setUserHives();
 
-    public void onPageResume();
+    void onPageResume();
 
-    public void updatePostLogic();
+    void updatePostLogic();
     //gets the info about this post to see if the user has already liked it
-    public void likePostLogic(int postId);
+    void likePostLogic(int postId);
 
-    public void onHiveRequestSuccess(JSONArray response);
+    void onHiveRequestSuccess(JSONArray response);
 
-    public void onError(VolleyError error);
+    void onError(VolleyError error);
 
-    public Context getHomeContext();
+    Context getHomeContext();
 
-    public void notifyDataSetChanged();
+    void notifyDataSetChanged();
 
-    public void clearAdapterData();
+    void clearAdapterData();
 
-    public ArrayList<Integer> getHiveIdsHome();
+    void addToHiveIdsHome(int hiveId);
 
-    public ArrayList<String> getHiveOptionsHome();
+    ArrayList<Integer> getHiveIdsHome();
 
-    public ArrayList<Integer> getHiveIdsDiscover();
+    ArrayList<String> getHiveOptionsHome();
+
+    ArrayList<Integer> getHiveIdsDiscover();
 
 
-    public ArrayList<String> getHiveOptionsDiscover();
+    ArrayList<String> getHiveOptionsDiscover();
 
-    public void addToDiscoverIds(int hiveId);
+    void addToDiscoverIds(int hiveId);
 
-    public void addToDiscoverPosts(JSONObject post);
+    void addToDiscoverPosts(JSONObject post);
 
-    public void sortData();
+    void sortData();
 
-    public void addToDiscoverOptions(String name);
+    void addToDiscoverOptions(String name);
 
-    public void addToHomePosts(JSONObject post);
+    void addToHomePosts(JSONObject post);
 
     int getUserId();
 }

@@ -27,6 +27,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Activity to create a new hive.
+ */
 public class HiveCreation extends AppCompatActivity implements IHiveCreationView, AdapterView.OnItemSelectedListener {
 
     private HiveCreationLogic logic;
@@ -75,10 +78,21 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
         });
     }
 
+    /**
+     * Returns the id of the current user
+     * @return The user id of the current user
+     */
     public int getUserId(){
         return userId;
     }
 
+    /**
+     * Called when an item is selected in the spinner and sets the selected item position variable appropriately.
+     * @param adapterView
+     * @param view
+     * @param pos The selected position in the spinner
+     * @param id
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
         selectedItemPos = pos;
@@ -90,11 +104,19 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
     }
 
 
+    /**
+     * Returns the context of this activity
+     * @return
+     */
     @Override
     public Context getViewContext() {
         return this.getApplicationContext();
     }
 
+    /**
+     * Called when a user presses the "create hive" button. Calls the logic class to handle the logic of hive creation.
+     * @throws JSONException
+     */
     @Override
     public void handleClick() throws JSONException {
 
@@ -102,8 +124,11 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
             JSONObject hive = new JSONObject();
             EditText title= findViewById(R.id.hiveTitleInput);
             EditText bio= findViewById(R.id.hiveBioInput);
+            EditText latitude= findViewById(R.id.hiveLatitudeInput);
+            EditText longitude= findViewById(R.id.hiveLongitudeInput);
             hive.put("name",title.getText().toString());
             hive.put("description",bio.getText().toString());
+
             if(selectedItemPos==1){
                 hive.put("type","public");
             }
@@ -113,21 +138,46 @@ public class HiveCreation extends AppCompatActivity implements IHiveCreationView
             if(selectedItemPos==3){
                 hive.put("type","private");
             }
-            hive.put("latitude",10);
-            hive.put("longitude",10);
+            hive.put("latitude", Double.parseDouble(latitude.getText().toString()));
+            hive.put("longitude", Double.parseDouble(longitude.getText().toString()));
             logic.createHive(hive);
         }
         else{
-            Toast.makeText(this.getApplicationContext(), "Invalid name or description.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getApplicationContext(), "Invalid name, description, or location.", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    @Override
-    public boolean validInput(){
-        return true;
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
+    /**
+     * Determines if the provided hive title and bio are valid
+     * @return Returns true if input is valid, false if not
+     */
+    @Override
+    public boolean validInput(){
+        EditText title= findViewById(R.id.hiveTitleInput);
+        EditText bio= findViewById(R.id.hiveBioInput);
+        EditText latitude= findViewById(R.id.hiveLatitudeInput);
+        EditText longitude= findViewById(R.id.hiveLongitudeInput);
+        if(title.getText().toString().length()>0 && bio.getText().toString().length()>0 && isNumeric(latitude.getText().toString()) && isNumeric(longitude.getText().toString())) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
+     * Starts the intent to go back to the home screen
+     */
     @Override
     public void goHome(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
