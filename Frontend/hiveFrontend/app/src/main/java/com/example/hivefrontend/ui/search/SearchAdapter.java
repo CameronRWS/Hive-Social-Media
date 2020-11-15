@@ -151,12 +151,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             storage = FirebaseStorage.getInstance();
             storageReference = storage.getReference();
 
-            int hiveId = 3;
+            int hiveId = 4;
+
             StorageReference test1 = storageReference.child("hivePictures/" + hiveId + ".jpg");
             StorageReference test2 = storageReference.child("hiveBackgrounds/" + hiveId + ".jpg");
 
+
             GlideApp.with(context)
-                    .load(test1)
+                    .load(R.drawable.defaulth)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .skipMemoryCache(true)
                     .error(R.drawable.defaulth)
