@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.Hive.HiveActivity;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
@@ -34,6 +37,8 @@ import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 import com.example.hivefrontend.ui.profile.ProfileFragment;
 import com.example.hivefrontend.ui.search.Logic.SearchLogic;
 import com.example.hivefrontend.ui.search.Server.SearchServerRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +58,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
      * Context for this adapter
      */
     private Context context;
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     /**
      * Creates a SearchAdapter with the given Context and data
@@ -123,6 +131,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         public ImageButton joinHiveCardButton;
 
+        public ImageView hiveProfile;
+
+        public ImageView hiveBanner;
+
         /**
          * Constructs a ViewHolder from the given View
          * @param itemView The View for this ViewHolder
@@ -134,6 +146,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             relativeLayout=itemView.findViewById(R.id.postViewLayout);
             memberCnt = itemView.findViewById(R.id.hiveCardMemberCount);
             hiveDescrip = itemView.findViewById(R.id.hiveCardDescription);
+            hiveProfile = itemView.findViewById(R.id.hiveCardPicture);
+            hiveBanner = itemView.findViewById(R.id.hiveCardHeader);
+
+            
 
             joinHiveCardButton = itemView.findViewById(R.id.joinedHiveCardButton);
 

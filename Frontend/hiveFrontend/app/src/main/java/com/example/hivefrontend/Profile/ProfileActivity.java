@@ -86,11 +86,6 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
         myAdapter = new MyAdapter(getApplicationContext(), hiveOptions);
         recyclerView.setAdapter(myAdapter);
 
-
-        ServerRequest serverRequest = new ServerRequest();
-        com.example.hivefrontend.ui.profile.Logic.ProfileLogic logic = new com.example.hivefrontend.ui.profile.Logic.ProfileLogic(this, serverRequest);
-        logic.displayProfile();
-
         StorageReference test1 = storageReference.child("profilePictures/" + userId + ".jpg");
         StorageReference test2 = storageReference.child("profileBackgrounds/" + userId + ".jpg");
 
@@ -107,6 +102,10 @@ public class ProfileActivity extends AppCompatActivity implements IProfileView {
                 .skipMemoryCache(true)
                 .error(R.drawable.defaultb)
                 .into(header);
+
+        ServerRequest serverRequest = new ServerRequest();
+        com.example.hivefrontend.ui.profile.Logic.ProfileLogic logic = new com.example.hivefrontend.ui.profile.Logic.ProfileLogic(this, serverRequest);
+        logic.displayProfile();
     }
 
     /**
