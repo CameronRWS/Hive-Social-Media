@@ -25,8 +25,6 @@ public class RegisterRoboelectricTest {
     private RegisterActivity registerActivity;
 
     @Before
-
-
     public void setUp() throws Exception
     {
         
