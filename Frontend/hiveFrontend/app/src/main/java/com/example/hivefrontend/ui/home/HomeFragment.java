@@ -1,5 +1,6 @@
 package com.example.hivefrontend.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -239,11 +242,18 @@ public class HomeFragment extends Fragment implements IHomeView{
         homePostObjects.add(post);
     }
 
+
     @Override
     public void openHivePage(String str) {
+
         HiveFragment nextFrag = new HiveFragment();
-        ViewGroup vG = (ViewGroup) root;
-        getActivity().getSupportFragmentManager().beginTransaction().replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "findThisFrag").addToBackStack(null).commit();
+
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "UHivePageFragment");
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     /**

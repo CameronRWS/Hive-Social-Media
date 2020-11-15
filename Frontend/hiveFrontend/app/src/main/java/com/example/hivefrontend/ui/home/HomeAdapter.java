@@ -95,7 +95,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 //                    Intent intent = new Intent(view.getContext(), HiveActivity.class);
 //                   intent.putExtra("hiveName", holder.hiveName.getText().toString());
 //                    view.getContext().startActivity(intent);
-                    Log.i("versace", "WHAT");
+                    Log.i("versace", "WHAT!");
                     homeView.openHivePage("ISU Math Nerds");
 
                 }
