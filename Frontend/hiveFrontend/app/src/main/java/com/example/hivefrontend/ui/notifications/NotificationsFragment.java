@@ -1,6 +1,7 @@
 package com.example.hivefrontend.ui.notifications;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class NotificationsFragment extends Fragment implements INotificationsView {
 
@@ -75,9 +78,11 @@ public class NotificationsFragment extends Fragment implements INotificationsVie
         return this.getContext();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void updateNotifcations(JSONObject noti) {
         notifications.add(noti);
+        notifications.sort(new NotiComparator());
         notiAdapter.notifyDataSetChanged();
     }
     @Override
