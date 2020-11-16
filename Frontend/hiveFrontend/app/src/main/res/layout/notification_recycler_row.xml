@@ -75,7 +75,7 @@
                 android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/notificationdot" />
+                app:srcCompat="@drawable/activeusers" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

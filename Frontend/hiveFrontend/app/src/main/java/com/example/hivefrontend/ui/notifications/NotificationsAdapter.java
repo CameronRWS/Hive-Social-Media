@@ -148,7 +148,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 boolean isNew = notifications.get(position).getBoolean("isNew");
                 if (isNew) {
                     readNotification(notiId);
-                    notiIsNew.setText("");
+                    notiDot.setVisibility(View.INVISIBLE);
                 }
                 String notiType = notifications.get(position).getString("notiType");
                 String entityType = notiType.split("-")[0];
