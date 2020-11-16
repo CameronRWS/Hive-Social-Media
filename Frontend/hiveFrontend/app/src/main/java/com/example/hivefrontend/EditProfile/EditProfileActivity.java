@@ -18,13 +18,19 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.hivefrontend.EditProfile.Logic.EPLogic;
 import com.example.hivefrontend.EditProfile.Logic.IEPVolleyListener;
 import com.example.hivefrontend.EditProfile.Network.ServerRequest;
+import com.example.hivefrontend.HiveRequests.Server.CustomHurlStack;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.VolleySingleton;
@@ -41,6 +47,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The EditProfile activity
@@ -118,13 +126,18 @@ public class EditProfileActivity extends AppCompatActivity implements IEPView {
                 //bio = etBio.getText().toString();
                 Log.i("bigmacburger", "bio done");
 
-                onSave();
+                try {
+
+                    onSave();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 //serverRequest.onSave();
 
 
-                FragmentManager fm = getSupportFragmentManager();
-                ProfileFragment profileFragment = new ProfileFragment();
-                fm.beginTransaction().add(R.id.saveButton, profileFragment).commit();
+//                FragmentManager fm = getSupportFragmentManager();
+//                ProfileFragment profileFragment = new ProfileFragment();
+//                fm.beginTransaction().add(R.id.saveButton, profileFragment).commit();
 
 
             }
@@ -156,17 +169,27 @@ public class EditProfileActivity extends AppCompatActivity implements IEPView {
         });
     }
 
-    private void onSave() {
+    private void onSave() throws JSONException {
+
         String url ="http://10.24.227.37:8080/users";
-
-        // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
-
         //first request: user information
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        final JSONObject user1 = new JSONObject();
+        user1.put("userId", (Integer) 2);
+        user1.put("userName", "Mark");
+        user1.put("displayName", "Mark C.");
+        user1.put("birthday", "November 11, 1999");
+        user1.put("biography", "I AM HELPLESS PLEASE HELP ME.");
+        user1.put("location", "HELP ME PLEASEIFNAOWIEJF.");
+
+
+        HttpStack customHurlStack = new CustomHurlStack();
+        RequestQueue queue = Volley.newRequestQueue(this.getApplicationContext(), customHurlStack);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.PUT, url, user1, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                        Log.i("bigmacburger", "it worked!");
+                    public void onResponse(JSONObject response) {
+                        Log.i("bigmacburger", "WE DID IT");
                     }
                 }, new Response.ErrorListener() {
 
@@ -175,8 +198,12 @@ public class EditProfileActivity extends AppCompatActivity implements IEPView {
 
 
                     }
+
                 });
-        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
+        Log.i("bigmacburger", "inside of onSave");
+       queue.add(jsonObjectRequest);
+        Log.i("bigmacburger", "we made it out alive");
+
     }
 
     private String getUsername() {return username;}
