@@ -14,4 +14,5 @@ public interface IRegisterVolleyListener {
     public JSONObject createUser();
     public Context getRegisterContext();
     public void onRegisterUserSuccess(JSONObject response) throws JSONException;
+    public boolean isAvailable(JSONArray response) throws JSONException;
 }

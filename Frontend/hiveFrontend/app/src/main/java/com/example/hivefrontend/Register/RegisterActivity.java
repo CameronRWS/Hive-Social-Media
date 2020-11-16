@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.hivefrontend.EditProfileActivity;
+import com.example.hivefrontend.EditProfile.EditProfileActivity;
 import com.example.hivefrontend.Login.LoginActivity;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;
@@ -51,7 +51,8 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
         findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                serverRequest.registerUser();
+
+                serverRequest.availableCheck();
             }
         });
 
@@ -70,6 +71,20 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterView
      */
     @Override
     public Context getRegisterContext() {return this.getApplicationContext();}
+
+    @Override
+    public void takenName(String e) {
+        if (e.contains("email")) {
+            emailAddressField.setError("That email address is already registered to an account. Try a new one or log in!");
+            emailAddressField.requestFocus();
+            return;
+        }
+        if (e.contains("user")) {
+            usernameField.setError("That username is taken. Try something else!");
+            usernameField.requestFocus();
+            return;
+        }
+    }
 
     /**
      * Starts the Edit Profile activity upon successful registration.

@@ -111,6 +111,7 @@ public class ServerRequest implements IProfileServerRequest {
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        Log.i("bigmacburger", "profile onresponse");
                         profileVolleyListener.onUserInfoSuccess(response);
                     }
                 }, new Response.ErrorListener() {

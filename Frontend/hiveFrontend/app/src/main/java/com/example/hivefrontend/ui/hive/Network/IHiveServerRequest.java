@@ -1,14 +1,10 @@
-package com.example.hivefrontend.Hive.Network;
+package com.example.hivefrontend.ui.hive.Network;
 
-import com.example.hivefrontend.Hive.Logic.IHiveVolleyListener;
-import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
+import com.example.hivefrontend.ui.hive.Logic.IHiveVolleyListener;
 
-/**
- * Interface implemented by ServerRequest
- */
 public interface IHiveServerRequest {
 
-    public void addVolleyListener(IHiveVolleyListener logic);
+    void addVolleyListener(IHiveVolleyListener l);
     public void displayScreen(String hiveName);
     public void fetchMemberCount(String hiveName);
     public void setUserHiveRequest(int userId);

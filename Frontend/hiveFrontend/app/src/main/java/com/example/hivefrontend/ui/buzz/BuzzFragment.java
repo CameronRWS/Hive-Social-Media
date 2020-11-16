@@ -2,11 +2,9 @@ package com.example.hivefrontend.ui.buzz;
 
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,14 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,19 +23,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.HiveCreation.HiveCreation;
 
 import com.example.hivefrontend.MainActivity;
@@ -49,23 +35,14 @@ import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.buzz.Logic.BuzzLogic;
 import com.example.hivefrontend.ui.buzz.Network.ServerRequest;
-import com.example.hivefrontend.ui.home.HomeFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BuzzFragment extends Fragment implements IBuzzView, AdapterView.OnItemSelectedListener {
 

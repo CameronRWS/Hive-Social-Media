@@ -1,12 +1,11 @@
-package com.example.hivefrontend.Hive;
+package com.example.hivefrontend.ui.hive;
 
 import android.content.Context;
 
-import com.example.hivefrontend.Hive.Network.ServerRequest;
+import org.json.JSONObject;
 
-/**
- * The interface that the HiveActivity implements.
- */
+import java.util.ArrayList;
+
 public interface IHiveView {
     public Context getHiveContext();
     public void displayBio(String description);
@@ -17,5 +16,8 @@ public interface IHiveView {
     public void addToHiveOptionsHome(String hiveName);
     public void notifyDataChange();
     void sortPosts();
+    void addToHomePosts(JSONObject post);
+    ArrayList<Integer> getHiveIdsHome();
+    ArrayList<String> getHiveOptionsHome();
 
 }

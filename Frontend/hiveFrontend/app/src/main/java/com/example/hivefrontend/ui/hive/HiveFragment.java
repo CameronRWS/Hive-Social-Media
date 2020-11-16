@@ -1,55 +1,44 @@
-package com.example.hivefrontend.Hive;
+package com.example.hivefrontend.ui.hive;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import org.json.JSONObject;
-import com.example.hivefrontend.Hive.Logic.HiveLogic;
-import com.example.hivefrontend.Hive.Network.ServerRequest;
+
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
-import com.example.hivefrontend.ui.home.HomeAdapter;
-import com.example.hivefrontend.ui.home.HomeViewModel;
-import com.example.hivefrontend.ui.home.Logic.HomeLogic;
+import com.example.hivefrontend.ui.hive.Logic.HiveLogic;
+import com.example.hivefrontend.ui.hive.Network.ServerRequest;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * Activity to display a hive
- */
-public class HiveActivity extends AppCompatActivity implements IHiveView {
+public class HiveFragment extends Fragment implements IHiveView{
 
-    public static HiveLogic logic;
     public static Context context;
+    private com.example.hivefrontend.ui.hive.HiveViewModel hiveViewModel;
 
     int joinState = 0;
     SharedPrefManager sharedPrefManager;
     int userId = 1;
     String givenHiveName;
-    private HiveViewModel hiveViewModel;
+    String description;
+    int memberCount;
+
     public static ArrayList<Integer> hiveIds;
     public static ArrayList<String> hiveOptions;
     public static ArrayList<Integer> hiveIdsHome;
@@ -61,28 +50,40 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
     public static ArrayList<JSONObject> homePostObjects;
     public static HiveAdapter hiveAdapter;
     public int selectedTab;
+    public static View root;
+    public static com.example.hivefrontend.ui.hive.Logic.HiveLogic logic;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                                ViewGroup container, Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hive);
+                             ViewGroup container, Bundle savedInstanceState) {
 
-        ServerRequest serverRequest = new ServerRequest();
+        com.example.hivefrontend.ui.hive.Network.ServerRequest serverRequest = new ServerRequest();
         logic = new HiveLogic(this, serverRequest);
         logic.setUserHives();
+        hiveViewModel = ViewModelProviders.of(this).get(com.example.hivefrontend.ui.hive.HiveViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_hive, container, false);
+        hiveViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+
+            }
+        });
+
+        serverRequest.displayScreen("ISU Math Nerds");
 
 
-        serverRequest.displayScreen(givenHiveName);
+        final ImageButton joined = (ImageButton) root.findViewById(R.id.joinedHiveButton);
+        final ImageButton join = (ImageButton) root.findViewById(R.id.joinHiveButton);
+        final ImageButton requested = (ImageButton) root.findViewById(R.id.requestedHiveButton);
+        final TextView tvHiveName = (TextView) root.findViewById(R.id.hiveName);
+        //givenHiveName = getActivity().getIntent().getStringExtra("hiveName");
+        tvHiveName.setText("Test Hive");
+        final TextView bio = (TextView) root.findViewById(R.id.hiveDescription);
+        bio.setText(this.description);
+        final TextView memberCount = (TextView) root.findViewById(R.id.hiveMemberCount);
+        memberCount.setText(this.memberCount + " bees and counting");
 
-        final ImageButton joined = (ImageButton) findViewById(R.id.joinedHiveButton);
-        final ImageButton join = (ImageButton) findViewById(R.id.joinHiveButton);
-        final ImageButton requested = (ImageButton) findViewById(R.id.requestedHiveButton);
-        final TextView tvHiveName = (TextView) findViewById(R.id.hiveName);
-        givenHiveName = getIntent().getStringExtra("hiveName");
-        tvHiveName.setText(givenHiveName);
-
-        userId = SharedPrefManager.getInstance(this.getApplicationContext()).getUser().getId();
+        userId = SharedPrefManager.getInstance(this.getContext()).getUser().getId();
         hiveIdsHome = new ArrayList<>();
         hiveOptionsHome = new ArrayList<>();
         hiveIdsDiscover = new ArrayList<>();
@@ -95,8 +96,8 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
         discoverPostObjects = new ArrayList<>();
 
         hiveViewModel = ViewModelProviders.of(this).get(HiveViewModel.class);
-        View root = inflater.inflate(R.layout.activity_hive, container, false);
-        hiveViewModel.getText().observe(this, new Observer<String>() {
+        root = inflater.inflate(R.layout.fragment_hive, container, false);
+        hiveViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
 
@@ -105,14 +106,12 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
 
 
         final RecyclerView recyclerView = root.findViewById(R.id.hivePostRecyler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-        hiveAdapter = new HiveAdapter(this.getApplicationContext(), discoverPostObjects, hiveIdsHome, hiveOptionsHome);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        hiveAdapter = new com.example.hivefrontend.ui.hive.HiveAdapter(getActivity().getApplicationContext(), discoverPostObjects, hiveIdsHome, hiveOptionsHome);
         recyclerView.setAdapter(hiveAdapter);
 
         context = root.getContext();
         return root;
-
-
     }
 
     /**
@@ -121,7 +120,7 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
      */
     @Override
     public Context getHiveContext() {
-        return this.getApplicationContext();
+        return this.getContext();
     }
 
     /**
@@ -130,8 +129,7 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
      */
     @Override
     public void displayBio(String description) {
-        final TextView bio = (TextView) findViewById(R.id.hiveDescription);
-        bio.setText(description);
+        this.description = description;
     }
 
     /**
@@ -140,7 +138,7 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
     @Override
     public void onResume() {
         super.onResume();
-       // logic.onPageResume();
+        logic.onPageResume();
     }
 
     /**
@@ -157,8 +155,7 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
      */
     @Override
     public void displayMemberCount(int count) {
-        final TextView memberCount = (TextView) findViewById(R.id.hiveMemberCount);
-        memberCount.setText(count + " bees and counting");
+        this.memberCount = count;
     }
 
     /**
@@ -184,12 +181,12 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
     @Override
     public void clearData() {
 
-            discoverPostObjects.clear();
-            homePostObjects.clear();
-            hiveIdsDiscover.clear();
-            hiveOptionsDiscover.clear();
-            hiveIdsHome.clear();
-            hiveOptionsHome.clear();
+        discoverPostObjects.clear();
+        homePostObjects.clear();
+        hiveIdsDiscover.clear();
+        hiveOptionsDiscover.clear();
+        hiveIdsHome.clear();
+        hiveOptionsHome.clear();
 
     }
 
@@ -209,5 +206,19 @@ public class HiveActivity extends AppCompatActivity implements IHiveView {
         Collections.sort(homePostObjects, new PostComparator());
     }
 
+    @Override
+    public void addToHomePosts(JSONObject post) {
+        homePostObjects.add(post);
+    }
+
+    @Override
+    public ArrayList<Integer> getHiveIdsHome() {
+        return hiveIdsHome;
+    }
+
+    @Override
+    public ArrayList<String> getHiveOptionsHome() {
+        return hiveOptionsHome;
+    }
 
 }

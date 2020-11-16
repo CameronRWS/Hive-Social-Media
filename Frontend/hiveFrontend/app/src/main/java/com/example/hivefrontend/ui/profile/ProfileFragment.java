@@ -13,19 +13,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.hivefrontend.EditProfileActivity;
+import com.example.hivefrontend.EditProfile.EditProfileActivity;
 import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.HiveRequests.HiveRequestsActivity;
 import com.example.hivefrontend.R;
@@ -34,8 +30,6 @@ import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 

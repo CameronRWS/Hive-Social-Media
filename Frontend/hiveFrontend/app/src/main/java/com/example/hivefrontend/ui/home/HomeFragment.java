@@ -1,7 +1,9 @@
 package com.example.hivefrontend.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
+import com.example.hivefrontend.ui.hive.HiveFragment;
 import com.example.hivefrontend.ui.home.Logic.HomeLogic;
 import com.example.hivefrontend.ui.home.Network.ServerRequest;
 import com.google.android.material.tabs.TabLayout;
@@ -44,7 +49,7 @@ public class HomeFragment extends Fragment implements IHomeView{
     public int selectedTab;
     public int userId;
 
-
+    public static View root;
     public static HomeLogic logic;
     public static Context context;
 
@@ -63,9 +68,9 @@ public class HomeFragment extends Fragment implements IHomeView{
         postObjects = new ArrayList(homePostObjects);
         discoverPostObjects = new ArrayList<>();
 
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        root = inflater.inflate(R.layout.fragment_home, container, false);
+
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -77,8 +82,8 @@ public class HomeFragment extends Fragment implements IHomeView{
         final RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        homeAdapter = new HomeAdapter(getActivity().getApplicationContext(), homePostObjects,hiveIdsHome,hiveOptionsHome);
-        discoverAdapter = new HomeAdapter(getActivity().getApplicationContext(), discoverPostObjects,hiveIdsDiscover,hiveOptionsDiscover);
+        homeAdapter = new HomeAdapter(getActivity(), this, getActivity().getApplicationContext(), homePostObjects,hiveIdsHome,hiveOptionsHome);
+        discoverAdapter = new HomeAdapter(getActivity(), this, getActivity().getApplicationContext(), discoverPostObjects,hiveIdsDiscover,hiveOptionsDiscover);
         recyclerView.setAdapter(homeAdapter);
 
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabLayout);
@@ -235,6 +240,18 @@ public class HomeFragment extends Fragment implements IHomeView{
     @Override
     public void addToHomePosts(JSONObject post) {
         homePostObjects.add(post);
+    }
+
+
+    @Override
+    public void openHivePage(String str) {
+            Log.i("bigmacburger", "ignore this");
+//        HiveFragment nextFrag = new HiveFragment();
+//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "UHivePageFragment");
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
     }
 
     /**

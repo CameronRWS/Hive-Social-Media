@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditProfileActivity">
+    tools:context=".EditProfile.EditProfileActivity">
 
     <ImageButton
         android:id="@+id/headerActual"
@@ -51,28 +51,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePictureBorder" />
 
-    <EditText
-        android:id="@+id/emailAddressField"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="195dp"
-        android:background="@drawable/rect_border_filled_bg_edit_profile"
-        android:ems="10"
-        android:fontFamily="@font/helveticaneuelight"
-        android:hint=""
-        android:inputType="textPersonName"
-        android:paddingLeft="15dp"
-        android:paddingTop="0dp"
-        android:textColor="#000000"
-        android:textColorHighlight="#31000000"
-        android:textColorHint="#40000000"
-        android:textColorLink="#FFFFFF"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePictureBorder" />
-
     <TextView
         android:id="@+id/tvFirstName"
         android:layout_width="wrap_content"
@@ -101,22 +79,6 @@
         android:textSize="14sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toTopOf="@+id/bioField"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.316"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tvEmailAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="145dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/helveticaneuemedium"
-        android:text="Email Address"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@+id/emailAddressField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.316"
         app:layout_constraintStart_toStartOf="parent" />
@@ -157,7 +119,7 @@
         android:id="@+id/bioField"
         android:layout_width="296dp"
         android:layout_height="152dp"
-        android:layout_marginTop="275dp"
+        android:layout_marginTop="190dp"
         android:background="@drawable/rect_border_filled_bg_edit_profile"
         android:ems="10"
         android:fontFamily="@font/helveticaneuelight"

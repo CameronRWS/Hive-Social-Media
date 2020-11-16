@@ -1,24 +1,33 @@
-package com.example.hivefrontend;
+package com.example.hivefrontend.EditProfile;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.hivefrontend.Login.LoginActivity;
-import com.example.hivefrontend.ui.buzz.BuzzFragment;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.hivefrontend.EditProfile.Logic.EPLogic;
+import com.example.hivefrontend.EditProfile.Logic.IEPVolleyListener;
+import com.example.hivefrontend.EditProfile.Network.ServerRequest;
+import com.example.hivefrontend.R;
+import com.example.hivefrontend.SharedPrefManager;
+import com.example.hivefrontend.VolleySingleton;
 import com.example.hivefrontend.ui.profile.ProfileFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,15 +36,18 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.FileNotFoundException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 /**
  * The EditProfile activity
  */
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements IEPView {
 
-    public int userId = 2;
+    public int userId;
     private String imageFolder;
     private ImageButton editProfilePicture;
     private ImageButton editHeader;
@@ -47,12 +59,25 @@ public class EditProfileActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private static final int GALLERY_REQUEST_CODE = 123;
     private ImageButton toSet;
+    private EditText etFirstName;
+    private EditText etUsername;
+    private EditText etLastName;
+    private EditText etBio;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String bio;
+    private String emailAddress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        userId = SharedPrefManager.getInstance(this.getApplicationContext()).getUser().getId();
 
+
+        etFirstName = findViewById(R.id.firstNameField);
         editProfilePicture = findViewById(R.id.editProfilePicture);
         cancelButton = findViewById(R.id.cancelButton);
         saveButton = findViewById(R.id.saveButton);
@@ -60,24 +85,48 @@ public class EditProfileActivity extends AppCompatActivity {
         editHeader = findViewById(R.id.editHeader);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        etUsername = findViewById(R.id.usernameField);
+        etLastName = findViewById(R.id.lastNameField);
 
+        etBio = findViewById(R.id.bioField);
+
+        final ServerRequest serverRequest = new ServerRequest();
+        EPLogic logic = new EPLogic(this, serverRequest);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 FragmentManager fm = getSupportFragmentManager();
                 ProfileFragment profileFragment = new ProfileFragment();
-
                 fm.beginTransaction().add(R.id.cancelButton, profileFragment).commit();
+
             }
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.i("bigmacburger", "save button was clicked.");
+                username = etUsername.getText().toString();
+                Log.i("bigmacburger", "username done");
+                //firstName = etFirstName.getText().toString();
+                Log.i("bigmacburger", "firstname done");
+                //lastName = etLastName.getText().toString();
+                Log.i("bigmacburger", "lastname done");
+                //bio = etBio.getText().toString();
+                Log.i("bigmacburger", "bio done");
+
+                onSave();
+                //serverRequest.onSave();
+
+
                 FragmentManager fm = getSupportFragmentManager();
                 ProfileFragment profileFragment = new ProfileFragment();
                 fm.beginTransaction().add(R.id.saveButton, profileFragment).commit();
+
+
             }
         });
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +156,34 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void onSave() {
+        String url ="http://10.24.227.37:8080/users";
+
+        // Server name http://coms-309-tc-03.cs.iastate.edu:8080/posts
+
+        //first request: user information
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.i("bigmacburger", "it worked!");
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+
+                    }
+                });
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
+    }
+
+    private String getUsername() {return username;}
+    private String getFirstName() {return firstName;}
+    private String getLastName() { return lastName;}
+    private String getEmailAddress() {return emailAddress;}
+    private String getBio() {return bio;}
     /**
      * Uploads an image
      */
@@ -176,4 +253,11 @@ public class EditProfileActivity extends AppCompatActivity {
         }
         uploadImage();
     }
+
+    @Override
+    public Context getContext() {return this.getApplicationContext();}
+
+    @Override
+    public int getUserId() {return userId;}
+
 }

@@ -17,5 +17,6 @@ public interface IRegisterView {
     public void emailAddressCheck();
     public void validateEmailAddress();
     public Context getRegisterContext();
+    public void takenName(String e);
     public void successfullyRegistered();
 }

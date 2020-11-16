@@ -8,6 +8,7 @@ import com.example.hivefrontend.ui.buzz.Logic.IBuzzVolleyListener;
  */
 public interface IRegisterServerRequest {
 
+    public void availableCheck();
     public void addVolleyListener(IRegisterVolleyListener r);
     public void registerUser();
 }

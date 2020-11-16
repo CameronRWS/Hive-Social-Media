@@ -1,4 +1,4 @@
-package com.example.hivefrontend.Hive;
+package com.example.hivefrontend.ui.hive;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,11 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
-/**
- * PostComparator class which compares posts by time.
- */
 public class PostComparator implements Comparator<JSONObject> {
-
     final SimpleDateFormat ft = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 
     /**
