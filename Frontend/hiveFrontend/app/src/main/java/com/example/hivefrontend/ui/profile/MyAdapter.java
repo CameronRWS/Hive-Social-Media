@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -119,6 +120,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView memberCnt;
         public TextView hiveDescrip;
         ConstraintLayout relativeLayout;
+        public ImageView hiveProfile;
+        public ImageView hiveBanner;
 
         /**
          * Creates a ViewHolder from the given View
@@ -130,6 +133,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             relativeLayout=itemView.findViewById(R.id.postViewLayout);
             memberCnt = itemView.findViewById(R.id.hiveCardMemberCount);
             hiveDescrip = itemView.findViewById(R.id.hiveCardDescription);
+            hiveProfile = itemView.findViewById(R.id.hiveCardPicture);
+            hiveBanner = itemView.findViewById(R.id.hiveCardPicture);
         }
     }
 

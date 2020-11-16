@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
@@ -33,6 +36,8 @@ import com.example.hivefrontend.ui.profile.Network.ServerRequest;
 import com.example.hivefrontend.ui.profile.ProfileFragment;
 import com.example.hivefrontend.ui.search.Logic.SearchLogic;
 import com.example.hivefrontend.ui.search.Server.SearchServerRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +58,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
      */
     private Context context;
 
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private int position = 0;
+
     /**
      * Creates a SearchAdapter with the given Context and data
      * @param context The context for this adapter
@@ -67,7 +76,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public SearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_row, parent, false);
-        SearchAdapter.ViewHolder viewHolder = new SearchAdapter.ViewHolder(view);
+        ViewHolder viewHolder = null;
+        try {
+            viewHolder = new ViewHolder(view);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return viewHolder;
     }
 
@@ -81,6 +95,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         try {
             holder.joinHiveCardButton.setTag(position);
+            holder.itemView.setTag(position);
             holder.hiveDescrip.setText(hives.get(position).getString("description"));
             holder.itemTxt.setText(hives.get(position).getString("name"));
             holder.itemTxt.setTag(position);
@@ -122,17 +137,47 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         public ImageButton joinHiveCardButton;
 
+        public ImageView hiveProfile;
+
+        public ImageView hiveBanner;
+
         /**
          * Constructs a ViewHolder from the given View
          * @param itemView The View for this ViewHolder
          */
-        ViewHolder(View itemView) {
+        ViewHolder(View itemView) throws JSONException {
             super(itemView);
             itemTxt = itemView.findViewById(R.id.hiveCardName);
             itemTxt.setOnClickListener(this);
             relativeLayout=itemView.findViewById(R.id.postViewLayout);
             memberCnt = itemView.findViewById(R.id.hiveCardMemberCount);
             hiveDescrip = itemView.findViewById(R.id.hiveCardDescription);
+            hiveProfile = itemView.findViewById(R.id.hiveCardPicture);
+            hiveBanner = itemView.findViewById(R.id.hiveCardHeader);
+            storage = FirebaseStorage.getInstance();
+            storageReference = storage.getReference();
+
+
+            int hiveId = hives.get(position).getInt("hiveId");
+            position += 1;
+
+            // server request class  for search frag or discover hives
+            StorageReference test1 = storageReference.child("hivePictures/" + hiveId + ".jpg");
+            StorageReference test2 = storageReference.child("hiveBackgrounds/" + hiveId + ".jpg");
+
+            GlideApp.with(context)
+                    .load(test1)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.defaulth)
+                    .into(hiveProfile);
+
+            GlideApp.with(context)
+                    .load(test2)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.defaultb)
+                    .into(hiveBanner);
 
             joinHiveCardButton = itemView.findViewById(R.id.joinedHiveCardButton);
 
@@ -234,8 +279,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 //start new activity and pass the user ID to it
                 //intent.putExtra("hiveId", hiveId);
                // v.getContext().startActivity(intent);
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
