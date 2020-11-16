@@ -25,7 +25,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.hivefrontend.GlideApp;
-import com.example.hivefrontend.Hive.HiveActivity;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
