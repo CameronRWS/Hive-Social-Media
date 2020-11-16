@@ -1,27 +1,20 @@
-package com.example.hivefrontend.Hive.Logic;
+package com.example.hivefrontend.ui.hive.Logic;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.example.hivefrontend.Hive.IHiveView;
-import com.example.hivefrontend.Hive.Network.IHiveServerRequest;
-import com.example.hivefrontend.SharedPrefManager;
-import com.example.hivefrontend.User;
+import com.example.hivefrontend.ui.hive.IHiveView;
+import com.example.hivefrontend.ui.hive.Network.IHiveServerRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-/**
- * HiveLogic handles the logic behind the Hive class and handles the server
- *     responses.
- */
+import java.util.ArrayList;
 
 public class HiveLogic implements IHiveVolleyListener {
-    IHiveView hiveView;
+    com.example.hivefrontend.ui.hive.IHiveView hiveView;
     IHiveServerRequest server;
 
     /**
@@ -31,9 +24,10 @@ public class HiveLogic implements IHiveVolleyListener {
      * @param hv interface IHiveView to be used by this HiveLogic
      * @param hsr interface IHiveServerRequest to be used by this HiveLogic
      */
-    public HiveLogic(IHiveView hv, IHiveServerRequest hsr) {
-        this.hiveView = hv;
-        this.server = hsr;
+    public HiveLogic(IHiveView hv, com.example.hivefrontend.ui.hive.Network.IHiveServerRequest hsr) {
+
+        hiveView = hv;
+        server = hsr;
         server.addVolleyListener(this);
     }
 
@@ -109,6 +103,13 @@ public class HiveLogic implements IHiveVolleyListener {
     @Override
     public int getUserId() {return hiveView.getUserId();}
 
+    public void sortData() {
+        hiveView.sortPosts();
+    }
+
+
+    public void addToHomePosts(JSONObject post) { hiveView.addToHomePosts(post);}
+
     /**
      * Fetches the hive's display name.
      * @param response JSONArray response which holds member data
@@ -162,4 +163,7 @@ public class HiveLogic implements IHiveVolleyListener {
         }
     }
 
+    public ArrayList<Integer> getHiveIdsHome() {
+        return hiveView.getHiveIdsHome();
+    }
 }

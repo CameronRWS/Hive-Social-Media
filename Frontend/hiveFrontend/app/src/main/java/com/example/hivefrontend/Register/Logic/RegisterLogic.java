@@ -69,6 +69,22 @@ public class RegisterLogic implements IRegisterVolleyListener {
         }
     }
 
+    @Override
+    public boolean isAvailable(JSONArray response) throws JSONException {
+        for(int i = 0; i < response.length(); i++) {
+            JSONObject member = response.getJSONObject(i);
+            if (registerView.getUsername().equals(member.getJSONObject("userRegistrationIdentity").getJSONObject("user").getString("userName"))) {
+                registerView.takenName("username");
+                return false;
+            }
+            if (registerView.getEmailAddress().equals(member.getString("email"))) {
+                registerView.takenName("email");
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Returns the register context.
      * @return The context.

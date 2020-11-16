@@ -1,4 +1,4 @@
-package com.example.hivefrontend.Hive.Network;
+package com.example.hivefrontend.ui.hive.Network;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -8,29 +8,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.hivefrontend.Hive.Logic.IHiveVolleyListener;
 import com.example.hivefrontend.VolleySingleton;
-import com.example.hivefrontend.ui.profile.ProfileVolleyListener;
+import com.example.hivefrontend.ui.hive.Logic.IHiveVolleyListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Handles the server calls needed for hive pages
- */
-public class ServerRequest implements IHiveServerRequest {
-
-    private String tag_json_obj = "json_obj_req";
-
-    private static IHiveVolleyListener logic;
+public class ServerRequest implements  IHiveServerRequest{
+    private static com.example.hivefrontend.ui.hive.Logic.IHiveVolleyListener logic;
 
     /**
      * Assigns this instance's logic to the parameter
-     * @param logic The parameter, or, the given logic
+     * @param l The parameter, or, the given logic
      */
     @Override
-    public void addVolleyListener(IHiveVolleyListener logic) { this.logic = logic;}
+    public void addVolleyListener(IHiveVolleyListener l) { logic = l;}
 
     /**
      * Invokes the logic to handle displaying the hive page
@@ -71,6 +64,49 @@ public class ServerRequest implements IHiveServerRequest {
     public void updatePostRequest() {
         setUserHiveRequest(logic.getUserId());
         logic.clearAdapterData();
+        logic.notifyDataSetChanged();
+        getHomePosts();
+    }
+
+
+    public static void getHomePosts() {
+        for (int i = 0; i < logic.getHiveIdsHome().size(); i++) {
+            int hiveId = logic.getHiveIdsHome().get(i);
+
+            String url = "http://10.24.227.37:8080/posts/byHiveId/" + hiveId;
+            JsonArrayRequest hivePostRequest = new JsonArrayRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            try{
+                                for(int i = 0; i <  response.length(); i++){
+                                    JSONObject post = response.getJSONObject(i); //should a post object
+                                    logic.addToHomePosts(post);
+                                }
+                                //now have all the posts--must sort chronologically
+                                sortPosts();
+                            }
+                            catch (JSONException e){
+                                e.printStackTrace();
+                                Log.i("jsonAppError",e.toString());
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO: Handle error
+                            Log.i("volleyAppError","Error: " + error.getMessage());
+                            Log.i("volleyAppError","VolleyError: "+ error);
+
+                        }
+                    });
+            VolleySingleton.getInstance(logic.getHiveContext()).addToRequestQueue(hivePostRequest);
+        }
+    }
+
+    public static void sortPosts(){
+        logic.sortData();
         logic.notifyDataSetChanged();
     }
 
@@ -161,7 +197,7 @@ public class ServerRequest implements IHiveServerRequest {
             @Override
             public void onResponse(JSONArray response) {
 
-               logic.onHiveRequestSuccess(response);
+                logic.onHiveRequestSuccess(response);
             }
         }, new Response.ErrorListener() {
 
@@ -199,6 +235,5 @@ public class ServerRequest implements IHiveServerRequest {
                 });
         VolleySingleton.getInstance(logic.getHiveContext()).addToRequestQueue(jsonArrayRequest);
     }
-
 
 }

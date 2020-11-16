@@ -1,4 +1,4 @@
-package com.example.hivefrontend.Hive;
+package com.example.hivefrontend.ui.hive;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,33 +8,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
-import com.example.hivefrontend.PostDetails.PostDetailsActivity;
-import com.example.hivefrontend.Profile.ProfileActivity;
-import com.example.hivefrontend.R;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.hivefrontend.ui.home.HomeAdapter;
+import com.android.volley.RequestQueue;
+import com.example.hivefrontend.PostDetails.PostDetailsActivity;
+import com.example.hivefrontend.Profile.ProfileActivity;
+import com.example.hivefrontend.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
-/**
- * Adapter for a hive page
- */
 public class HiveAdapter extends RecyclerView.Adapter<HiveAdapter.ViewHolder> {
-
     private Context context;
     private List<JSONObject> posts;
     private List<Integer> hiveIds;
     private List <String> hiveNames;
 
     HiveAdapter(Context context, List<JSONObject> posts, List<Integer> hiveIds, List<String> hiveNames) {
+
         this.context = context;
         this.posts = posts;
         this.hiveIds = hiveIds;
@@ -43,13 +39,14 @@ public class HiveAdapter extends RecyclerView.Adapter<HiveAdapter.ViewHolder> {
 
 
 
-   // @NonNull
+    // @NonNull
     @Override
     public HiveAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_recycler_row, parent, false);
         HiveAdapter.ViewHolder viewHolder = new HiveAdapter.ViewHolder(view);
         return viewHolder;
     }
+
 
     @Override
     public void onBindViewHolder(final HiveAdapter.ViewHolder holder, final int position) {
@@ -68,15 +65,15 @@ public class HiveAdapter extends RecyclerView.Adapter<HiveAdapter.ViewHolder> {
             int id = posts.get(position).getInt("hiveId");
             String hive = hiveNames.get(hiveIds.indexOf(id));
             holder.hiveName.setText(hive);
-            holder.hiveName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), HiveActivity.class);
-                    intent.putExtra("hiveName", holder.hiveName.getText().toString());
-                    view.getContext().startActivity(intent);
-
-                }
-            });
+//            holder.hiveName.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    hiveView.openHivePage();
+//                    Intent intent = new Intent(view.getContext(), HiveFragment.class);
+//                   intent.putExtra("hiveName", holder.hiveName.getText().toString());
+//                    view.getContext().startActivity(intent);
+//                }
+//            });
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -158,7 +155,7 @@ public class HiveAdapter extends RecyclerView.Adapter<HiveAdapter.ViewHolder> {
                     int position = (Integer) view.getTag();
                     try {
                         int postId = posts.get(position).getInt("postId");
-                        HiveActivity.likePost(postId);
+                        HiveFragment.likePost(postId);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

@@ -20,7 +20,7 @@
         <activity android:name=".HiveRequests.HiveRequestsActivity" />
         <activity android:name=".HiveCreation.HiveCreation" />
         <activity android:name=".Hive.HiveActivity" />
-        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".EditProfile.EditProfileActivity" />
         <activity android:name=".Profile.ProfileActivity" />
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".PostDetails.PostDetailsActivity" />
