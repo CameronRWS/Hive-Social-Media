@@ -1,5 +1,7 @@
 package com.example.hivefrontend.ui.home;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -9,9 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +28,8 @@ import com.example.hivefrontend.PostDetails.PostDetailsActivity;
 import com.example.hivefrontend.Profile.ProfileActivity;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.ui.buzz.BuzzFragment;
+import com.example.hivefrontend.ui.hive.HiveFragment;
+import com.example.hivefrontend.ui.profile.ProfileFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +47,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<Integer> hiveIds;
     private List<String> hiveNames;
     private IHomeView homeView;
+    private Activity activity;
 
     /**
      * Creates an adapter for the home page
@@ -49,7 +56,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
      * @param hiveIds The hive ids that the posts come from
      * @param hiveNames The hive names that the posts come from
      */
-    HomeAdapter(IHomeView hV, Context context, List<JSONObject> posts, List<Integer> hiveIds, List<String> hiveNames) {
+    HomeAdapter(Activity a, IHomeView hV, Context context, List<JSONObject> posts, List<Integer> hiveIds, List<String> hiveNames) {
+        this.activity = a;
         this.homeView = hV;
         this.context = context;
         this.posts=posts;
@@ -92,11 +100,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.hiveName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.i("bigmacburger", "ah so this was it.");
 //                    Intent intent = new Intent(view.getContext(), HiveActivity.class);
 //                   intent.putExtra("hiveName", holder.hiveName.getText().toString());
 //                    view.getContext().startActivity(intent);
-                    Log.i("versace", "WHAT!");
-                    homeView.openHivePage("ISU Math Nerds");
+
+//                    FragmentManager fm = ((AppCompatActivity)activity).getSupportFragmentManager();
+//                    HiveFragment hiveFragment = new HiveFragment();
+//                    fm.beginTransaction().add((int) holder.getItemId(), hiveFragment).commit();
+
+
+                    //homeView.openHivePage("ISU Math Nerds!");
 
                 }
             });

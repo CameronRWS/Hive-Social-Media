@@ -82,8 +82,8 @@ public class HomeFragment extends Fragment implements IHomeView{
         final RecyclerView recyclerView = root.findViewById(R.id.homePostRecyler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        homeAdapter = new HomeAdapter(this, getActivity().getApplicationContext(), homePostObjects,hiveIdsHome,hiveOptionsHome);
-        discoverAdapter = new HomeAdapter(this, getActivity().getApplicationContext(), discoverPostObjects,hiveIdsDiscover,hiveOptionsDiscover);
+        homeAdapter = new HomeAdapter(getActivity(), this, getActivity().getApplicationContext(), homePostObjects,hiveIdsHome,hiveOptionsHome);
+        discoverAdapter = new HomeAdapter(getActivity(), this, getActivity().getApplicationContext(), discoverPostObjects,hiveIdsDiscover,hiveOptionsDiscover);
         recyclerView.setAdapter(homeAdapter);
 
         TabLayout tabLayout = (TabLayout) root.findViewById(R.id.tabLayout);
@@ -245,15 +245,13 @@ public class HomeFragment extends Fragment implements IHomeView{
 
     @Override
     public void openHivePage(String str) {
-
-        HiveFragment nextFrag = new HiveFragment();
-
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "UHivePageFragment");
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+            Log.i("bigmacburger", "ignore this");
+//        HiveFragment nextFrag = new HiveFragment();
+//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "UHivePageFragment");
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
     }
 
     /**

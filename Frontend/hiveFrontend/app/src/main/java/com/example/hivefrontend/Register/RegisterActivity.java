@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.hivefrontend.EditProfileActivity;
+import com.example.hivefrontend.EditProfile.EditProfileActivity;
 import com.example.hivefrontend.Login.LoginActivity;
 import com.example.hivefrontend.MainActivity;
 import com.example.hivefrontend.R;

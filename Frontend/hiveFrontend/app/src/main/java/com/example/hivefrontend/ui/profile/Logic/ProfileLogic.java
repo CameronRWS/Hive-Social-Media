@@ -230,7 +230,6 @@ public class ProfileLogic implements ProfileVolleyListener{
             for(int i = 0; i < response.length(); i++) {
                 JSONObject member = response.getJSONObject(i);
                 if (member.getString("name").equals(hiveName)) {
-                    Log.i("princess", "name: " + member.getString("name") + "description: " + member.getString("description"));
                     hiveDescrip = member.getString("description");
                     break;
                 }

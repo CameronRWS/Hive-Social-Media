@@ -1,21 +1,14 @@
 package com.example.hivefrontend.Register.Network;
 
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.hivefrontend.EditProfileActivity;
 import com.example.hivefrontend.Register.Logic.IRegisterVolleyListener;
-import com.example.hivefrontend.Register.RegisterActivity;
-import com.example.hivefrontend.SharedPrefManager;
-import com.example.hivefrontend.User;
 import com.example.hivefrontend.VolleySingleton;
-import com.example.hivefrontend.ui.buzz.Logic.IBuzzVolleyListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
