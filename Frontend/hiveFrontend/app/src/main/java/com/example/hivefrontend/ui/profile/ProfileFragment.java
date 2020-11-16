@@ -104,6 +104,8 @@ public class ProfileFragment extends Fragment implements IProfileView{
      * ImageView for this user's profile picture
      */
     private ImageView header;
+    public ImageView hiveProfile;
+    public ImageView hiveBanner;
     private Uri imageUri;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -131,7 +133,10 @@ public class ProfileFragment extends Fragment implements IProfileView{
         final View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
         profilePic = (ImageView) rootView.findViewById(R.id.profilePicture);
 
-        header = (ImageView) rootView.findViewById(R.id.header);hiveIds= new ArrayList<>();
+        header = (ImageView) rootView.findViewById(R.id.header);
+        hiveProfile = (ImageView) rootView.findViewById(R.id.hiveCardPicture);
+        hiveBanner = (ImageView) rootView.findViewById(R.id.hiveCardHeader);
+        hiveIds= new ArrayList<>();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         hiveOptions = new ArrayList<>();

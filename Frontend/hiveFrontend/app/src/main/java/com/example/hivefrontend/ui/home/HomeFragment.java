@@ -2,11 +2,13 @@ package com.example.hivefrontend.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,12 +20,16 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.SharedPrefManager;
 import com.example.hivefrontend.ui.hive.HiveFragment;
 import com.example.hivefrontend.ui.home.Logic.HomeLogic;
 import com.example.hivefrontend.ui.home.Network.ServerRequest;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONObject;
 
@@ -52,10 +58,13 @@ public class HomeFragment extends Fragment implements IHomeView{
     public static View root;
     public static HomeLogic logic;
     public static Context context;
+    private ImageView picturePreview;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
 
         userId = SharedPrefManager.getInstance(this.getContext()).getUser().getId();
         hiveIdsHome = new ArrayList<>();
@@ -70,6 +79,27 @@ public class HomeFragment extends Fragment implements IHomeView{
 
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        picturePreview = (ImageView) root.findViewById(R.id.photoPreview);
+
+        StorageReference test1 = storageReference.child("posts/1.jpg");
+        //StorageReference test2 = storageReference.child("hiveBackgrounds/" + hiveId + ".jpg");
+
+//        GlideApp.with(this)
+//                .load(test1)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .skipMemoryCache(true)
+//                .error(R.drawable.defaulth)
+//                .into(picturePreview);
+
+//        GlideApp.with(this)
+//                .load(test2)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .skipMemoryCache(true)
+//                .error(R.drawable.defaultb)
+//                .into(hiveHeader);
 
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
