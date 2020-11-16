@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -95,11 +96,14 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                     break;
             }
             holder.notiText.setText(notiText);
+
             String date = notifications.get(position).getString("dateCreated");
             holder.notiDateTime.setText(date);
             String isNewText = "";
             if(notifications.get(position).getString("isNew").equals("true")) {
-                isNewText = "unread";
+                holder.notiDot.setVisibility(View.VISIBLE);
+            } else {
+                holder.notiDot.setVisibility(View.INVISIBLE);
             }
             holder.notiIsNew.setText(isNewText);
         } catch (JSONException e) {
@@ -119,12 +123,14 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         public TextView notiDateTime;
         public TextView notiIsNew;
         public CardView cv;
+        public ImageView notiDot;
 
         ConstraintLayout constraintLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
             notiText = itemView.findViewById(R.id.noti_text);
+            notiDot = itemView.findViewById(R.id.notificationDot);
             notiDateTime = itemView.findViewById(R.id.noti_datetime);
             notiIsNew = itemView.findViewById(R.id.noti_isnew);
             constraintLayout = itemView.findViewById(R.id.notiViewLayout);

@@ -51,7 +51,6 @@ public class VolleySingleton{
      * @param <T> The queue
      */
     public <T> void addToRequestQueue(Request<T> req) {
-        Log.i("bigmacburger", "inside of request queue");
         getRequestQueue().add(req);
     }
 }

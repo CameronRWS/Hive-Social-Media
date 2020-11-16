@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     String num = message.substring(13);
                     int count = Integer.parseInt(num);
 
-                    activeUsers.setText("Total bees buzzing: " + count);
+                    activeUsers.setText("Online: " + count);
 
                 }
 
