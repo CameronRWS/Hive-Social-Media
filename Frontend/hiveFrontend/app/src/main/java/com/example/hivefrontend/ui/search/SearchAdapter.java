@@ -61,6 +61,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private int position = 0;
 
     /**
      * Creates a SearchAdapter with the given Context and data
@@ -76,7 +77,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public SearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_row, parent, false);
-        SearchAdapter.ViewHolder viewHolder = new SearchAdapter.ViewHolder(view);
+        ViewHolder viewHolder = null;
+        try {
+            viewHolder = new ViewHolder(view);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return viewHolder;
     }
 
@@ -90,6 +96,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         try {
             holder.joinHiveCardButton.setTag(position);
+            holder.itemView.setTag(position);
             holder.hiveDescrip.setText(hives.get(position).getString("description"));
             holder.itemTxt.setText(hives.get(position).getString("name"));
             holder.itemTxt.setTag(position);
@@ -139,7 +146,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
          * Constructs a ViewHolder from the given View
          * @param itemView The View for this ViewHolder
          */
-        ViewHolder(View itemView) {
+        ViewHolder(View itemView) throws JSONException {
             super(itemView);
             itemTxt = itemView.findViewById(R.id.hiveCardName);
             itemTxt.setOnClickListener(this);
@@ -151,14 +158,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             storage = FirebaseStorage.getInstance();
             storageReference = storage.getReference();
 
-            int hiveId = 4;
 
+            int hiveId = hives.get(position).getInt("hiveId");
+            position += 1;
+
+            // server request class  for search frag or discover hives
             StorageReference test1 = storageReference.child("hivePictures/" + hiveId + ".jpg");
             StorageReference test2 = storageReference.child("hiveBackgrounds/" + hiveId + ".jpg");
 
-
             GlideApp.with(context)
-                    .load(R.drawable.defaulth)
+                    .load(test1)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .skipMemoryCache(true)
                     .error(R.drawable.defaulth)
@@ -265,13 +274,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             //for find item that hold in list
             int position = (Integer) v.getTag();
             Intent intent = new Intent(v.getContext(), HiveActivity.class);
+
             try {
 
                 int hiveId = hives.get(position).getInt("hiveId");
                 //start new activity and pass the user ID to it
                 intent.putExtra("hiveId", hiveId);
                 v.getContext().startActivity(intent);
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
