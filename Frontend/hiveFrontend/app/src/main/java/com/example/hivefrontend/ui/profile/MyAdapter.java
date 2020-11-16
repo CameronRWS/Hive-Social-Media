@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -14,10 +15,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.hivefrontend.GlideApp;
 import com.example.hivefrontend.R;
 import com.example.hivefrontend.VolleySingleton;
 import com.example.hivefrontend.ui.profile.Logic.ProfileLogic;
 import com.example.hivefrontend.ui.profile.Network.ServerRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     ServerRequest serverRequest = new ServerRequest();
     ProfileFragment profile = new ProfileFragment();
     ProfileLogic logic = new ProfileLogic(profile, serverRequest);
+    private List<Integer> hives;
 
 
     /**
@@ -119,6 +125,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView memberCnt;
         public TextView hiveDescrip;
         ConstraintLayout relativeLayout;
+        public ImageView hiveProfile;
+        public ImageView hiveBanner;
+        private FirebaseStorage storage;
+        private StorageReference storageReference;
+        private int position = 0;
 
         /**
          * Creates a ViewHolder from the given View
@@ -130,6 +141,30 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             relativeLayout=itemView.findViewById(R.id.postViewLayout);
             memberCnt = itemView.findViewById(R.id.hiveCardMemberCount);
             hiveDescrip = itemView.findViewById(R.id.hiveCardDescription);
+            hiveProfile = itemView.findViewById(R.id.hiveCardPicture);
+            hiveBanner = itemView.findViewById(R.id.hiveCardHeader);
+            storage = FirebaseStorage.getInstance();
+            storageReference = storage.getReference();
+
+            int hiveId =  getHiveIds().get(3);
+            position += 1;
+
+            StorageReference test1 = storageReference.child("hivePictures/" + hiveId + ".jpg");
+            StorageReference test2 = storageReference.child("hiveBackgrounds/" + hiveId + ".jpg");
+
+            GlideApp.with(context)
+                    .load(test1)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.defaulth)
+                    .into(hiveProfile);
+
+            GlideApp.with(context)
+                    .load(test2)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.defaultb)
+                    .into(hiveBanner);
         }
     }
 
@@ -138,4 +173,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return mData.get(id);
     }
 
+    private List<Integer> getHiveIds(){
+        List<Integer> hiveIds = new ArrayList<>();
+        hiveIds.add(3);
+        hiveIds.add(4);
+        hiveIds.add(7);
+        hiveIds.add(9);
+        hiveIds.add(10);
+        hiveIds.add(11);
+        return hiveIds;
+    }
 }

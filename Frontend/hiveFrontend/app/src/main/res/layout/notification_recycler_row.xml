@@ -45,9 +45,10 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/noti_text"
                 app:layout_constraintEnd_toEndOf="@+id/noti_text"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.951"
                 app:layout_constraintStart_toStartOf="@+id/noti_datetime"
-                app:layout_constraintTop_toTopOf="parent"></TextView>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"></TextView>
 
             <TextView
                 android:id="@+id/noti_text"

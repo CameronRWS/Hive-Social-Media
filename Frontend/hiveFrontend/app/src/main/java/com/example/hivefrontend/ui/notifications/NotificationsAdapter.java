@@ -97,7 +97,10 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             holder.notiText.setText(notiText);
             String date = notifications.get(position).getString("dateCreated");
             holder.notiDateTime.setText(date);
-            String isNewText = "isNew: " + notifications.get(position).getString("isNew");
+            String isNewText = "";
+            if(notifications.get(position).getString("isNew").equals("true")) {
+                isNewText = "unread";
+            }
             holder.notiIsNew.setText(isNewText);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -139,6 +142,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 boolean isNew = notifications.get(position).getBoolean("isNew");
                 if (isNew) {
                     readNotification(notiId);
+                    notiIsNew.setText("");
                 }
                 String notiType = notifications.get(position).getString("notiType");
                 String entityType = notiType.split("-")[0];
